@@ -71,10 +71,10 @@ namespace CarteiraDeJogos.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("JogosFavoritos")
+                    b.Property<string>("Jogos")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("ListaJogos")
+                    b.Property<string>("JogosFavoritos")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Nome")

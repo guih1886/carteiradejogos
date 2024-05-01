@@ -18,8 +18,7 @@ public class Usuario
     [MinLength(3, ErrorMessage = "Senha inválida.")]
     public string Senha { get; set; }
 
-    public ICollection<int>? ListaJogos { get; set; }
+    public List<int>? Jogos { get; set; }
 
-    [AllowNull]
-    public ICollection<int>? JogosFavoritos { get; set; }
+    public List<int>? JogosFavoritos { get; set; }
 }

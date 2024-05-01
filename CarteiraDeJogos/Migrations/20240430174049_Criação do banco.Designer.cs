@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarteiraDeJogos.Migrations
 {
     [DbContext(typeof(JogosContext))]
-    [Migration("20240429212226_user update 2")]
-    partial class userupdate2
+    [Migration("20240430174049_Criação do banco")]
+    partial class Criaçãodobanco
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -74,10 +74,10 @@ namespace CarteiraDeJogos.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("JogosFavoritos")
+                    b.Property<string>("Jogos")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("ListaJogos")
+                    b.Property<string>("JogosFavoritos")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Nome")

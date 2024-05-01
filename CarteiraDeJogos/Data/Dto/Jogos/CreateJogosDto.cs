@@ -1,15 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using CarteiraDeJogos.Models;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace CarteiraDeJogos.Models;
+namespace CarteiraDeJogos.Data.Dto.Jogos;
 
-public class Jogos
+public class CreateJogosDto
 {
-    [Key]
-    [Required]
-    public int Id { get; set; }
-
     [Required(ErrorMessage = "A imagem não pode ser vazio.")]
     public string EnderecoImagem { get; set; }
 
@@ -24,15 +20,12 @@ public class Jogos
     [Required(ErrorMessage = "O Genero não pode ser vazio.")]
     public Genero Genero { get; set; }
 
-    [AllowNull]
+    [Required(ErrorMessage = "O id do usuário não pode ser vazio.")]
+    public int UsuarioId { get; set; }
+
     public string AnoLancamento { get; set; }
 
-    [AllowNull]
     public string Plataforma { get; set; }
 
-    [AllowNull]
     public int Nota { get; set; }
-
-    [Required(ErrorMessage = "O id do usuário deve ser preenchido.")]
-    public int UsuarioId { get; set; }
 }
