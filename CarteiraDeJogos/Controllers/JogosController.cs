@@ -20,16 +20,16 @@ namespace CarteiraDeJogos.Controllers
         }
 
         [HttpGet]
-        public IActionResult BuscaJogos()
+        public IActionResult ListarJogos()
         {
             List<ReadJogosDto> jogos = _mapper.Map<List<ReadJogosDto>>(_context.Jogos.ToList());
             return Ok(jogos);
         }
 
         [HttpGet("{id}")]
-        public IActionResult BuscaJogoPorId(int id)
+        public IActionResult BuscarJogoPorId(int id)
         {
-            Jogos? jogo = _context.Jogos.FirstOrDefault(j => j.Id == id);
+            Jogos? jogo = Utils.BuscarJogos(id, _context);
             if (jogo == null) return NotFound();
             return Ok(_mapper.Map<ReadJogosDto>(jogo));
 
@@ -45,9 +45,9 @@ namespace CarteiraDeJogos.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult AtualizaJogo(int id, [FromBody] UpdateJogosDto jogo)
+        public IActionResult AtualizarJogo(int id, [FromBody] UpdateJogosDto jogo)
         {
-            Jogos? jogoAtualizado = _context.Jogos.FirstOrDefault(jogo => jogo.Id == id);
+            Jogos? jogoAtualizado = Utils.BuscarJogos(id, _context);
             if (jogoAtualizado == null) return NotFound();
             _mapper.Map(jogo, jogoAtualizado);
             _context.SaveChanges();
@@ -55,9 +55,9 @@ namespace CarteiraDeJogos.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult DeletarJogo(int id)
         {
-            Jogos? jogo = _context.Jogos.FirstOrDefault(jogo => jogo.Id == id);
+            Jogos? jogo = Utils.BuscarJogos(id, _context);
             if (jogo == null) return NotFound();
             _context.Jogos.Remove(jogo);
             _context.SaveChanges();

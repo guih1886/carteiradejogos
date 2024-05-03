@@ -8,6 +8,8 @@ public class ReadJogosDto
 
     public string Nome { get; set; }
 
+    public string EnderecoImagem { get; set; }
+
     public string Descricao { get; set; }
 
     public Genero Genero { get; set; }

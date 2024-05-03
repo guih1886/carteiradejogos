@@ -20,9 +20,6 @@ public class UpdateJogosDto
     [Required(ErrorMessage = "O Genero não pode ser vazio.")]
     public Genero Genero { get; set; }
 
-    [Required(ErrorMessage = "O id do usuário não pode ser vazio.")]
-    public int UsuarioId { get; set; }
-
     public string AnoLancamento { get; set; }
 
     public string Plataforma { get; set; }
