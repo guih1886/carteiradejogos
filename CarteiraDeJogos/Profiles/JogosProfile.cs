@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CarteiraDeJogos.Data.Dto.Jogos;
 using CarteiraDeJogos.Models;
+using Microsoft.OpenApi.Extensions;
 
 namespace CarteiraDeJogos.Profiles;
 

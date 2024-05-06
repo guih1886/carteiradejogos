@@ -1,6 +1,5 @@
 ﻿using CarteiraDeJogos.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace CarteiraDeJogos.Data.Dto.Jogos;
 

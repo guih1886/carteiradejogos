@@ -35,4 +35,6 @@ public class Jogos
 
     [Required(ErrorMessage = "O id do usuário deve ser preenchido.")]
     public int UsuarioId { get; set; }
+
+    public virtual Usuario Usuario { get; set; }
 }

@@ -12,7 +12,7 @@ public class ReadJogosDto
 
     public string Descricao { get; set; }
 
-    public Genero Genero { get; set; }
+    public string Genero { get; set; }
 
     public string AnoLancamento { get; set; }
 

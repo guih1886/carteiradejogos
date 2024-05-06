@@ -1,6 +1,5 @@
 ﻿using CarteiraDeJogos.Models;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace CarteiraDeJogos.Data.Dto.Jogos;
 
@@ -27,5 +26,6 @@ public class CreateJogosDto
 
     public string Plataforma { get; set; }
 
+    [RegularExpression("([10]|[1-9])", ErrorMessage = "Nota deve ser de 0 a 10.")]
     public int Nota { get; set; }
 }
