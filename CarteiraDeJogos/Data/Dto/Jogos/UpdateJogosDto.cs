@@ -5,6 +5,17 @@ namespace CarteiraDeJogos.Data.Dto.Jogos;
 
 public class UpdateJogosDto
 {
+    public UpdateJogosDto(string enderecoImagem, string nome, string descricao, Genero genero, string anoLancamento, string plataforma, int nota)
+    {
+        EnderecoImagem = enderecoImagem;
+        Nome = nome;
+        Descricao = descricao;
+        Genero = genero;
+        AnoLancamento = anoLancamento;
+        Plataforma = plataforma;
+        Nota = nota;
+    }
+
     [Required(ErrorMessage = "A imagem não pode ser vazio.")]
     public string EnderecoImagem { get; set; }
 

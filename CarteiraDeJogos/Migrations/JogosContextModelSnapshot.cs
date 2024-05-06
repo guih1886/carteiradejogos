@@ -33,6 +33,9 @@ namespace CarteiraDeJogos.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("Ativo")
+                        .HasColumnType("int");
+
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -59,6 +62,8 @@ namespace CarteiraDeJogos.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Jogos");
                 });
@@ -88,6 +93,17 @@ namespace CarteiraDeJogos.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("CarteiraDeJogos.Models.Jogos", b =>
+                {
+                    b.HasOne("CarteiraDeJogos.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 #pragma warning restore 612, 618
         }

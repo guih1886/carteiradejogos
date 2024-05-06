@@ -12,17 +12,19 @@ namespace CarteiraDeJogos.Controllers
     {
         private JogosContext _context;
         private IMapper _mapper;
+        private JogosDoUsuarioController _controller;
 
-        public JogosController(JogosContext context, IMapper mapper)
+        public JogosController(JogosContext context, IMapper mapper, JogosDoUsuarioController controller)
         {
             _context = context;
             _mapper = mapper;
+            _controller = controller;
         }
 
         [HttpGet]
         public IActionResult ListarJogos()
         {
-            List<ReadJogosDto> jogos = _mapper.Map<List<ReadJogosDto>>(_context.Jogos.ToList());
+            List<ReadJogosDto> jogos = _mapper.Map<List<ReadJogosDto>>(_context.Jogos.Where(jogo => jogo.Ativo == 1).ToList());
             return Ok(jogos);
         }
 
@@ -38,10 +40,19 @@ namespace CarteiraDeJogos.Controllers
         [HttpPost]
         public IActionResult CadastrarJogo([FromBody] CreateJogosDto jogo)
         {
-            Jogos novoJogo = _mapper.Map<Jogos>(jogo);
-            _context.Jogos.Add(novoJogo);
-            _context.SaveChanges();
-            return Ok(_mapper.Map<ReadJogosDto>(novoJogo));
+            try
+            {
+                Jogos novoJogo = _mapper.Map<Jogos>(jogo);
+                novoJogo.Ativo = 1;
+                _context.Jogos.Add(novoJogo);
+                _context.SaveChanges();
+                Utils.AdicionarJogoUsuario(jogo.UsuarioId, novoJogo.Id, _context);
+                return Ok(_mapper.Map<ReadJogosDto>(novoJogo));
+            }
+            catch (Exception)
+            {
+                return BadRequest($"Erro ao cadastrar o jogo, verifique o Id do usuário.");
+            }
         }
 
         [HttpPut("{id}")]

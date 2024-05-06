@@ -40,6 +40,8 @@ public class UsuarioController : ControllerBase
     public IActionResult CadastrarUsuario([FromBody] CreateUsuarioDto usuario)
     {
         Usuario novoUsuario = _mapper.Map<Usuario>(usuario);
+        novoUsuario.Jogos = [];
+        novoUsuario.JogosFavoritos = [];
         _context.Usuarios.Add(novoUsuario);
         _context.SaveChanges();
         return Ok(_mapper.Map<ReadUsuariosDto>(novoUsuario));

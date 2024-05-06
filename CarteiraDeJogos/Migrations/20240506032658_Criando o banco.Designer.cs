@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarteiraDeJogos.Migrations
 {
     [DbContext(typeof(JogosContext))]
-    [Migration("20240502220219_Criando o banco")]
+    [Migration("20240506032658_Criando o banco")]
     partial class Criandoobanco
     {
         /// <inheritdoc />
@@ -63,6 +63,8 @@ namespace CarteiraDeJogos.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UsuarioId");
+
                     b.ToTable("Jogos");
                 });
 
@@ -91,6 +93,17 @@ namespace CarteiraDeJogos.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("CarteiraDeJogos.Models.Jogos", b =>
+                {
+                    b.HasOne("CarteiraDeJogos.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 #pragma warning restore 612, 618
         }

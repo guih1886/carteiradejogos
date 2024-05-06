@@ -6,6 +6,13 @@ namespace CarteiraDeJogos.Models;
 
 public class Jogos
 {
+    public Jogos(string enderecoImagem, string nome, string descricao)
+    {
+        EnderecoImagem = enderecoImagem;
+        Nome = nome;
+        Descricao = descricao;
+    }
+
     [Key]
     [Required]
     public int Id { get; set; }
@@ -36,5 +43,8 @@ public class Jogos
     [Required(ErrorMessage = "O id do usuário deve ser preenchido.")]
     public int UsuarioId { get; set; }
 
-    public virtual Usuario Usuario { get; set; }
+    public int Ativo { get; set; }
+
+    [ForeignKey("UsuarioId")]
+    public virtual required Usuario Usuario { get; set; }
 }

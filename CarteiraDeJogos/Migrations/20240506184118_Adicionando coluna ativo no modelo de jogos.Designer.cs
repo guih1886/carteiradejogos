@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarteiraDeJogos.Migrations
 {
     [DbContext(typeof(JogosContext))]
-    [Migration("20240430174049_Criação do banco")]
-    partial class Criaçãodobanco
+    [Migration("20240506184118_Adicionando coluna ativo no modelo de jogos")]
+    partial class Adicionandocolunaativonomodelodejogos
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,9 @@ namespace CarteiraDeJogos.Migrations
                     b.Property<string>("AnoLancamento")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("Ativo")
+                        .HasColumnType("int");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
@@ -62,6 +65,8 @@ namespace CarteiraDeJogos.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Jogos");
                 });
@@ -91,6 +96,17 @@ namespace CarteiraDeJogos.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("CarteiraDeJogos.Models.Jogos", b =>
+                {
+                    b.HasOne("CarteiraDeJogos.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 #pragma warning restore 612, 618
         }
