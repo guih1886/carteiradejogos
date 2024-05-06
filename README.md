@@ -12,3 +12,25 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 > - **Cadastrar, Alterar, deletar, listar e detalhar os jogos.**
 > - **Cadastrar, Alterar, deletar, listar e detalhar os usuários.**
 > - **Adicionar e remover os jogos na lista de jogos favoritos do usuário.**
+
+##
+
+- `POST /Usuarios`: Essa rota recebe através do corpo da requisição um JSON com os dados de `nome`, `senha` e `confirmacaoSenha` cadastrado
+  previamente no banco de dados, aqui utilizado o MySQL. O usuário não é cadastrado caso as senhas sejam divergentes.
+
+  ```json
+    {
+        "nome": "Guilherme Henrique",
+        "senha": "1234",
+        "confirmacaoSenha": "1234"
+    }
+  ```
+
+####
+
+##
+
+### Imagens
+
+![](https://github.com/guih1886/vollmedAPI/blob/main/src/main/resources/static/reqConsultas.png#vitrinedev)
+
