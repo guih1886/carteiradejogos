@@ -169,10 +169,38 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
   ```
 
 - `DELETE /Jogos/{id}`: Marca o jogo com o `Id` correspondente como inativo. Em caso de sucesso é retornado o HTTP 204 e caso não encontre o usuário é retornado o HTTP 404.
+  O jogo é retirado da lista de jogos e de jogos favoritos de todos os usuários cadastrados.
 
 ##
 
 ### Jogos Do Usuário
+
+- `POST /JogosDoUsuario/{id}/adicionarJogoFavorito/{idJogoFavorito}`: Adiciona um jogo ativo cadastrado "`idJogoFavorito`" à lista de jogos favoritos do usuário com o `id` informado. Retorna um HTTP 200 com a lista de jogos favoritos em caso de sucesso.
+
+  ```json
+  [6]
+  ```
+
+Em caso de falha retorna um HTTP 400 caso o jogo já esteja na lista de jogos favoritos do usuário com a mensagem `"Jogo já está na lista."` ou caso o jogo não esteja cadastrado com a mensagem `"Jogo não está na lista de jogos."`.
+Caso o usuário ou o jogo não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem "`Usuario não encontrado.`" ou "`Jogo não encontrado.`".
+
+- `GET /JogosDoUsuario/{id}/todosJogos`: Retorna a lista de todos os jogos ativos cadastrados do usuário.
+
+  ```json
+  [5, 6, 7]
+  ```
+
+- `GET /JogosDoUsuario/{id}/jogosfavoritos`: Retorna a lista de todos os jogos favoritos ativos cadastrados do usuário.
+
+  ```json
+  [6]
+  ```
+
+- `DELETE /JogosDoUsuario/{id}/removerJogo/{idJogo}`: Remove o jogo da lista de jogos do usuário e marca o jogo como inativo. Retona o HTTP 204 em caso de sucesso,
+  e caso o usuário não seja encontrado retorna o HTTP 404 com a mensagem "`Usuario não encontrado.`" ou "`Jogo não está na lista.`" caso o `idJogo` não seja de um jogo na lista de jogos do usuário.
+
+- `DELETE /JogosDoUsuario/{id}/removerJogoFavorito/{idJogoFavorito}`: Remove o jogo da lista de jogos favoritos do usuário. Retona o HTTP 204 em caso de sucesso,
+  e caso o usuário não seja encontrado retorna o HTTP 404 com a mensagem "`Usuario não encontrado.`" ou "`Jogo não está na lista.`" caso o `idJogoFavorito` não seja de um jogo na lista de jogos favoritos do usuário.
 
 ### Imagens
 
