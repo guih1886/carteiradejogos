@@ -10,7 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("CarteiraDeJogosConnection");
 
 builder.Services.AddDbContext<JogosContext>(opts =>
-    opts.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    opts.UseSqlServer(connectionString, e => e.EnableRetryOnFailure()));
+
+/*builder.Services.AddDbContext<JogosContext>(opts =>
+    opts.UseSqlServer(connectionString, ServerVersion.AutoDetect(connectionString)));*/
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<JogosDoUsuarioController>();
