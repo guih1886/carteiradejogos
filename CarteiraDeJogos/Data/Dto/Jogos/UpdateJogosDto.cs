@@ -7,8 +7,8 @@ public class UpdateJogosDto
 {
     public UpdateJogosDto(string enderecoImagem, string nome, string descricao, Genero genero, string anoLancamento, string plataforma, int nota)
     {
-        EnderecoImagem = enderecoImagem;
         Nome = nome;
+        EnderecoImagem = enderecoImagem;
         Descricao = descricao;
         Genero = genero;
         AnoLancamento = anoLancamento;

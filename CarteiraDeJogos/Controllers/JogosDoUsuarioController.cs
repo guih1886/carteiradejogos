@@ -1,6 +1,7 @@
 ﻿using CarteiraDeJogos.Data;
 using CarteiraDeJogos.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace CarteiraDeJogos.Controllers;
 
@@ -39,10 +40,12 @@ public class JogosDoUsuarioController : ControllerBase
     public IActionResult AdicionarJogoFavoritoUsuario(int id, int idJogoFavorito)
     {
         Usuario? usuario = Utils.BuscarUsuario(id, _context);
+        Jogos? jogo = Utils.BuscarJogos(idJogoFavorito, _context);
         if (usuario == null) return NotFound("Usuario não encontrado.");
-        if (usuario.JogosFavoritos!.Contains(idJogoFavorito)) return BadRequest("Jogo já está na lista.");
-        if (!usuario.Jogos!.Contains(idJogoFavorito)) return BadRequest("Jogo não está na lista de jogos.");
-        usuario.JogosFavoritos!.Add(idJogoFavorito);
+        if (jogo == null) return NotFound("Jogo não encontrado.");
+        if (usuario.JogosFavoritos!.Contains(jogo.Id)) return BadRequest("Jogo já está na lista.");
+        if (!usuario.Jogos!.Contains(jogo.Id)) return BadRequest("Jogo não está na lista de jogos.");
+        usuario.JogosFavoritos!.Add(jogo.Id);
         _context.SaveChanges();
         return Ok(usuario.JogosFavoritos);
     }
@@ -57,7 +60,7 @@ public class JogosDoUsuarioController : ControllerBase
         usuario.Jogos!.Remove(idJogo);
         jogo!.Ativo = 0;
         _context.SaveChanges();
-        return Ok(usuario.Jogos);
+        return NoContent();
     }
 
     [HttpDelete("removerJogoFavorito/{idJogoFavorito}")]
@@ -68,7 +71,7 @@ public class JogosDoUsuarioController : ControllerBase
         if (!usuario.JogosFavoritos!.Contains(idJogoFavorito)) return BadRequest("Jogo não está na lista.");
         usuario.JogosFavoritos!.Remove(idJogoFavorito);
         _context.SaveChanges();
-        return Ok(usuario.JogosFavoritos);
+        return NoContent();
     }
 }
 

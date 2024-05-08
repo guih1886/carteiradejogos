@@ -9,6 +9,12 @@ public static class Utils
         return usuarioId;
     }
 
+    public static List<Usuario>? ListarUsuarios(JogosContext _context)
+    {
+        List<Usuario>? usuarioId = _context.Usuarios.ToList();
+        return usuarioId;
+    }
+
     public static Jogos? BuscarJogos(int id, JogosContext _context)
     {
         Jogos? jogo = _context.Jogos.FirstOrDefault(j => j.Id == id && j.Ativo == 1);

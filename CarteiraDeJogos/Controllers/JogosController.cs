@@ -12,13 +12,11 @@ namespace CarteiraDeJogos.Controllers
     {
         private JogosContext _context;
         private IMapper _mapper;
-        private JogosDoUsuarioController _controller;
 
-        public JogosController(JogosContext context, IMapper mapper, JogosDoUsuarioController controller)
+        public JogosController(JogosContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _controller = controller;
         }
 
         [HttpGet]
@@ -69,8 +67,14 @@ namespace CarteiraDeJogos.Controllers
         public IActionResult DeletarJogo(int id)
         {
             Jogos? jogo = Utils.BuscarJogos(id, _context);
+            List<Usuario>? usuarios = Utils.ListarUsuarios(_context);
             if (jogo == null) return NotFound();
-            _context.Jogos.Remove(jogo);
+            jogo.Ativo = 0;
+            foreach (var usuario in usuarios)
+            {
+                if (usuario.Jogos!.Contains(jogo.Id)) usuario.Jogos.Remove(jogo.Id);
+                if (usuario.JogosFavoritos!.Contains(jogo.Id)) usuario.JogosFavoritos.Remove(jogo.Id);
+            }
             _context.SaveChanges();
             return NoContent();
         }
