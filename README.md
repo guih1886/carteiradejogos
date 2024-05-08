@@ -15,12 +15,9 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 > - **Adicionar e remover os jogos na lista de jogos favoritos do usuário.**
 
 ### Escalamento do projeto (breve)
-  - Implementar os testes para garantir a qualidade do código.
-  - Implementar um app com Flutter para o consumo da API.
 
-##
-
-### Jogos
+- Implementar os testes para garantir a qualidade do código.
+- Implementar um app com Flutter para o consumo da API.
 
 ##
 
@@ -87,9 +84,96 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 
 - `DELETE /Usuarios/{id}`: Apaga o usuário com o `Id` correspondente. Em caso de sucesso é retornado o HTTP 204 e caso não encontre o usuário é retornado o HTTP 404.
 
-####
+##
+
+### Jogos
+
+- `POST /Jogos`: A rota cria um jogo no banco de dados, utilizando um DTO de criação com os dados `nome`, `endereçoImagem`, `descricao`, `genero`, `anoLançamento`, `plataforma`, `nota` e `usuarioId`.
+  Os campos opcionais são gênero, ano de lançamento, plataforma e nota. E os demais são obrigátorios, e o campo de `usuarioId` é uma chave estrangeira que faz referência ao Id de usuário e portanto deve ser um valor válido para a inclusão.
+
+  ```json
+  {
+    "nome": "Super Mário",
+    "enderecoImagem": "https://jogoveio.com.br/wp-content/uploads/2019/04/super-mario-bros-nes.png",
+    "descricao": "O objetivo do jogo é percorrer o Reino do Cogumelo, sobreviver às forças do vilão Bowser e salvar a Princesa Peach.",
+    "genero": 1,
+    "anoLancamento": "1981",
+    "plataforma": "Super Nintendo",
+    "nota": 0,
+    "usuarioId": 3
+  }
+  ```
+
+  Em caso de sucesso, é retornado um HTTP 200 com o json do jogo criado, e o Id do jogo é adicionado automaticamente à lista de jogos do usuário que cadastrou o jogo.
+  Em caso de falha, será retornado um HTTP 400 e a/as mensagens de erro sobre quais campos são ausentes.
+
+  ```json
+  {
+    "nome": "Guilherme Henrique",
+    "jogos": [5, 6, 7],
+    "jogosFavoritos": []
+  }
+  ```
+
+- `GET /Jogos`: Retorna uma lista de todos os jogos através do DTO de leitura.
+
+  ```json
+  [
+    {
+      "nome": "Jogo Teste",
+      "enderecoImagem": "",
+      "descricao": "jogo teste para o metodo post",
+      "genero": "Sem_Genero",
+      "anoLancamento": "",
+      "plataforma": "",
+      "nota": 0
+    },
+    {
+      "nome": "Super Mário",
+      "enderecoImagem": "https://jogoveio.com.br/wp-content/uploads/2019/04/super-mario-bros-nes.png",
+      "descricao": "O objetivo do jogo é percorrer o Reino do Cogumelo, sobreviver às forças do vilão Bowser e salvar a Princesa Peach.",
+      "genero": "Aventura",
+      "anoLancamento": "1981",
+      "plataforma": "Super Nintendo",
+      "nota": 8
+    }
+  ]
+  ```
+
+- `GET /Jogos/{id}`: Detalha o jogo com o `Id` correspondente e retorna o HTTP 200 e o json da busca. Caso não encontre o joso é retornado o HTTP 404.
+
+  ```json
+  {
+    "nome": "Super Mário",
+    "enderecoImagem": "https://jogoveio.com.br/wp-content/uploads/2019/04/super-mario-bros-nes.png",
+    "descricao": "O objetivo do jogo é percorrer o Reino do Cogumelo, sobreviver às forças do vilão Bowser e salvar a Princesa Peach.",
+    "genero": "Aventura",
+    "anoLancamento": "1981",
+    "plataforma": "Super Nintendo",
+    "nota": 8
+  }
+  ```
+
+- `PUT /Jogos/{id}`: Faz a alteração do jogo com o `Id` correspondente. O DTO de update somente permite a modificação nesse caso dos campos de `nome`, `endereçoImagem`, `descricao`, `genero`, `anoLançamento`, `plataforma`, `nota`, protegendo assim os campos mais sensíveis.
+  O retorno do é um HTTP 200 e o json do jogo modificado em caso de sucesso e um 404 caso o jogo não seja localizado.
+
+  ```json
+  {
+    "nome": "Mario Kart",
+    "enderecoImagem": "um endereco",
+    "descricao": "Jogo do mário de corrida com kards, muito divertido.",
+    "genero": "Corrida",
+    "anoLancamento": "1994",
+    "plataforma": "Nintendo",
+    "nota": 8
+  }
+  ```
+
+- `DELETE /Usuarios/{id}`: Apaga o jogo com o `Id` correspondente. Em caso de sucesso é retornado o HTTP 204 e caso não encontre o usuário é retornado o HTTP 404.
 
 ##
+
+### Jogos Do Usuário
 
 ### Imagens
 
