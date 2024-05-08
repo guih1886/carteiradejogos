@@ -181,8 +181,8 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
   [6]
   ```
 
-Em caso de falha retorna um HTTP 400 caso o jogo já esteja na lista de jogos favoritos do usuário com a mensagem `"Jogo já está na lista."` ou caso o jogo não esteja cadastrado com a mensagem `"Jogo não está na lista de jogos."`.
-Caso o usuário ou o jogo não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem "`Usuario não encontrado.`" ou "`Jogo não encontrado.`".
+  Em caso de falha retorna um HTTP 400 caso o jogo já esteja na lista de jogos favoritos do usuário com a mensagem `"Jogo já está na lista."` ou caso o jogo não esteja cadastrado com a mensagem `"Jogo não está na lista de jogos."`.
+  Caso o usuário ou o jogo não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem "`Usuario não encontrado.`" ou "`Jogo não encontrado.`".
 
 - `GET /JogosDoUsuario/{id}/todosJogos`: Retorna a lista de todos os jogos ativos cadastrados do usuário.
 
