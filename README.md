@@ -208,3 +208,10 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/schemas.png)
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/modeloJogos.png)
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/modeloUsuarios.png)
+
+
+##
+
+### Configurando o zip
+
+Faça o download e extraia a pasta do aplicativo. No arquivo `appsettings.json` será necessário adicionar a string de conexão com o banco de dados SQL Server. Exercutar o aplicativo carteiraDeJogos.exe.
