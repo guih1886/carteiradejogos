@@ -6,7 +6,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 | --------------------- | ----------------------------- |
 | :sparkles: Nome       | **CarteiraDeJogos-API**       |
 | :label: Tecnologias   | C#, .NET, ASP.NET, SQL Server |
-| :inbox_tray: Download | [Download EXE]()              |
+| :inbox_tray: Download | [Download Zip](https://github.com/guih1886/carteiradejogos/raw/main/CarteiraDeJogos/Assets/carteiraDeJogos.rar)<br>[Download App]() Em breve |
 
 ### Detalhes do projeto
 
@@ -14,7 +14,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 > - **Cadastrar, Alterar, deletar, listar e detalhar os usuários.**
 > - **Adicionar e remover os jogos na lista de jogos favoritos do usuário.**
 
-### Escalamento do projeto (breve)
+### Escalamento do projeto (em breve)
 
 - Implementar os testes para garantir a qualidade do código.
 - Implementar um app com Flutter para o consumo da API.
@@ -204,4 +204,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 
 ### Imagens
 
-![](#vitrinedev)
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/swagger.png#vitrinedev)
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/schemas.png)
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/modeloJogos.png)
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/modeloUsuarios.png)
