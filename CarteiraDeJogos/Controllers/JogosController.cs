@@ -1,8 +1,5 @@
-﻿using AutoMapper;
-using CarteiraDeJogos.Data;
-using CarteiraDeJogos.Data.Dto.Jogos;
+﻿using CarteiraDeJogos.Data.Dto.Jogos;
 using CarteiraDeJogos.Data.Repository;
-using CarteiraDeJogos.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarteiraDeJogos.Controllers

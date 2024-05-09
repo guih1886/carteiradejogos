@@ -1,4 +1,5 @@
 ﻿using CarteiraDeJogos.Data;
+using CarteiraDeJogos.Data.Repository;
 using CarteiraDeJogos.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -9,69 +10,46 @@ namespace CarteiraDeJogos.Controllers;
 [Route("JogosDoUsuario/{id}")]
 public class JogosDoUsuarioController : ControllerBase
 {
-    private JogosContext _context;
+    private readonly JogosDoUsuarioRepository _jogosDoUsuarioRepository;
 
-    public JogosDoUsuarioController(JogosContext context)
+    public JogosDoUsuarioController(JogosDoUsuarioRepository jogosDoUsuarioRepository)
     {
-        _context = context;
+        _jogosDoUsuarioRepository = jogosDoUsuarioRepository;
     }
 
     [HttpGet("todosJogos")]
-    public IActionResult ListarTodosOsJogos(int id)
+    public ActionResult<List<int>> ListarTodosOsJogos(int id)
     {
-        Usuario? usuario = Utils.BuscarUsuario(id, _context);
-        if (usuario == null) return NotFound("Usuario não encontrado.");
-        if (usuario.Jogos == null) return NoContent();
-        List<int> todosOsJogos = usuario.Jogos.ToList();
-        return Ok(todosOsJogos);
+        List<int> listaDeJogos = _jogosDoUsuarioRepository.ListarTodosOsJogos(id);
+        return Ok(listaDeJogos);
     }
 
     [HttpGet("jogosfavoritos")]
-    public IActionResult ListarJogosFavoritos(int id)
+    public ActionResult<List<int>> ListarJogosFavoritos(int id)
     {
-        Usuario? usuario = Utils.BuscarUsuario(id, _context);
-        if (usuario == null) return NotFound("Usuario não encontrado.");
-        if (usuario.JogosFavoritos == null) return NoContent();
-        List<int> jogosFavoritos = usuario.JogosFavoritos.ToList();
+        List<int> jogosFavoritos = _jogosDoUsuarioRepository.ListarJogosFavoritos(id);
         return Ok(jogosFavoritos);
-    }    
+    }
 
     [HttpPost("adicionarJogoFavorito/{idJogoFavorito}")]
-    public IActionResult AdicionarJogoFavoritoUsuario(int id, int idJogoFavorito)
+    public ActionResult<List<int>> AdicionarJogoFavoritoUsuario(int id, int idJogoFavorito)
     {
-        Usuario? usuario = Utils.BuscarUsuario(id, _context);
-        Jogos? jogo = Utils.BuscarJogos(idJogoFavorito, _context);
-        if (usuario == null) return NotFound("Usuario não encontrado.");
-        if (jogo == null) return NotFound("Jogo não encontrado.");
-        if (usuario.JogosFavoritos!.Contains(jogo.Id)) return BadRequest("Jogo já está na lista.");
-        if (!usuario.Jogos!.Contains(jogo.Id)) return BadRequest("Jogo não está na lista de jogos.");
-        usuario.JogosFavoritos!.Add(jogo.Id);
-        _context.SaveChanges();
-        return Ok(usuario.JogosFavoritos);
+        List<int> jogosFavoritos = _jogosDoUsuarioRepository.AdicionarJogoAoFavoritoDoUsuario(id, idJogoFavorito);
+        return Ok(jogosFavoritos);
     }
 
     [HttpDelete("removerJogo/{idJogo}")]
-    public IActionResult RemoverJogoUsuario(int id, int idJogo)
+    public ActionResult<List<int>> RemoverJogoUsuario(int id, int idJogo)
     {
-        Usuario? usuario = Utils.BuscarUsuario(id, _context);
-        Jogos? jogo = Utils.BuscarJogos(idJogo, _context);
-        if (usuario == null) return NotFound("Usuario não encontrado.");
-        if (!usuario.Jogos!.Contains(idJogo)) return BadRequest("Jogo não está na lista.");      
-        usuario.Jogos!.Remove(idJogo);
-        jogo!.Ativo = 0;
-        _context.SaveChanges();
-        return NoContent();
+        List<int> listaDeJogos = _jogosDoUsuarioRepository.RemoverJogoDoUsuario(id, idJogo);
+        return Ok(listaDeJogos);
     }
 
     [HttpDelete("removerJogoFavorito/{idJogoFavorito}")]
     public IActionResult RemoverJogoFavoritoUsuario(int id, int idJogoFavorito)
     {
-        Usuario? usuario = Utils.BuscarUsuario(id, _context);
-        if (usuario == null) return NotFound("Usuario não encontrado.");
-        if (!usuario.JogosFavoritos!.Contains(idJogoFavorito)) return BadRequest("Jogo não está na lista.");
-        usuario.JogosFavoritos!.Remove(idJogoFavorito);
-        _context.SaveChanges();
-        return NoContent();
+        List<int> listaDeJogosFavoritos = _jogosDoUsuarioRepository.RemoverJogoDoUsuario(id, idJogoFavorito);
+        return Ok(listaDeJogosFavoritos);
     }
 }
 
