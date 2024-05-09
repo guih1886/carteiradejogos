@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CarteiraDeJogos.Data;
 using CarteiraDeJogos.Data.Dto.Jogos;
+using CarteiraDeJogos.Data.Repository;
 using CarteiraDeJogos.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,73 +11,56 @@ namespace CarteiraDeJogos.Controllers
     [Route("Jogos")]
     public class JogosController : ControllerBase
     {
-        private JogosContext _context;
-        private IMapper _mapper;
+        private readonly JogosRepository _repository;
 
-        public JogosController(JogosContext context, IMapper mapper)
+        public JogosController(JogosRepository repository)
         {
-            _context = context;
-            _mapper = mapper;
+            _repository = repository;
         }
 
         [HttpGet]
-        public IActionResult ListarJogos()
+        public ActionResult<List<ReadJogosDto>> ListarJogos()
         {
-            List<ReadJogosDto> jogos = _mapper.Map<List<ReadJogosDto>>(_context.Jogos.Where(jogo => jogo.Ativo == 1).ToList());
+            List<ReadJogosDto> jogos = _repository.ListarJogos();
             return Ok(jogos);
         }
 
         [HttpGet("{id}")]
         public IActionResult BuscarJogoPorId(int id)
         {
-            Jogos? jogo = Utils.BuscarJogos(id, _context);
+            ReadJogosDto jogo = _repository.BuscarJogoPorId(id);
             if (jogo == null) return NotFound();
-            return Ok(_mapper.Map<ReadJogosDto>(jogo));
-
+            return Ok(jogo);
         }
 
         [HttpPost]
-        public IActionResult CadastrarJogo([FromBody] CreateJogosDto jogo)
+        public ActionResult<ReadJogosDto> CadastrarJogo([FromBody] CreateJogosDto jogo)
         {
             try
             {
-                Jogos novoJogo = _mapper.Map<Jogos>(jogo);
-                novoJogo.Ativo = 1;
-                _context.Jogos.Add(novoJogo);
-                _context.SaveChanges();
-                Utils.AdicionarJogoUsuario(jogo.UsuarioId, novoJogo.Id, _context);
-                return Ok(_mapper.Map<ReadJogosDto>(novoJogo));
+                ReadJogosDto novoJogo = _repository.CadastrarJogo(jogo);
+                return Ok(novoJogo);
             }
-            catch (Exception)
+            catch (Exception error)
             {
-                return BadRequest($"Erro ao cadastrar o jogo, verifique o Id do usuário.");
+                return BadRequest($"Erro ao cadastrar o jogo. {error.Message}");
             }
         }
 
         [HttpPut("{id}")]
-        public IActionResult AtualizarJogo(int id, [FromBody] UpdateJogosDto jogo)
+        public ActionResult<ReadJogosDto> AtualizarJogo(int id, [FromBody] UpdateJogosDto jogo)
         {
-            Jogos? jogoAtualizado = Utils.BuscarJogos(id, _context);
+
+            ReadJogosDto jogoAtualizado = _repository.AtualizarJogo(id, jogo);
             if (jogoAtualizado == null) return NotFound();
-            _mapper.Map(jogo, jogoAtualizado);
-            _context.SaveChanges();
-            return Ok(_mapper.Map<ReadJogosDto>(jogoAtualizado));
+            return Ok(jogoAtualizado);
         }
 
         [HttpDelete("{id}")]
         public IActionResult DeletarJogo(int id)
         {
-            Jogos? jogo = Utils.BuscarJogos(id, _context);
-            List<Usuario>? usuarios = Utils.ListarUsuarios(_context);
-            if (jogo == null) return NotFound();
-            jogo.Ativo = 0;
-            foreach (var usuario in usuarios)
-            {
-                if (usuario.Jogos!.Contains(jogo.Id)) usuario.Jogos.Remove(jogo.Id);
-                if (usuario.JogosFavoritos!.Contains(jogo.Id)) usuario.JogosFavoritos.Remove(jogo.Id);
-            }
-            _context.SaveChanges();
-            return NoContent();
+            if (_repository.DeletarJogo(id)) return NoContent();
+            return NotFound();
         }
     }
 }

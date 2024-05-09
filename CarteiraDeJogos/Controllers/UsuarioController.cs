@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using CarteiraDeJogos.Data;
-using CarteiraDeJogos.Data.Dto.Usuarios;
-using CarteiraDeJogos.Models;
+﻿using CarteiraDeJogos.Data.Dto.Usuarios;
+using CarteiraDeJogos.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarteiraDeJogos.Controllers;
@@ -10,59 +8,46 @@ namespace CarteiraDeJogos.Controllers;
 [Route("Usuarios")]
 public class UsuarioController : ControllerBase
 {
-    private JogosContext _context;
-    private IMapper _mapper;
+    private readonly UsuarioRepository _usuarioRepository;
 
-    public UsuarioController(JogosContext context, IMapper mapper)
+    public UsuarioController(UsuarioRepository usuarioRepository)
     {
-        _context = context;
-        _mapper = mapper;
+        _usuarioRepository = usuarioRepository;
     }
 
     [HttpGet]
-    public IActionResult ListarUsuarios()
+    public ActionResult<List<ReadUsuariosDto>> ListarUsuarios()
     {
-        List<ReadUsuariosDto> usuarios = _mapper.Map<List<ReadUsuariosDto>>(_context.Usuarios.ToList());
-        if (usuarios == null) return NoContent();
+        List<ReadUsuariosDto> usuarios = _usuarioRepository.ListarUsuarios();
         return Ok(usuarios);
     }
 
     [HttpGet("{id}")]
-    public IActionResult BuscarUsuarioPorId(int id)
+    public ActionResult<ReadUsuariosDto> BuscarUsuarioPorId(int id)
     {
-        Usuario? usuario = Utils.BuscarUsuario(id, _context);
+        ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(id);
         if (usuario == null) return NotFound();
-        ReadUsuariosDto usuarioId = _mapper.Map<ReadUsuariosDto>(usuario);
-        return Ok(usuarioId);
+        return Ok(usuario);
     }
 
     [HttpPost]
-    public IActionResult CadastrarUsuario([FromBody] CreateUsuarioDto usuario)
+    public ActionResult<ReadUsuariosDto> CadastrarUsuario([FromBody] CreateUsuarioDto usuario)
     {
-        Usuario novoUsuario = _mapper.Map<Usuario>(usuario);
-        novoUsuario.Jogos = [];
-        novoUsuario.JogosFavoritos = [];
-        _context.Usuarios.Add(novoUsuario);
-        _context.SaveChanges();
-        return Ok(_mapper.Map<ReadUsuariosDto>(novoUsuario));
+        ReadUsuariosDto usuarioNovo = _usuarioRepository.CadastrarUsuario(usuario);
+        return Ok(usuarioNovo);
     }
 
     [HttpPut("{id}")]
-    public IActionResult AlterarUsuario(int id, [FromBody] UpdateUsuariosDto usuario)
+    public ActionResult<ReadUsuariosDto> AlterarUsuario(int id, [FromBody] UpdateUsuariosDto usuario)
     {
-        Usuario? usuarioId = Utils.BuscarUsuario(id, _context);
-        _mapper.Map(usuario, usuarioId);
-        _context.SaveChanges();
-        return Ok();
+        ReadUsuariosDto usuarioAtualizado = _usuarioRepository.AtualizarUsuario(id, usuario);
+        return Ok(usuarioAtualizado);
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeletarUsuario(int id)
+    public ActionResult DeletarUsuario(int id)
     {
-        Usuario? usuario = Utils.BuscarUsuario(id, _context);
-        if (usuario == null) return NotFound();
-        _context.Usuarios.Remove(usuario);
-        _context.SaveChanges();
-        return NoContent();
+        if (_usuarioRepository.DeletarUsuario(id)) return NoContent();
+        return NotFound();
     }
 }
