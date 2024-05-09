@@ -54,6 +54,13 @@ namespace CarteiraDeJogos.Data.Repository
             return _mapper.Map<List<ReadUsuariosDto>>(_context.Usuarios.ToList());
         }
 
+        public void AdicionarJogoUsuario(int usuarioId, int id)
+        {
+            Usuario? usuario = BuscarUsuario(usuarioId);
+            if (usuario == null) throw new Exception("Usuário não encontrado.");
+            if (!usuario.Jogos!.Contains(id)) usuario.Jogos.Add(id);
+        }
+
         private Usuario? BuscarUsuario(int id)
         {
             return _context.Usuarios.FirstOrDefault(u => u.Id == id);

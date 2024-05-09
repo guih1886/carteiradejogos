@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CarteiraDeJogos.Data.Dto.Jogos;
+using CarteiraDeJogos.Data.Dto.Usuarios;
 using CarteiraDeJogos.Data.Interfaces;
 using CarteiraDeJogos.Models;
 
@@ -9,11 +10,13 @@ namespace CarteiraDeJogos.Data.Repository
     {
         private JogosContext _context;
         private IMapper _mapper;
+        private UsuarioRepository _usuarioRepository;
 
-        public JogosRepository(JogosContext context, IMapper mapper)
+        public JogosRepository(JogosContext context, IMapper mapper, UsuarioRepository usuarioRepository)
         {
             _context = context;
             _mapper = mapper;
+            _usuarioRepository = usuarioRepository;
         }
 
         public List<ReadJogosDto> ListarJogos()
@@ -34,7 +37,7 @@ namespace CarteiraDeJogos.Data.Repository
             novoJogo.Ativo = 1;
             _context.Jogos.Add(novoJogo);
             _context.SaveChanges();
-            Utils.AdicionarJogoUsuario(novoJogo.UsuarioId, novoJogo.Id, _context);
+            _usuarioRepository.AdicionarJogoUsuario(novoJogo.UsuarioId, novoJogo.Id);
             return _mapper.Map<ReadJogosDto>(novoJogo);
         }
 
@@ -53,7 +56,7 @@ namespace CarteiraDeJogos.Data.Repository
 
             //Caso encontre o jogo, muda ele para inativo, e retira ele das listas dos usuários.
             jogo.Ativo = 0;
-            List<Usuario>? usuarios = Utils.ListarUsuarios(_context);
+            List<ReadUsuariosDto>? usuarios = _usuarioRepository.ListarUsuarios();
             foreach (var usuario in usuarios!)
             {
                 if (usuario.Jogos!.Contains(jogo.Id)) usuario.Jogos.Remove(jogo.Id);
@@ -63,7 +66,7 @@ namespace CarteiraDeJogos.Data.Repository
             return true;
         }
 
-        private Jogos? BuscarJogo(int id)
+        public Jogos? BuscarJogo(int id)
         {
             return _context.Jogos.FirstOrDefault(j => j.Id == id && j.Ativo == 1);
         }

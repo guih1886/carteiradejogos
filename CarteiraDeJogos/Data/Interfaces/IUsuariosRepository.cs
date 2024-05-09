@@ -1,6 +1,4 @@
-﻿using CarteiraDeJogos.Data.Dto.Jogos;
-using CarteiraDeJogos.Data.Dto.Usuarios;
-using CarteiraDeJogos.Models;
+﻿using CarteiraDeJogos.Data.Dto.Usuarios;
 
 namespace CarteiraDeJogos.Data.Interfaces;
 
