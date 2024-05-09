@@ -11,6 +11,7 @@ public class JogosProfile : Profile
     {
         CreateMap<CreateJogosDto, Jogos>();
         CreateMap<UpdateJogosDto, Jogos>();
+        CreateMap<UpdateJogosDto, ReadJogosDto>();
         CreateMap<Jogos, ReadJogosDto>();
     }
 }
