@@ -1,9 +1,4 @@
 ﻿using CarteiraDeJogos.Controllers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CarteiraDeJogosTest.ControllersTest;
 
@@ -16,6 +11,25 @@ public class JogosControllerTest
         _controller = controller;
     }
 
+    #region "Crud de Jogos"
+
+    [Fact]
+    public void CadastrarJogosTest()
+    {
+        //Arrange
+        
+        //Act
+        //Assert
+    }
+
+    [Fact]
+    public void AlterarJogosTest()
+    {
+        //Arrange
+        //Act
+        //Assert
+    }
+
     [Fact]
     public void ListarJogosTest()
     {
@@ -23,4 +37,28 @@ public class JogosControllerTest
         //Act
         //Assert
     }
+
+    [Fact]
+    public void ListarJogosPorIdTest()
+    {
+        //Arrange
+        //Act
+        //Assert
+    }
+
+    [Fact]
+    public void DeletarJogosTest()
+    {
+        //Arrange
+        //Act
+        //Assert
+    }
+
+    #endregion
+
+    #region "Demais Testes"
+
+
+
+    #endregion
 }
