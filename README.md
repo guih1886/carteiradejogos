@@ -18,6 +18,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 
 - Implementar os conceitos de repository, para a clareza do código. ✅
 - Implementar os testes para garantir a qualidade do código.
+- Implementar segurança de login, com o JWT.
 - Implementar um app com Flutter para o consumo da API.
 
 ##
