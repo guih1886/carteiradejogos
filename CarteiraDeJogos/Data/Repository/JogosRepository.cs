@@ -44,7 +44,7 @@ namespace CarteiraDeJogos.Data.Repository
         public ReadJogosDto AtualizarJogo(int id, UpdateJogosDto jogoNovo)
         {
             Jogos? jogo = BuscarJogo(id);
-            UpdateJogosDto jogoAtualizado = _mapper.Map(jogo, jogoNovo);
+            Jogos jogoAtualizado = _mapper.Map(jogoNovo, jogo)!;
             _context.SaveChanges();
             return _mapper.Map<ReadJogosDto>(jogoAtualizado);
         }
