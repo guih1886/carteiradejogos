@@ -13,5 +13,6 @@ public class JogosProfile : Profile
         CreateMap<UpdateJogosDto, Jogos>();
         CreateMap<UpdateJogosDto, ReadJogosDto>();
         CreateMap<Jogos, ReadJogosDto>();
+        CreateMap<Jogos, UpdateJogosDto>();
     }
 }
