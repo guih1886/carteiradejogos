@@ -2,10 +2,10 @@
 
 O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, deletar e adicionar os jogos aos favoritos. O projeto envolve uma complexidade onde cada jogo cadastrado é incluido na lista de jogos do usuário, e ao ser excluido o jogo é inativado, não aparecendo mais para o usuário. Também é possível adicionar os jogos a lista de favoritos, caso esse jogo já esteja na lista de jogos do usuário.
 
-| :placard: Vitrine.Dev | Guilherme Henrique            |
-| --------------------- | ----------------------------- |
-| :sparkles: Nome       | **CarteiraDeJogos-API**       |
-| :label: Tecnologias   | C#, .NET, ASP.NET, SQL Server |
+| :placard: Vitrine.Dev | Guilherme Henrique                                                                                                                           |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| :sparkles: Nome       | **CarteiraDeJogos-API**                                                                                                                      |
+| :label: Tecnologias   | C#, .NET, ASP.NET, SQL Server                                                                                                                |
 | :inbox_tray: Download | [Download Zip](https://github.com/guih1886/carteiradejogos/raw/main/CarteiraDeJogos/Assets/carteiraDeJogos.rar)<br>[Download App]() Em breve |
 
 ### Detalhes do projeto
@@ -25,7 +25,8 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 
 ### Usuários
 
-- `POST /Usuarios`: Essa rota recebe através do corpo da requisição um JSON com os dados de `nome`, `senha` e `confirmacaoSenha` para o cadastro no banco de dados, aqui utilizado o SQL Server. O usuário não é cadastrado caso as senhas sejam divergentes.
+- `POST /Usuarios`: Essa rota recebe através do corpo da requisição um JSON com os dados de `nome`, `senha` e `confirmacaoSenha` para o cadastro no banco de dados, aqui utilizado o SQL Server.
+  O usuário não é cadastrado caso as senhas sejam divergentes, e reporta a mensagem de erro `"As senhas não são iguais."`.
 
   ```json
   {
@@ -39,6 +40,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 
   ```json
   {
+    "id": 1,
     "nome": "Guilherme Henrique",
     "jogos": [],
     "jogosFavoritos": []
@@ -50,11 +52,13 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
   ```json
   [
     {
+      "id": 1,
       "nome": "Pedro Henrique",
       "jogos": [],
       "jogosFavoritos": []
     },
     {
+      "id": 1,
       "nome": "Guilherme Henrique",
       "jogos": [],
       "jogosFavoritos": []
@@ -210,7 +214,6 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/schemas.png)
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/modeloJogos.png)
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/modeloUsuarios.png)
-
 
 ##
 
