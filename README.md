@@ -26,7 +26,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 ### Usuários
 
 - `POST /Usuarios`: Essa rota recebe através do corpo da requisição um JSON com os dados de `nome`, `senha` e `confirmacaoSenha` para o cadastro no banco de dados, aqui utilizado o SQL Server.
-  O usuário não é cadastrado caso as senhas sejam divergentes, e reporta a mensagem de erro `"As senhas não são iguais."`.
+  O usuário não é cadastrado caso as senhas sejam divergentes, e retorna a mensagem de erro `"As senhas não são iguais."`.
 
   ```json
   {
@@ -36,7 +36,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
   }
   ```
 
-  A resposta é um DTO de leitura com os campos de `nome`, `jogos` e `jogosFavoritos` do usuário.
+  A resposta é um DTO de leitura com os campos de `id`, `nome`, `jogos` e `jogosFavoritos` do usuário.
 
   ```json
   {
@@ -58,7 +58,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
       "jogosFavoritos": []
     },
     {
-      "id": 1,
+      "id": 2,
       "nome": "Guilherme Henrique",
       "jogos": [],
       "jogosFavoritos": []
@@ -70,6 +70,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 
   ```json
   {
+    "id": 2,
     "nome": "Guilherme Henrique",
     "jogos": [],
     "jogosFavoritos": []
@@ -81,6 +82,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 
   ```json
   {
+    "id": 2,
     "nome": "Guilherme Henrique",
     "jogos": [1, 3, 5, 8, 10, 15, 18, 21, 22, 27, 31, 35, 39, 41, 45, 48],
     "jogosFavoritos": [1, 5, 15, 31]
