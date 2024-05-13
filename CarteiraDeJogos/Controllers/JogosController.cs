@@ -40,7 +40,7 @@ namespace CarteiraDeJogos.Controllers
             }
             catch (Exception error)
             {
-                return BadRequest($"Erro ao cadastrar o jogo. {error.Message}");
+                return BadRequest($"Erro ao localizar o usuário com o id {jogo.UsuarioId}.");
             }
         }
 
