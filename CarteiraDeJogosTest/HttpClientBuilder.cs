@@ -30,4 +30,14 @@ public class HttpClientBuilder
         HttpResponseMessage response = await _httpClient.DeleteAsync(baseUrl + endPoint);
         return response;
     }
+
+    internal async Task<string> AlterarAsync<T>(string endPoint, T novoObjeto)
+    {
+        string json = JsonSerializer.Serialize(novoObjeto);
+        HttpContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+        HttpResponseMessage response = await _httpClient.PutAsync(baseUrl + endPoint, httpContent);
+        string resultado = response.Content.ReadAsStringAsync().Result;
+        return resultado;
+    }
 }
