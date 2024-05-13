@@ -38,6 +38,7 @@ namespace CarteiraDeJogos.Data.Repository
             _context.Jogos.Add(novoJogo);
             _context.SaveChanges();
             _usuarioRepository.AdicionarJogoUsuario(novoJogo.UsuarioId, novoJogo.Id);
+            _context.SaveChanges();
             return _mapper.Map<ReadJogosDto>(novoJogo);
         }
 
@@ -56,13 +57,11 @@ namespace CarteiraDeJogos.Data.Repository
 
             //Caso encontre o jogo, muda ele para inativo, e retira ele das listas dos usuários.
             jogo.Ativo = 0;
-            List<ReadUsuariosDto>? usuarios = _usuarioRepository.ListarUsuarios();
-            foreach (var usuario in usuarios!)
-            {
-                if (usuario.Jogos!.Contains(jogo.Id)) usuario.Jogos.Remove(jogo.Id);
-                if (usuario.JogosFavoritos!.Contains(jogo.Id)) usuario.JogosFavoritos.Remove(jogo.Id);
-            }
-            _context.SaveChanges();
+            ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(jogo.UsuarioId);
+            UpdateUsuariosDto usuarioAlterado = _mapper.Map<UpdateUsuariosDto>(usuario);
+            if (usuarioAlterado.Jogos.Contains(jogo.Id)) usuarioAlterado.Jogos.Remove(jogo.Id);
+            if (usuarioAlterado.JogosFavoritos.Contains(jogo.Id)) usuarioAlterado.JogosFavoritos.Remove(jogo.Id);
+            _usuarioRepository.AtualizarUsuario(usuario.Id, usuarioAlterado);
             return true;
         }
 
