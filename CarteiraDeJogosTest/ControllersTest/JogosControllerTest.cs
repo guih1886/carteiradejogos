@@ -9,9 +9,7 @@ namespace CarteiraDeJogosTest.ControllersTest;
 
 public class JogosControllerTest
 {
-    private HttpClient _httpClient = new HttpClient();
-    private string baseUrl = "http://localhost:5020";
-    private static int idDoJogo = 0;
+    private HttpClientBuilder _httpClient = new HttpClientBuilder();
     private ITestOutputHelper _outputHelper;
 
     public JogosControllerTest(ITestOutputHelper outputHelper)
@@ -19,42 +17,48 @@ public class JogosControllerTest
         _outputHelper = outputHelper;
     }
 
-    #region "Crud de Jogos"
-
     [Fact]
-    public async void A_CadastrarJogosTest()
+    public async void CadastrarJogosTest()
     {
         //Arrange
-        CreateJogosDto jogo = new CreateJogosDto("Endereço Teste", "Jogo Teste", "Descrição de Teste para o modelo.", Genero.Ação, 1, "1994", "PS4", 9);
-        string json = JsonSerializer.Serialize(jogo);
-        HttpContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+        CreateJogosDto novoJogo = new CreateJogosDto("Endereço Teste", "Jogo Teste", "Descrição de Teste para o modelo.", Genero.Ação, 1, "1994", "PS4", 9);
         //Act
-        HttpResponseMessage response = await _httpClient.PostAsync(baseUrl + "/Jogos", httpContent);
-        string resultado = response.Content.ReadAsStringAsync().Result.ToString();
-        ReadJogosDto jogoCadastrado = JsonSerializer.Deserialize<ReadJogosDto>(resultado)!;
-        idDoJogo = jogoCadastrado.Id;
-        _outputHelper.WriteLine(idDoJogo.ToString());
+        string response = await _httpClient.CadastrarAsync<CreateJogosDto>("/Jogos", novoJogo);
+        ReadJogosDto jogo = JsonSerializer.Deserialize<ReadJogosDto>(response)!;
+        _outputHelper.WriteLine(jogo.ToString());
         //Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Contains("Jogo Teste", resultado);
-        Assert.Contains("Ação", resultado);
+        Assert.Equal(1, jogo.Ativo);
+        Assert.Equal("Jogo Teste", jogo.Nome);
+        await _httpClient.DeletarAsync($"/Jogos/{jogo.Id}");
+    }
+
+    [Fact]
+    public async void CadastrarJogoComUsuarioIdIncorretoTest()
+    {
+        //Arrange
+        CreateJogosDto jogo = new CreateJogosDto("Endereço Teste", "Jogo Teste", "Descrição de Teste para o modelo.", Genero.Ação, 0, "1994", "PS4", 9);
+        //Act
+        string response = await _httpClient.CadastrarAsync<CreateJogosDto>("/Jogos", jogo);
+        _outputHelper.WriteLine(response);
+        //Assert
+        Assert.Contains("Erro ao localizar o usuário", response);
     }
 
     [Fact]
     public async void AlterarJogosTest()
     {
         //Arrange
+        CreateJogosDto novoJogo = new CreateJogosDto("Endereço Teste", "Jogo Teste", "Descrição de Teste para o modelo.", Genero.Ação, 1, "1994", "PS4", 9);
         UpdateJogosDto jogo = new UpdateJogosDto("Endereço Teste", "Jogo Alterado", "Descrição de Teste alterada para o modelo.", Genero.Ação, "1994", "PS4", 9);
-        string json = JsonSerializer.Serialize(jogo);
-        HttpContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
         //Act
-        HttpResponseMessage response = await _httpClient.PutAsync(baseUrl + "/Jogos/" + idDoJogo, httpContent);
-        string resultado = response.Content.ReadAsStringAsync().Result.ToString();
-        ReadJogosDto jogoAlterado = JsonSerializer.Deserialize<ReadJogosDto>(resultado)!;
-        _outputHelper.WriteLine(jogoAlterado.Nome);
+        string response = await _httpClient.CadastrarAsync<CreateJogosDto>("/Jogos", novoJogo);
+        ReadJogosDto jogoCadastrado = JsonSerializer.Deserialize<ReadJogosDto>(response)!;
+        string responseJogoAlterado = await _httpClient.AlterarAsync($"/Jogos/{jogoCadastrado.Id}", jogo);
+        ReadJogosDto jogoAlterado = JsonSerializer.Deserialize<ReadJogosDto>(responseJogoAlterado)!;
+        _outputHelper.WriteLine(jogoAlterado.ToString());
         //Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         Assert.Equal("Jogo Alterado", jogoAlterado.Nome);
+        await _httpClient.DeletarAsync($"/Jogos/{jogoAlterado.Id}");
     }
 
     [Fact]
@@ -62,39 +66,58 @@ public class JogosControllerTest
     {
         //Arrange
         //Act
-        HttpResponseMessage resultado = await _httpClient.GetAsync(baseUrl + "/Jogos");
+        HttpResponseMessage resultado = await _httpClient.BuscarAsync("/Jogos");
         //Assert        
         Assert.True(resultado.StatusCode == HttpStatusCode.OK);
     }
 
     [Fact]
-    public async void B_ListarJogosPorIdTest()
+    public async void ListarJogosPorIdTest()
     {
         //Arrange
+        CreateJogosDto novoJogo = new CreateJogosDto("Endereço Teste", "Jogo Teste", "Descrição de Teste para o modelo.", Genero.Ação, 1, "1994", "PS4", 9);
         //Act
-        HttpResponseMessage resultado = await _httpClient.GetAsync(baseUrl + "/Jogos/" + idDoJogo);
-        _outputHelper.WriteLine(baseUrl + "/Jogos/" + idDoJogo);
-        ReadJogosDto jogo = JsonSerializer.Deserialize<ReadJogosDto>(resultado.Content.ReadAsStringAsync().Result.ToString())!;
+        string response = await _httpClient.CadastrarAsync<CreateJogosDto>("/Jogos", novoJogo);
+        ReadJogosDto jogo = JsonSerializer.Deserialize<ReadJogosDto>(response)!;
+        HttpResponseMessage resultado = await _httpClient.BuscarAsync($"/Jogos/{jogo.Id}");
+        ReadJogosDto jogoBuscado = JsonSerializer.Deserialize<ReadJogosDto>(resultado.Content.ReadAsStringAsync().Result!)!;
+        _outputHelper.WriteLine(jogoBuscado.ToString());
         //Assert
-        Assert.Equal(idDoJogo, jogo.Id);
+        Assert.Equal(jogoBuscado.Id, jogo.Id);
+        await _httpClient.DeletarAsync($"/Jogos/{jogo.Id}");
     }
 
     [Fact]
-    public async void Z_DeletarJogosTest()
+    public async void ListarJogosPorIdIncorretoTest()
     {
         //Arrange
         //Act
-        _outputHelper.WriteLine(baseUrl + $"/Jogos/" + idDoJogo);
-        HttpResponseMessage resultado = await _httpClient.DeleteAsync(baseUrl + $"/Jogos/{idDoJogo}");
+        HttpResponseMessage resultado = await _httpClient.BuscarAsync($"/Jogos/0");
         //Assert
-        Assert.Equal(HttpStatusCode.NoContent, resultado.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, resultado.StatusCode);
+    }
+    
+    [Fact]
+    public async void DeletarJogosTest()
+    {
+        //Arrange
+        CreateJogosDto jogo = new CreateJogosDto("Endereço Teste", "Jogo Teste", "Descrição de Teste para o modelo.", Genero.Ação, 1, "1994", "PS4", 9);
+        //Act
+        string response = await _httpClient.CadastrarAsync<CreateJogosDto>("/Jogos", jogo);
+        ReadJogosDto jogoCriado = JsonSerializer.Deserialize<ReadJogosDto>(response)!;
+        HttpResponseMessage deleteResponse = await _httpClient.DeletarAsync($"/Jogos/{jogoCriado.Id}");
+        _outputHelper.WriteLine(deleteResponse.ToString());
+        //Assert
+        Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
     }
 
-    #endregion
-
-    #region "Demais Testes"
-
-
-
-    #endregion
+    [Fact]
+    public async void DeletarJogosIncorretoTest()
+    {
+        //Arrange
+        //Act
+        HttpResponseMessage deleteResponse = await _httpClient.DeletarAsync($"/Jogos/0");
+        //Assert
+        Assert.Equal(HttpStatusCode.NotFound, deleteResponse.StatusCode);
+    }
 }
