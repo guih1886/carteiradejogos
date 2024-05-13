@@ -106,13 +106,14 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
     "genero": 1,
     "anoLancamento": "1981",
     "plataforma": "Super Nintendo",
+    "ativo": 1,
     "nota": 0,
     "usuarioId": 3
   }
   ```
 
   Em caso de sucesso, é retornado um HTTP 200 com o json do jogo criado, e o Id do jogo é adicionado automaticamente à lista de jogos do usuário que cadastrou o jogo.
-  Em caso de falha, será retornado um HTTP 400 e a/as mensagens de erro sobre quais campos estão ausentes.
+  Em caso de falha, será retornado um HTTP 400 e a/as mensagens de erro sobre quais campos estão ausentes, ou a mensagem `Erro ao localizar o usuário com o id {UsuarioId}.`
 
   ```json
   {
@@ -127,21 +128,25 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
   ```json
   [
     {
+    "id": 1,
       "nome": "Jogo Teste",
       "enderecoImagem": "",
       "descricao": "jogo teste para o metodo post",
       "genero": "Sem_Genero",
       "anoLancamento": "",
       "plataforma": "",
+      "ativo": 1,
       "nota": 0
     },
     {
+    "id": 2,
       "nome": "Super Mário",
       "enderecoImagem": "https://jogoveio.com.br/wp-content/uploads/2019/04/super-mario-bros-nes.png",
       "descricao": "O objetivo do jogo é percorrer o Reino do Cogumelo, sobreviver às forças do vilão Bowser e salvar a Princesa Peach.",
       "genero": "Aventura",
       "anoLancamento": "1981",
       "plataforma": "Super Nintendo",
+      "ativo": 1,
       "nota": 8
     }
   ]
@@ -151,12 +156,14 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 
   ```json
   {
+    "id": 2,
     "nome": "Super Mário",
     "enderecoImagem": "https://jogoveio.com.br/wp-content/uploads/2019/04/super-mario-bros-nes.png",
     "descricao": "O objetivo do jogo é percorrer o Reino do Cogumelo, sobreviver às forças do vilão Bowser e salvar a Princesa Peach.",
     "genero": "Aventura",
     "anoLancamento": "1981",
     "plataforma": "Super Nintendo",
+    "ativo": 1,
     "nota": 8
   }
   ```
@@ -166,12 +173,14 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 
   ```json
   {
+    "id": 2,
     "nome": "Mario Kart",
     "enderecoImagem": "um endereco",
     "descricao": "Jogo do mário de corrida com kards, muito divertido.",
     "genero": "Corrida",
     "anoLancamento": "1994",
     "plataforma": "Nintendo",
+    "ativo": 1,
     "nota": 8
   }
   ```
