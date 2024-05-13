@@ -19,7 +19,7 @@ namespace CarteiraDeJogos.Data.Repository
         public ReadUsuariosDto AtualizarUsuario(int id, UpdateUsuariosDto usuarioDto)
         {
             Usuario? usuario = BuscarUsuario(id);
-            _mapper.Map(usuario, usuarioDto);
+            _mapper.Map(usuarioDto, usuario);
             _context.SaveChanges();
             return _mapper.Map<ReadUsuariosDto>(usuario);
         }
