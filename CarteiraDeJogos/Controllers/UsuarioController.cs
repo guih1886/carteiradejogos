@@ -41,6 +41,7 @@ public class UsuarioController : ControllerBase
     public ActionResult<ReadUsuariosDto> AlterarUsuario(int id, [FromBody] UpdateUsuariosDto usuario)
     {
         ReadUsuariosDto usuarioAtualizado = _usuarioRepository.AtualizarUsuario(id, usuario);
+        if (usuarioAtualizado == null) return NotFound();
         return Ok(usuarioAtualizado);
     }
 
