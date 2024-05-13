@@ -6,7 +6,7 @@ namespace CarteiraDeJogos.Data.Dto.Jogos;
 
 public class ReadJogosDto
 {
-    public ReadJogosDto(int id, string nome, string enderecoImagem, string descricao, string genero, string anoLancamento, string plataforma, int nota)
+    public ReadJogosDto(int id, string nome, string enderecoImagem, string descricao, string genero, string anoLancamento, string plataforma, int nota, int ativo)
     {
         Id = id;
         Nome = nome;
@@ -16,6 +16,7 @@ public class ReadJogosDto
         AnoLancamento = anoLancamento;
         Plataforma = plataforma;
         Nota = nota;
+        Ativo = ativo;
     }
     [JsonPropertyName("id")]
     public int Id { get; set; }
@@ -31,6 +32,25 @@ public class ReadJogosDto
     public string AnoLancamento { get; set; }
     [JsonPropertyName("plataforma")]
     public string Plataforma { get; set; }
+    [JsonPropertyName("ativo")]
+    public int Ativo { get; set; }
+
     [JsonPropertyName("nota")]
     public int Nota { get; set; }
+
+
+    public override string ToString()
+    {
+        return $"""
+            Id == {Id}
+            Nome == {Nome} 
+            EnderecoImagem == {EnderecoImagem}
+            Descricao == {Descricao}
+            Genero == {Genero}
+            AnoLancamento == {AnoLancamento}
+            Plataforma =={Plataforma}
+            Ativo == {Ativo}
+            Nota == {Nota};
+            """;
+    }
 }
