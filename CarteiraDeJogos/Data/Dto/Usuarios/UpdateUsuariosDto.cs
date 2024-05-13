@@ -1,4 +1,6 @@
-﻿namespace CarteiraDeJogos.Data.Dto.Usuarios;
+﻿using System.Text.Json.Serialization;
+
+namespace CarteiraDeJogos.Data.Dto.Usuarios;
 
 public class UpdateUsuariosDto
 {
@@ -9,9 +11,12 @@ public class UpdateUsuariosDto
         JogosFavoritos = jogosFavoritos;
     }
 
+    [JsonPropertyName("nome")]
     public string Nome { get; set; }
 
+    [JsonPropertyName("jogos")]
     public List<int> Jogos { get; set; }
 
+    [JsonPropertyName("jogosFavoritos")]
     public List<int> JogosFavoritos { get; set; }
 }
