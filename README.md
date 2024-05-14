@@ -129,7 +129,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
   ```json
   [
     {
-    "id": 1,
+      "id": 1,
       "nome": "Jogo Teste",
       "enderecoImagem": "",
       "descricao": "jogo teste para o metodo post",
@@ -140,7 +140,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
       "nota": 0
     },
     {
-    "id": 2,
+      "id": 2,
       "nome": "Super Mário",
       "enderecoImagem": "https://jogoveio.com.br/wp-content/uploads/2019/04/super-mario-bros-nes.png",
       "descricao": "O objetivo do jogo é percorrer o Reino do Cogumelo, sobreviver às forças do vilão Bowser e salvar a Princesa Peach.",
@@ -187,20 +187,21 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
   ```
 
 - `DELETE /Jogos/{id}`: Marca o jogo com o `Id` correspondente como inativo. Em caso de sucesso é retornado o HTTP 204 e caso não encontre o usuário é retornado o HTTP 404.
-  O jogo é retirado da lista de jogos e de jogos favoritos de todos os usuários cadastrados.
+  O jogo é retirado da lista de jogos e de jogos favoritos do usuários.
 
 ##
 
 ### Jogos Do Usuário
 
-- `POST /JogosDoUsuario/{id}/adicionarJogoFavorito/{idJogoFavorito}`: Adiciona um jogo ativo cadastrado `idJogoFavorito` à lista de jogos favoritos do usuário com o `id` informado. Retorna um HTTP 200 com a lista de jogos favoritos em caso de sucesso.
+- `POST /JogosDoUsuario/{id}/adicionarJogoFavorito/{idJogoFavorito}`: Adiciona um jogo ativo cadastrado `idJogoFavorito` à lista de jogos favoritos do usuário com o `id` informado.
+  Retorna um HTTP 200 com a lista de jogos favoritos em caso de sucesso.
 
   ```json
   [6]
   ```
 
-  Em caso de falha retorna um HTTP 400 caso o jogo já esteja na lista de jogos favoritos do usuário com a mensagem `"Jogo já está na lista."` ou caso o jogo não esteja cadastrado, com a mensagem `"Jogo não está na lista de jogos."`.
-  Caso o usuário ou o jogo não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem "`Usuario não encontrado.`" ou "`Jogo não encontrado.`".
+  Em caso de falha retorna um HTTP 500 caso o jogo já esteja na lista de jogos favoritos do usuário com a mensagem `"Jogo já está na lista."` ou caso o jogo não esteja cadastrado, com a mensagem `"Jogo não está na lista de jogos."`.
+  Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 500 com a mensagem "`Usuario não encontrado.`.
 
 - `GET /JogosDoUsuario/{id}/todosJogos`: Retorna a lista de todos os jogos ativos cadastrados do usuário.
 
