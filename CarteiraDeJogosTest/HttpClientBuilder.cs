@@ -1,5 +1,4 @@
-﻿using System.Net.Http;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
 
 namespace CarteiraDeJogosTest;
@@ -41,7 +40,12 @@ public class HttpClientBuilder
 
     public async Task<HttpResponseMessage> IncluirJogoNosFavoritos(int usuarioId, int jogoId)
     {
-        HttpResponseMessage response = await _httpClient.PostAsync(baseUrl + $"/JogosDoUsuario/{usuarioId}/adicionarJogoFavorito/{jogoId}", null);
+       HttpResponseMessage response = await _httpClient.PostAsync(baseUrl + $"/JogosDoUsuario/{usuarioId}/adicionarJogoFavorito/{jogoId}", null);
         return response;
+    }
+
+    internal async Task<HttpResponseMessage> CadastrarAsync(string v, object jogo1)
+    {
+        throw new NotImplementedException();
     }
 }

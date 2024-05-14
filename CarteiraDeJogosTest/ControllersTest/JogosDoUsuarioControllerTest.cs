@@ -7,61 +7,45 @@ using Xunit.Abstractions;
 
 namespace CarteiraDeJogosTest.ControllersTest;
 
-public class JogosDoUsuarioControllerTest
+[Collection("JogosDoUsuarioControllerTest")]
+public class JogosDoUsuarioControllerTest : IDisposable
 {
     private HttpClientBuilder _httpClientBuilder;
     private ITestOutputHelper _outputHelper;
+    private ReadJogosDto jogo;
 
     public JogosDoUsuarioControllerTest(ITestOutputHelper outputHelper)
     {
         _httpClientBuilder = new HttpClientBuilder();
         _outputHelper = outputHelper;
+        CreateJogosDto jogo = new CreateJogosDto("Endereço de imagem da internet", "Jogo teste do JogosDoUsuarioTeste", "Um jogo de teste para o testes do controlador", Genero.Estratégia, 1, "2000", "Atari", 8);
+        Task<HttpResponseMessage> response = _httpClientBuilder.CadastrarAsync("/Jogos", jogo);
+        this.jogo = JsonSerializer.Deserialize<ReadJogosDto>(response.Result.Content.ReadAsStringAsync().Result)!;
     }
-
     [Fact]
     public async void AdicionaJogoAtivoAosJogosFavoritos()
     {
         //Arrange
-        CreateJogosDto jogo1 = new CreateJogosDto("Endereço de imagem da internet", "Jogo teste do JogosDoUsuarioTeste", "Um jogo de teste para o testes do controlador", Genero.Estratégia, 1, "2000", "Atari", 8);
-        CreateJogosDto jogo2 = new CreateJogosDto("Endereço de imagem da internet", "Jogo teste do JogosDoUsuarioTeste 2", "Um jogo de teste para o testes do controlador", Genero.Estratégia, 1, "2000", "Atari", 8);
         //Act
         //Cadastrando os jogos
-        await _httpClientBuilder.CadastrarAsync("/Jogos", jogo1);
-        await _httpClientBuilder.CadastrarAsync("/Jogos", jogo2);
         //Serealizando os resultado no usuário
         HttpResponseMessage responseUsuario = await _httpClientBuilder.BuscarAsync($"/Usuarios/1");
         ReadUsuariosDto usuarioDto = JsonSerializer.Deserialize<ReadUsuariosDto>(responseUsuario.Content.ReadAsStringAsync().Result)!;
-        //Incluindo os jogos na lista de favoritos, buscando o usuário final com os jogos inclusos e serializando para os asserts
-        int primeiroJogo = usuarioDto.Jogos[0];
-        int segundoJogo = usuarioDto.Jogos[1];
-        HttpResponseMessage respondeInclusao1 = await _httpClientBuilder.IncluirJogoNosFavoritos(usuarioDto.Id, primeiroJogo);
-        HttpResponseMessage respondeInclusao2 = await _httpClientBuilder.IncluirJogoNosFavoritos(usuarioDto.Id, segundoJogo);
+        //Incluindo o jogo na lista de favoritos
+        HttpResponseMessage respondeInclusao1 = await _httpClientBuilder.IncluirJogoNosFavoritos(usuarioDto.Id, jogo.Id);
+        //Buscando o usuário final com o jogo incluso e serializando para os asserts
         HttpResponseMessage usuarioDtoIncluso = await _httpClientBuilder.BuscarAsync($"/Usuarios/{usuarioDto.Id}");
         ReadUsuariosDto usuarioFinal = JsonSerializer.Deserialize<ReadUsuariosDto>(usuarioDtoIncluso.Content.ReadAsStringAsync().Result)!;
-        _outputHelper.WriteLine(usuarioFinal.ToString());
         //Assert
         Assert.Equal(HttpStatusCode.OK, respondeInclusao1.StatusCode);
-        Assert.Equal(HttpStatusCode.OK, respondeInclusao2.StatusCode);
-        Assert.Contains(primeiroJogo, usuarioFinal.JogosFavoritos);
-        Assert.Contains(segundoJogo, usuarioFinal.JogosFavoritos);
-        await _httpClientBuilder.DeletarAsync($"/Jogos/{primeiroJogo}");
-        await _httpClientBuilder.DeletarAsync($"/Jogos/{segundoJogo}");
+        Assert.Contains(jogo.Id, usuarioFinal.JogosFavoritos);
     }
-
     [Fact]
     public async void NaoAdicionaJogoQueNaoEstaNaListaAosJogosFavoritos()
     {
         //Arrange
-        CreateJogosDto jogo = new CreateJogosDto("Endereço de imagem da internet", "Jogo teste do JogosDoUsuarioTeste", "Um jogo de teste para o testes do controlador", Genero.Estratégia, 1, "2000", "Atari", 8);
         //Act
-        HttpResponseMessage response = await _httpClientBuilder.CadastrarAsync("/Jogos", jogo);
-        ReadJogosDto jogoCriado = JsonSerializer.Deserialize<ReadJogosDto>(response.Content.ReadAsStringAsync().Result)!;
-        await _httpClientBuilder.DeletarAsync($"/Jogos/{jogoCriado.Id}");
-
-        //Serealizando os resultado no usuário
-        HttpResponseMessage responseUsuario = await _httpClientBuilder.BuscarAsync($"/Usuarios/1");
-        ReadUsuariosDto usuarioDto = JsonSerializer.Deserialize<ReadUsuariosDto>(responseUsuario.Content.ReadAsStringAsync().Result)!;
-        HttpResponseMessage responseInclusao1 = await _httpClientBuilder.IncluirJogoNosFavoritos(usuarioDto.Id, jogoCriado.Id);
+        HttpResponseMessage responseInclusao1 = await _httpClientBuilder.IncluirJogoNosFavoritos(1, 9999);
         string erro = responseInclusao1.Content.ReadAsStringAsync().Result;
         //Assert
         Assert.Equal(HttpStatusCode.InternalServerError, responseInclusao1.StatusCode);
@@ -72,12 +56,9 @@ public class JogosDoUsuarioControllerTest
     public async void NaoAdicionaJogoQueJaEstaNaListaDeJogosFavoritos()
     {
         //Arrange
-        CreateJogosDto jogo = new CreateJogosDto("Endereço de imagem da internet", "Jogo teste do JogosDoUsuarioTeste", "Um jogo de teste para o testes do controlador", Genero.Estratégia, 1, "2000", "Atari", 8);
         //Act
-        HttpResponseMessage response = await _httpClientBuilder.CadastrarAsync("/Jogos", jogo);
-        ReadJogosDto jogoCriado = JsonSerializer.Deserialize<ReadJogosDto>(response.Content.ReadAsStringAsync().Result)!;
-        await _httpClientBuilder.IncluirJogoNosFavoritos(1, jogoCriado.Id);
-        HttpResponseMessage responseInclusao500 = await _httpClientBuilder.IncluirJogoNosFavoritos(1, jogoCriado.Id);
+        await _httpClientBuilder.IncluirJogoNosFavoritos(1, jogo.Id);
+        HttpResponseMessage responseInclusao500 = await _httpClientBuilder.IncluirJogoNosFavoritos(1, jogo.Id);
         string erro = responseInclusao500.Content.ReadAsStringAsync().Result;
         //Assert
         Assert.Equal(HttpStatusCode.InternalServerError, responseInclusao500.StatusCode);
@@ -105,7 +86,7 @@ public class JogosDoUsuarioControllerTest
     }
 
     [Fact]
-    public async void ListaJogosDoUsuarioInvalido()
+    public async void NaoListaJogosDoUsuarioInvalido()
     {
         //Arrange
         //Act
@@ -127,7 +108,7 @@ public class JogosDoUsuarioControllerTest
     }
 
     [Fact]
-    public async void ListaJogosFavoritosDoUsuarioInvalido()
+    public async void NaoListaJogosFavoritosDoUsuarioInvalido()
     {
         //Arrange
         //Act
@@ -136,5 +117,91 @@ public class JogosDoUsuarioControllerTest
         //Assert
         Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
         Assert.Contains("Usuário não encontrado.", erro);
+    }
+
+    [Fact]
+    public async void RemoveOJogoDaListaEMarcaComoInativo()
+    {
+        //Arrange
+        //Act
+        HttpResponseMessage response = await _httpClientBuilder.DeletarAsync($"/JogosDoUsuario/{1}/removerJogo/{jogo.Id}");
+        HttpResponseMessage responseUsuario = await _httpClientBuilder.BuscarAsync($"/Usuarios/1");
+        ReadUsuariosDto usuarioDto = JsonSerializer.Deserialize<ReadUsuariosDto>(responseUsuario.Content.ReadAsStringAsync().Result)!;
+        HttpResponseMessage responsejogo = await _httpClientBuilder.BuscarAsync($"/Jogos/{jogo.Id}");
+        //Assert
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.Equal(HttpStatusCode.NotFound, responsejogo.StatusCode);
+        Assert.True(!usuarioDto.Jogos.Contains(jogo.Id));
+    }
+
+    [Fact]
+    public async void NaoRemoveOJogoDaListaComUsuarioIncorreto()
+    {
+        //Arrange
+        //Act
+        HttpResponseMessage response = await _httpClientBuilder.DeletarAsync($"/JogosDoUsuario/{0}/removerJogo/{1}");
+        string error = response.Content.ReadAsStringAsync().Result;
+        //Assert
+        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        Assert.Contains("Usuário não encontrado.", error);
+    }
+
+    [Fact]
+    public async void NaoRemoveOJogoDaListaComJogoIncorreto()
+    {
+        //Arrange
+        //Act
+        HttpResponseMessage response = await _httpClientBuilder.DeletarAsync($"/JogosDoUsuario/{1}/removerJogo/{0}");
+        string error = response.Content.ReadAsStringAsync().Result;
+        //Assert
+        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        Assert.Contains("Jogo não está na lista.", error);
+    }
+
+    [Fact]
+    public async void RemoveOJogoDaListaFavorito()
+    {
+        //Arrange
+        //Act
+        await _httpClientBuilder.IncluirJogoNosFavoritos(1, jogo.Id);
+        HttpResponseMessage response = await _httpClientBuilder.DeletarAsync($"/JogosDoUsuario/{1}/removerJogoFavorito/{jogo.Id}");
+        HttpResponseMessage responseUsuario = await _httpClientBuilder.BuscarAsync($"/Usuarios/1");
+        ReadUsuariosDto usuarioDto = JsonSerializer.Deserialize<ReadUsuariosDto>(responseUsuario.Content.ReadAsStringAsync().Result)!;
+        _outputHelper.WriteLine($"/JogosDoUsuario/{1}/removerJogoFavorito/{jogo.Id}");
+        _outputHelper.WriteLine(response.Content.ReadAsStringAsync().Result);
+        //Assert
+        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
+        Assert.True(!usuarioDto.JogosFavoritos.Contains(jogo.Id));
+    }
+
+    [Fact]
+    public async void NaoRemoveOJogoFavoritoDaListaComUsuarioIncorreto()
+    {
+        //Arrange
+        //Act
+        HttpResponseMessage response = await _httpClientBuilder.DeletarAsync($"/JogosDoUsuario/{0}/removerJogoFavorito/{1}");
+        string error = response.Content.ReadAsStringAsync().Result;
+        //Assert
+        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        Assert.Contains("Usuário não encontrado.", error);
+    }
+
+    [Fact]
+    public async void NaoRemoveOJogoFavoritoDaListaComJogoIncorreto()
+    {
+        //Arrange
+        //Act
+        HttpResponseMessage response = await _httpClientBuilder.DeletarAsync($"/JogosDoUsuario/{1}/removerJogoFavorito/{0}");
+        string error = response.Content.ReadAsStringAsync().Result;
+        //Assert
+        Assert.Equal(HttpStatusCode.InternalServerError, response.StatusCode);
+        Assert.Contains("Jogo não está na lista.", error);
+    }
+
+    public async void Dispose()
+    {
+        await _httpClientBuilder.DeletarAsync($"/Jogos/{jogo.Id}");
+        await _httpClientBuilder.DeletarAsync($"/JogosDoUsuario/{1}/removerJogo/{jogo.Id}");
+        _outputHelper.WriteLine($"Jogo {jogo.Id} deletado com sucesso.");
     }
 }

@@ -41,15 +41,15 @@ public class JogosDoUsuarioController : ControllerBase
     [HttpDelete("removerJogo/{idJogo}")]
     public ActionResult<List<int>> RemoverJogoUsuario(int id, int idJogo)
     {
-        List<int> listaDeJogos = _jogosDoUsuarioRepository.RemoverJogoDoUsuario(id, idJogo);
-        return Ok(listaDeJogos);
+        _jogosDoUsuarioRepository.RemoverJogoDoUsuario(id, idJogo);
+        return NoContent();
     }
 
     [HttpDelete("removerJogoFavorito/{idJogoFavorito}")]
     public IActionResult RemoverJogoFavoritoUsuario(int id, int idJogoFavorito)
     {
-        List<int> listaDeJogosFavoritos = _jogosDoUsuarioRepository.RemoverJogoDoUsuario(id, idJogoFavorito);
-        return Ok(listaDeJogosFavoritos);
+        _jogosDoUsuarioRepository.RemoverJogoFavoritoDoUsuario(id, idJogoFavorito);
+        return NoContent();
     }
 }
 

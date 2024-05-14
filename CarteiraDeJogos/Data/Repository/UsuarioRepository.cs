@@ -74,5 +74,21 @@ namespace CarteiraDeJogos.Data.Repository
             if (!usuario.JogosFavoritos!.Contains(idJogoFavorito)) usuario.JogosFavoritos.Add(idJogoFavorito);
             _context.SaveChanges();
         }
+
+        public void RemoverJogo(int usuarioId, int idJogo)
+        {
+            Usuario? usuario = BuscarUsuario(usuarioId);
+            if (usuario == null) throw new Exception("Usuário não encontrado.");
+            if (usuario.Jogos!.Contains(idJogo)) usuario.Jogos.Remove(idJogo);
+            _context.SaveChanges();
+        }
+
+        public void RemoverJogoFavorito(int usuarioId, int idJogo)
+        {
+            Usuario? usuario = BuscarUsuario(usuarioId);
+            if (usuario == null) throw new Exception("Usuário não encontrado.");
+            if (usuario.JogosFavoritos!.Contains(idJogo)) usuario.JogosFavoritos.Remove(idJogo);
+            _context.SaveChanges();
+        }
     }
 }

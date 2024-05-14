@@ -44,25 +44,23 @@ public class JogosDoUsuarioRepository : IJogosDoUsuarioRepository
         return jogosFavoritos;
     }
 
-    public List<int> RemoverJogoDoUsuario(int usuarioId, int idJogo)
+    public void RemoverJogoDoUsuario(int usuarioId, int idJogo)
     {
         ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(usuarioId);
         if (usuario == null) throw new Exception("Usuário não encontrado.");
         if (!usuario.Jogos!.Contains(idJogo)) throw new Exception("Jogo não está na lista.");
-        usuario.Jogos!.Remove(idJogo);
-        Jogos? jogo = _jogosRepository.BuscarJogo(usuarioId);
+        _usuarioRepository.RemoverJogo(usuario.Id, idJogo);
+        Jogos? jogo = _jogosRepository.BuscarJogo(idJogo);
         jogo!.Ativo = 0;
         _context.SaveChanges();
-        return usuario.Jogos;
     }
 
-    public List<int> RemoverJogoFavoritoDoUsuario(int usuarioId, int idJogoFavorito)
+    public void RemoverJogoFavoritoDoUsuario(int usuarioId, int idJogoFavorito)
     {
         ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(usuarioId);
         if (usuario == null) throw new Exception("Usuário não encontrado.");
-        if (!usuario.Jogos!.Contains(idJogoFavorito)) throw new Exception("Jogo não está na lista.");
-        usuario.JogosFavoritos!.Remove(idJogoFavorito);
+        if (!usuario.JogosFavoritos!.Contains(idJogoFavorito)) throw new Exception("Jogo não está na lista.");
+        _usuarioRepository.RemoverJogoFavorito(usuario.Id, idJogoFavorito);
         _context.SaveChanges();
-        return usuario.JogosFavoritos;
     }
 }
