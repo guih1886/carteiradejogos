@@ -216,7 +216,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
   ```
 
 - `DELETE /JogosDoUsuario/{id}/removerJogo/{idJogo}`: Remove o jogo da lista de jogos do usuário e marca o jogo como inativo. Retorna o HTTP 204 em caso de sucesso,
-  e caso o usuário não seja encontrado retorna o HTTP 404 com a mensagem "`Usuario não encontrado.`" ou "`Jogo não está na lista.`" caso o `idJogo` não seja de um jogo na lista de jogos do usuário.
+  e caso o usuário não seja encontrado retorna o HTTP 500 com a mensagem "`Usuario não encontrado.`" ou "`Jogo não está na lista.`" caso o `idJogo` não seja de um jogo na lista de jogos do usuário.
 
 - `DELETE /JogosDoUsuario/{id}/removerJogoFavorito/{idJogoFavorito}`: Remove o jogo da lista de jogos favoritos do usuário. Retorna o HTTP 204 em caso de sucesso,
   e caso o usuário não seja encontrado retorna o HTTP 404 com a mensagem "`Usuario não encontrado.`" ou "`Jogo não está na lista.`" caso o `idJogoFavorito` não seja de um jogo na lista de jogos favoritos do usuário.
