@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net.Http;
+using System.Text;
 using System.Text.Json;
 
 namespace CarteiraDeJogosTest;
@@ -35,6 +36,12 @@ public class HttpClientBuilder
         HttpContent httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
         HttpResponseMessage response = await _httpClient.PutAsync(baseUrl + endPoint, httpContent);
+        return response;
+    }
+
+    public async Task<HttpResponseMessage> IncluirJogoNosFavoritos(int usuarioId, int jogoId)
+    {
+        HttpResponseMessage response = await _httpClient.PostAsync(baseUrl + $"/JogosDoUsuario/{usuarioId}/adicionarJogoFavorito/{jogoId}", null);
         return response;
     }
 }
