@@ -24,8 +24,7 @@ public class JogosDoUsuarioRepository : IJogosDoUsuarioRepository
         if (usuario == null) throw new Exception("Usuário não encontrado.");
         if (usuario.JogosFavoritos!.Contains(idJogoFavorito)) throw new Exception("Jogo já está na lista.");
         if (!usuario.Jogos!.Contains(idJogoFavorito)) throw new Exception("Jogo não está na lista de jogos.");
-        usuario.JogosFavoritos!.Add(idJogoFavorito);
-        _context.SaveChanges();
+        _usuarioRepository.AdicionarJogoFavorito(usuario.Id, idJogoFavorito);
         return usuario.JogosFavoritos;
     }
 
