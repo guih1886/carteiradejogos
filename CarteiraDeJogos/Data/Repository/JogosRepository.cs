@@ -19,18 +19,6 @@ namespace CarteiraDeJogos.Data.Repository
             _usuarioRepository = usuarioRepository;
         }
 
-        public List<ReadJogosDto> ListarJogos()
-        {
-            List<ReadJogosDto> jogos = _mapper.Map<List<ReadJogosDto>>(_context.Jogos.Where(jogo => jogo.Ativo == 1).ToList());
-            return jogos;
-        }
-
-        public ReadJogosDto BuscarJogoPorId(int id)
-        {
-            Jogos? jogo = BuscarJogo(id);
-            return _mapper.Map<ReadJogosDto>(jogo);
-        }
-
         public ReadJogosDto CadastrarJogo(CreateJogosDto jogo)
         {
             Jogos novoJogo = _mapper.Map<Jogos>(jogo);
@@ -41,7 +29,6 @@ namespace CarteiraDeJogos.Data.Repository
             _context.SaveChanges();
             return _mapper.Map<ReadJogosDto>(novoJogo);
         }
-
         public ReadJogosDto AtualizarJogo(int id, UpdateJogosDto jogoNovo)
         {
             Jogos? jogo = BuscarJogo(id);
@@ -49,12 +36,24 @@ namespace CarteiraDeJogos.Data.Repository
             _context.SaveChanges();
             return _mapper.Map<ReadJogosDto>(jogoAtualizado);
         }
-
+        public List<ReadJogosDto> ListarJogos()
+        {
+            List<ReadJogosDto> jogos = _mapper.Map<List<ReadJogosDto>>(_context.Jogos.Where(jogo => jogo.Ativo == 1).ToList());
+            return jogos;
+        }
+        public Jogos? BuscarJogo(int id)
+        {
+            return _context.Jogos.FirstOrDefault(j => j.Id == id && j.Ativo == 1);
+        }
+        public ReadJogosDto BuscarJogoPorId(int id)
+        {
+            Jogos? jogo = BuscarJogo(id);
+            return _mapper.Map<ReadJogosDto>(jogo);
+        }
         public bool DeletarJogo(int id)
         {
             Jogos? jogo = BuscarJogo(id);
             if (jogo == null) return false;
-
             //Caso encontre o jogo, muda ele para inativo, e retira ele das listas dos usuários.
             jogo.Ativo = 0;
             ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(jogo.UsuarioId);
@@ -63,11 +62,6 @@ namespace CarteiraDeJogos.Data.Repository
             if (usuarioAlterado.JogosFavoritos.Contains(jogo.Id)) usuarioAlterado.JogosFavoritos.Remove(jogo.Id);
             _usuarioRepository.AtualizarUsuario(usuario.Id, usuarioAlterado);
             return true;
-        }
-
-        public Jogos? BuscarJogo(int id)
-        {
-            return _context.Jogos.FirstOrDefault(j => j.Id == id && j.Ativo == 1);
         }
     }
 }
