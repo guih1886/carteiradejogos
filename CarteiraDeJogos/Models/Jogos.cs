@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace CarteiraDeJogos.Models;
 
@@ -15,6 +16,7 @@ public class Jogos
 
     [Key]
     [Required]
+    [JsonPropertyName("id")]
     public int Id { get; set; }
 
     [Required(ErrorMessage = "A imagem não pode ser vazio.")]
