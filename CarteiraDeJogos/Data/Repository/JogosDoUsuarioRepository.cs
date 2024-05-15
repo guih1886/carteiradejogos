@@ -24,13 +24,13 @@ public class JogosDoUsuarioRepository : IJogosDoUsuarioRepository
             response.Content = new StringContent("Usuário não encontrado.");
             return response;
         }
-        if (usuario.JogosFavoritos!.Contains(idJogoFavorito))
+        if (usuario.JogosFavoritos.Contains(idJogoFavorito))
         {
             response.StatusCode = HttpStatusCode.BadRequest;
             response.Content = new StringContent("Jogo já está na lista.");
             return response;
         }
-        if (usuario.Jogos!.Contains(idJogoFavorito))
+        if (!usuario.Jogos.Contains(idJogoFavorito))
         {
             response.StatusCode = HttpStatusCode.BadRequest;
             response.Content = new StringContent("Jogo não está na lista de jogos.");
@@ -38,7 +38,8 @@ public class JogosDoUsuarioRepository : IJogosDoUsuarioRepository
         }
         _usuarioRepository.AdicionarJogoFavorito(usuario.Id, idJogoFavorito);
         response.StatusCode = HttpStatusCode.OK;
-        string json = JsonSerializer.Serialize(usuario.JogosFavoritos);
+        ReadUsuariosDto usuarioNovo = _usuarioRepository.BuscarUsuarioPorId(usuarioId);
+        string json = JsonSerializer.Serialize(usuarioNovo.JogosFavoritos);
         response.Content = new StringContent(json, Encoding.UTF8, "application/json");
         return response;
     }
@@ -85,12 +86,11 @@ public class JogosDoUsuarioRepository : IJogosDoUsuarioRepository
         if (!usuario.Jogos!.Contains(idJogo))
         {
             response.StatusCode = HttpStatusCode.BadRequest;
-            response.Content = new StringContent("Jogo não está na lista de jogos.");
+            response.Content = new StringContent("Jogo não está na lista.");
             return response;
         }
         _usuarioRepository.RemoverJogo(usuario.Id, idJogo);
         response.StatusCode = HttpStatusCode.NoContent;
-        response.Content = new StringContent("Jogo removido com sucesso.");
         return response;
     }
     public HttpResponseMessage RemoverJogoFavoritoDoUsuario(int usuarioId, int idJogoFavorito)
@@ -110,9 +110,8 @@ public class JogosDoUsuarioRepository : IJogosDoUsuarioRepository
             response.Content = new StringContent("Jogo não está na lista.");
             return response;
         }
-        _usuarioRepository.RemoverJogo(usuario.Id, idJogoFavorito);
+        _usuarioRepository.RemoverJogoFavorito(usuario.Id, idJogoFavorito);
         response.StatusCode = HttpStatusCode.NoContent;
-        response.Content = new StringContent("Jogo removido com sucesso.");
         return response;
     }
 }

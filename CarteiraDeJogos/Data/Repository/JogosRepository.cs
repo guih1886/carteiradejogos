@@ -26,8 +26,8 @@ namespace CarteiraDeJogos.Data.Repository
                 Jogos novoJogo = _mapper.Map<Jogos>(jogo);
                 novoJogo.Ativo = 1;
                 _context.Jogos.Add(novoJogo);
-                _usuarioRepository.AdicionarJogoUsuario(novoJogo.UsuarioId, novoJogo.Id);
                 _context.SaveChanges();
+                _usuarioRepository.AdicionarJogoUsuario(novoJogo.UsuarioId, novoJogo.Id);
                 return _mapper.Map<ReadJogosDto>(novoJogo);
             }
             catch (Exception)

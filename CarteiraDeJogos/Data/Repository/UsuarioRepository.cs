@@ -57,7 +57,7 @@ namespace CarteiraDeJogos.Data.Repository
         {
             Usuario? usuario = BuscarUsuario(usuarioId);
             if (usuario == null) return "Usuário não encontrado.";
-            if (usuario.Jogos!.Contains(id)) usuario.Jogos.Add(id);
+            if (!usuario.Jogos!.Contains(id)) usuario.Jogos.Add(id);
             _context.SaveChanges();
             return "Ok";
         }
