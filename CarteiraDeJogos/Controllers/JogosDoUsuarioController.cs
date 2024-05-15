@@ -56,7 +56,7 @@ public class JogosDoUsuarioController : ControllerBase
         string content = await response.Content.ReadAsStringAsync();
         if (response.StatusCode == HttpStatusCode.NotFound) return NotFound(content);
         if (response.StatusCode == HttpStatusCode.BadRequest) return BadRequest(content);
-        return Ok(content);
+        return NoContent();
     }
 
     [HttpDelete("removerJogoFavorito/{idJogoFavorito}")]
@@ -66,7 +66,7 @@ public class JogosDoUsuarioController : ControllerBase
         string content = await response.Content.ReadAsStringAsync();
         if (response.StatusCode == HttpStatusCode.NotFound) return NotFound(content);
         if (response.StatusCode == HttpStatusCode.BadRequest) return BadRequest(content);
-        return Ok(content);
+        return NoContent();
     }
 }
 
