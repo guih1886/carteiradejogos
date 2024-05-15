@@ -18,7 +18,7 @@ namespace CarteiraDeJogos.Data.Repository
 
         public ReadUsuariosDto CadastrarUsuario(CreateUsuarioDto usuarioDto)
         {
-            Usuario novoUsuario = _mapper.Map<Usuario>(usuarioDto);
+            Usuario? novoUsuario = _mapper.Map<Usuario>(usuarioDto);
             novoUsuario.Jogos = [];
             novoUsuario.JogosFavoritos = [];
             _context.Usuarios.Add(novoUsuario);
@@ -57,7 +57,7 @@ namespace CarteiraDeJogos.Data.Repository
         {
             Usuario? usuario = BuscarUsuario(usuarioId);
             if (usuario == null) return "Usuário não encontrado.";
-            if (!usuario.Jogos!.Contains(id)) usuario.Jogos.Add(id);
+            if (usuario.Jogos!.Contains(id)) usuario.Jogos.Add(id);
             _context.SaveChanges();
             return "Ok";
         }
@@ -66,6 +66,9 @@ namespace CarteiraDeJogos.Data.Repository
             Usuario? usuario = BuscarUsuario(usuarioId);
             if (usuario == null) return "Usuário não encontrado.";
             if (usuario.Jogos!.Contains(idJogo)) usuario.Jogos.Remove(idJogo);
+            Jogos? jogo = _context.Jogos.FirstOrDefault(jogo => jogo.Id == idJogo);
+            if (jogo == null) return "Jogo não encontrado.";
+            jogo.Ativo = 0;
             _context.SaveChanges();
             return "Ok";
         }
