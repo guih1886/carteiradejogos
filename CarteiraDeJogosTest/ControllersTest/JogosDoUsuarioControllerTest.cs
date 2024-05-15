@@ -10,13 +10,12 @@ namespace CarteiraDeJogosTest.ControllersTest;
 [Collection("JogosDoUsuarioControllerTest")]
 public class JogosDoUsuarioControllerTest : IDisposable
 {
-    private HttpClientBuilder _httpClientBuilder;
+    private HttpClientBuilder _httpClientBuilder = new HttpClientBuilder();
     private ITestOutputHelper _outputHelper;
     private ReadJogosDto jogo;
 
     public JogosDoUsuarioControllerTest(ITestOutputHelper outputHelper)
     {
-        _httpClientBuilder = new HttpClientBuilder();
         _outputHelper = outputHelper;
         CreateJogosDto jogo = new CreateJogosDto("Endereço de imagem da internet", "Jogo teste do JogosDoUsuarioTeste", "Um jogo de teste para o testes do controlador", Genero.Estratégia, 1, "2000", "Atari", 8);
         Task<HttpResponseMessage> response = _httpClientBuilder.CadastrarAsync("/Jogos", jogo);
@@ -48,7 +47,7 @@ public class JogosDoUsuarioControllerTest : IDisposable
         HttpResponseMessage responseInclusao1 = await _httpClientBuilder.IncluirJogoNosFavoritos(1, 9999);
         string erro = responseInclusao1.Content.ReadAsStringAsync().Result;
         //Assert
-        Assert.Equal(HttpStatusCode.InternalServerError, responseInclusao1.StatusCode);
+        Assert.Equal(HttpStatusCode.BadRequest, responseInclusao1.StatusCode);
         Assert.Contains("Jogo não está na lista de jogos.", erro);
     }
 
