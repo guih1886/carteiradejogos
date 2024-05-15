@@ -14,12 +14,12 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 > - **Cadastrar, Alterar, deletar, listar e detalhar os usuários.**
 > - **Adicionar e remover os jogos na lista de jogos favoritos do usuário.**
 
-### Escalamento do projeto (em breve)
+### Escalamento do projeto
 
-- Implementar os conceitos de repository, para a clareza do código. ✅
-- Implementar os testes para garantir a qualidade do código. ✅
+- Implementado os conceitos de repository, para a clareza do código. ✅
+- Implementado 33 testes para garantir a qualidade do código. ✅
 - Implementar segurança de login, com o JWT.
-- Implementar a alteração de ativação e inativação dos jogos.
+- Implementar a alteração de ativação dos jogos.
 - Implementar um app com Flutter para o consumo da API.
 
 ##
@@ -229,6 +229,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/schemas.png)
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/modeloJogos.png)
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/modeloUsuarios.png)
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/testes.png)
 
 ##
 
