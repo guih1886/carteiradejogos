@@ -1,8 +1,6 @@
-﻿using CarteiraDeJogos.Data;
-using CarteiraDeJogos.Data.Repository;
-using CarteiraDeJogos.Models;
+﻿using CarteiraDeJogos.Data.Repository;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using System.Net;
 
 namespace CarteiraDeJogos.Controllers;
 
@@ -18,38 +16,57 @@ public class JogosDoUsuarioController : ControllerBase
     }
 
     [HttpGet("todosJogos")]
-    public ActionResult<List<int>> ListarTodosOsJogos(int id)
+    public async Task<IActionResult> ListarTodosOsJogos(int id)
     {
-        List<int> listaDeJogos = _jogosDoUsuarioRepository.ListarTodosOsJogos(id);
-        return Ok(listaDeJogos);
+        HttpResponseMessage response = _jogosDoUsuarioRepository.ListarTodosOsJogos(id);
+        string content = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            return NotFound(content);
+        }
+        return Ok(content);
     }
 
     [HttpGet("jogosfavoritos")]
-    public ActionResult<List<int>> ListarJogosFavoritos(int id)
+    public async Task<IActionResult> ListarJogosFavoritos(int id)
     {
-        List<int> jogosFavoritos = _jogosDoUsuarioRepository.ListarJogosFavoritos(id);
-        return Ok(jogosFavoritos);
+        HttpResponseMessage response = _jogosDoUsuarioRepository.ListarJogosFavoritos(id);
+        string content = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            return NotFound(content);
+        }
+        return Ok(content);
     }
 
     [HttpPost("adicionarJogoFavorito/{idJogoFavorito}")]
-    public ActionResult<List<int>> AdicionarJogoFavoritoUsuario(int id, int idJogoFavorito)
+    public async Task<IActionResult> AdicionarJogoFavoritoUsuario(int id, int idJogoFavorito)
     {
-        List<int> jogosFavoritos = _jogosDoUsuarioRepository.AdicionarJogoAoFavoritoDoUsuario(id, idJogoFavorito);
-        return Ok(jogosFavoritos);
+        HttpResponseMessage response = _jogosDoUsuarioRepository.AdicionarJogoAoFavoritoDoUsuario(id, idJogoFavorito);
+        string content = await response.Content.ReadAsStringAsync();
+        if (response.StatusCode == HttpStatusCode.NotFound) return NotFound(content);
+        if (response.StatusCode == HttpStatusCode.BadRequest) return BadRequest(content);
+        return Ok(content);
     }
 
     [HttpDelete("removerJogo/{idJogo}")]
-    public ActionResult<List<int>> RemoverJogoUsuario(int id, int idJogo)
+    public async Task<IActionResult> RemoverJogoUsuario(int id, int idJogo)
     {
-        _jogosDoUsuarioRepository.RemoverJogoDoUsuario(id, idJogo);
-        return NoContent();
+        HttpResponseMessage response = _jogosDoUsuarioRepository.RemoverJogoDoUsuario(id, idJogo);
+        string content = await response.Content.ReadAsStringAsync();
+        if (response.StatusCode == HttpStatusCode.NotFound) return NotFound(content);
+        if (response.StatusCode == HttpStatusCode.BadRequest) return BadRequest(content);
+        return Ok(content);
     }
 
     [HttpDelete("removerJogoFavorito/{idJogoFavorito}")]
-    public IActionResult RemoverJogoFavoritoUsuario(int id, int idJogoFavorito)
+    public async Task<IActionResult> RemoverJogoFavoritoUsuario(int id, int idJogoFavorito)
     {
-        _jogosDoUsuarioRepository.RemoverJogoFavoritoDoUsuario(id, idJogoFavorito);
-        return NoContent();
+        HttpResponseMessage response = _jogosDoUsuarioRepository.RemoverJogoFavoritoDoUsuario(id, idJogoFavorito);
+        string content = await response.Content.ReadAsStringAsync();
+        if (response.StatusCode == HttpStatusCode.NotFound) return NotFound(content);
+        if (response.StatusCode == HttpStatusCode.BadRequest) return BadRequest(content);
+        return Ok(content);
     }
 }
 

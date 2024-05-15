@@ -40,14 +40,13 @@ namespace CarteiraDeJogos.Controllers
             }
             catch (Exception error)
             {
-                return BadRequest($"Erro ao localizar o usuário com o id {jogo.UsuarioId}.");
+                return BadRequest($"Erro ao localizar o usuário com o id {jogo.UsuarioId} + {error.Message}.");
             }
         }
 
         [HttpPut("{id}")]
         public ActionResult<ReadJogosDto> AtualizarJogo(int id, [FromBody] UpdateJogosDto jogo)
         {
-
             ReadJogosDto jogoAtualizado = _repository.AtualizarJogo(id, jogo);
             if (jogoAtualizado == null) return NotFound();
             return Ok(jogoAtualizado);
