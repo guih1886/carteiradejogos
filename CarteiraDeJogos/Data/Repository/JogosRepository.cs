@@ -21,20 +21,33 @@ namespace CarteiraDeJogos.Data.Repository
 
         public ReadJogosDto CadastrarJogo(CreateJogosDto jogo)
         {
-            Jogos novoJogo = _mapper.Map<Jogos>(jogo);
-            novoJogo.Ativo = 1;
-            _context.Jogos.Add(novoJogo);
-            _context.SaveChanges();
-            _usuarioRepository.AdicionarJogoUsuario(novoJogo.UsuarioId, novoJogo.Id);
-            _context.SaveChanges();
-            return _mapper.Map<ReadJogosDto>(novoJogo);
+            try
+            {
+                Jogos novoJogo = _mapper.Map<Jogos>(jogo);
+                novoJogo.Ativo = 1;
+                _context.Jogos.Add(novoJogo);
+                _usuarioRepository.AdicionarJogoUsuario(novoJogo.UsuarioId, novoJogo.Id);
+                _context.SaveChanges();
+                return _mapper.Map<ReadJogosDto>(novoJogo);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Erro ao cadastrar o jogo.");
+            }
         }
         public ReadJogosDto AtualizarJogo(int id, UpdateJogosDto jogoNovo)
         {
-            Jogos? jogo = BuscarJogo(id);
-            Jogos jogoAtualizado = _mapper.Map(jogoNovo, jogo)!;
-            _context.SaveChanges();
-            return _mapper.Map<ReadJogosDto>(jogoAtualizado);
+            try
+            {
+                Jogos? jogo = BuscarJogo(id);
+                Jogos jogoAtualizado = _mapper.Map(jogoNovo, jogo)!;
+                _context.SaveChanges();
+                return _mapper.Map<ReadJogosDto>(jogoAtualizado);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Erro ao atualizar o jogo.");
+            }
         }
         public List<ReadJogosDto> ListarJogos()
         {
@@ -52,16 +65,24 @@ namespace CarteiraDeJogos.Data.Repository
         }
         public bool DeletarJogo(int id)
         {
-            Jogos? jogo = BuscarJogo(id);
-            if (jogo == null) return false;
-            //Caso encontre o jogo, muda ele para inativo, e retira ele das listas dos usuários.
-            jogo.Ativo = 0;
-            ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(jogo.UsuarioId);
-            UpdateUsuariosDto usuarioAlterado = _mapper.Map<UpdateUsuariosDto>(usuario);
-            if (usuarioAlterado.Jogos.Contains(jogo.Id)) usuarioAlterado.Jogos.Remove(jogo.Id);
-            if (usuarioAlterado.JogosFavoritos.Contains(jogo.Id)) usuarioAlterado.JogosFavoritos.Remove(jogo.Id);
-            _usuarioRepository.AtualizarUsuario(usuario.Id, usuarioAlterado);
-            return true;
+            try
+            {
+                Jogos? jogo = BuscarJogo(id);
+                if (jogo == null) return false;
+                //Caso encontre o jogo, muda ele para inativo, e retira ele das listas dos usuários.
+                jogo.Ativo = 0;
+                ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(jogo.UsuarioId);
+                UpdateUsuariosDto usuarioAlterado = _mapper.Map<UpdateUsuariosDto>(usuario);
+                if (usuarioAlterado.Jogos.Contains(jogo.Id)) usuarioAlterado.Jogos.Remove(jogo.Id);
+                if (usuarioAlterado.JogosFavoritos.Contains(jogo.Id)) usuarioAlterado.JogosFavoritos.Remove(jogo.Id);
+                _usuarioRepository.AtualizarUsuario(usuario.Id, usuarioAlterado);
+                return true;
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("Erro ao deletar o jogo.");
+            }
         }
     }
 }
