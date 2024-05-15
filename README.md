@@ -17,7 +17,7 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 ### Escalamento do projeto (em breve)
 
 - Implementar os conceitos de repository, para a clareza do código. ✅
-- Implementar os testes para garantir a qualidade do código.
+- Implementar os testes para garantir a qualidade do código. ✅
 - Implementar segurança de login, com o JWT.
 - Implementar a alteração de ativação e inativação dos jogos.
 - Implementar um app com Flutter para o consumo da API.
@@ -200,26 +200,28 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
   [6]
   ```
 
-  Em caso de falha retorna um HTTP 500 caso o jogo já esteja na lista de jogos favoritos do usuário com a mensagem `"Jogo já está na lista."` ou caso o jogo não esteja cadastrado, com a mensagem `"Jogo não está na lista de jogos."`.
-  Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 500 com a mensagem "`Usuario não encontrado.`.
+  Em caso de falha retorna um HTTP 400 caso o jogo já esteja na lista de jogos favoritos do usuário com a mensagem `"Jogo já está na lista."` ou caso o jogo não esteja cadastrado, com a mensagem `"Jogo não está na lista de jogos."`.
+  Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem "`Usuario não encontrado.`.
 
 - `GET /JogosDoUsuario/{id}/todosJogos`: Retorna a lista de todos os jogos ativos cadastrados do usuário.
+  Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem "`Usuario não encontrado.`.
 
   ```json
   [5, 6, 7]
   ```
 
 - `GET /JogosDoUsuario/{id}/jogosfavoritos`: Retorna a lista de todos os jogos favoritos ativos cadastrados do usuário.
+  Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem "`Usuario não encontrado.`.
 
   ```json
   [6]
   ```
 
 - `DELETE /JogosDoUsuario/{id}/removerJogo/{idJogo}`: Remove o jogo da lista de jogos do usuário e marca o jogo como inativo. Retorna o HTTP 204 em caso de sucesso,
-  e caso o usuário não seja encontrado retorna o HTTP 500 com a mensagem "`Usuario não encontrado.`" ou "`Jogo não está na lista.`" caso o `idJogo` não seja de um jogo na lista de jogos do usuário.
+  e caso o usuário não seja encontrado retorna o HTTP 404 com a mensagem "`Usuario não encontrado.`" ou o HTTP 400 com a mensagem "`Jogo não está na lista.`" caso o `idJogo` não seja de um jogo na lista de jogos do usuário.
 
 - `DELETE /JogosDoUsuario/{id}/removerJogoFavorito/{idJogoFavorito}`: Remove o jogo da lista de jogos favoritos do usuário. Retorna o HTTP 204 em caso de sucesso,
-  e caso o usuário não seja encontrado retorna o HTTP 404 com a mensagem "`Usuario não encontrado.`" ou "`Jogo não está na lista.`" caso o `idJogoFavorito` não seja de um jogo na lista de jogos favoritos do usuário.
+  e caso o usuário não seja encontrado retorna o HTTP 404 com a mensagem "`Usuario não encontrado.`" ou o HTTP 400 com a mensagem "`Jogo não está na lista.`" caso o `idJogoFavorito` não seja de um jogo na lista de jogos favoritos do usuário.
 
 ### Imagens
 
