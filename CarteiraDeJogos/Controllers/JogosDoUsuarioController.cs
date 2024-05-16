@@ -1,4 +1,4 @@
-﻿using CarteiraDeJogos.Data.Repository;
+﻿using CarteiraDeJogos.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,9 +8,9 @@ namespace CarteiraDeJogos.Controllers;
 [Route("JogosDoUsuario/{id}")]
 public class JogosDoUsuarioController : ControllerBase
 {
-    private readonly JogosDoUsuarioRepository _jogosDoUsuarioRepository;
+    private readonly IJogosDoUsuarioRepository _jogosDoUsuarioRepository;
 
-    public JogosDoUsuarioController(JogosDoUsuarioRepository jogosDoUsuarioRepository)
+    public JogosDoUsuarioController(IJogosDoUsuarioRepository jogosDoUsuarioRepository)
     {
         _jogosDoUsuarioRepository = jogosDoUsuarioRepository;
     }

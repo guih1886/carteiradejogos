@@ -1,5 +1,5 @@
 ﻿using CarteiraDeJogos.Data.Dto.Usuarios;
-using CarteiraDeJogos.Data.Repository;
+using CarteiraDeJogos.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarteiraDeJogos.Controllers;
@@ -8,9 +8,9 @@ namespace CarteiraDeJogos.Controllers;
 [Route("Usuarios")]
 public class UsuarioController : ControllerBase
 {
-    private readonly UsuarioRepository _usuarioRepository;
+    private readonly IUsuariosRepository _usuarioRepository;
 
-    public UsuarioController(UsuarioRepository usuarioRepository)
+    public UsuarioController(IUsuariosRepository usuarioRepository)
     {
         _usuarioRepository = usuarioRepository;
     }

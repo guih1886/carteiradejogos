@@ -1,5 +1,5 @@
 ﻿using CarteiraDeJogos.Data.Dto.Jogos;
-using CarteiraDeJogos.Data.Repository;
+using CarteiraDeJogos.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarteiraDeJogos.Controllers
@@ -8,9 +8,9 @@ namespace CarteiraDeJogos.Controllers
     [Route("Jogos")]
     public class JogosController : ControllerBase
     {
-        private readonly JogosRepository _repository;
+        private readonly IJogosRepository _repository;
 
-        public JogosController(JogosRepository repository)
+        public JogosController(IJogosRepository repository)
         {
             _repository = repository;
         }
