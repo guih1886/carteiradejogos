@@ -2,17 +2,21 @@
 
 namespace CarteiraDeJogos.Data.Dto.Usuarios
 {
-    public class CreateUsuarioDto
+    public record CreateUsuarioDto
     {
-        public CreateUsuarioDto(string nome, string senha, string confirmacaoSenha)
+        public CreateUsuarioDto(string nome, string email, string senha, string confirmacaoSenha)
         {
             Nome = nome;
+            Email = email;
             Senha = senha;
             ConfirmacaoSenha = confirmacaoSenha;
         }
 
         [Required]
         public string Nome { get; set; }
+
+        [Required]
+        public string Email { get; set; }
 
         [Required]
         public string Senha { get; set; }

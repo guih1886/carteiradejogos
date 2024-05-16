@@ -2,7 +2,7 @@
 
 namespace CarteiraDeJogos.Data.Dto.Usuarios;
 
-public class UpdateUsuariosDto
+public record UpdateUsuariosDto
 {
     public UpdateUsuariosDto(string nome, List<int> jogos, List<int> jogosFavoritos)
     {

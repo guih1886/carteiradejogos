@@ -2,7 +2,7 @@
 
 namespace CarteiraDeJogos.Data.Dto.Usuarios;
 
-public class ReadUsuariosDto
+public record ReadUsuariosDto
 {
     public ReadUsuariosDto(int id, string nome, List<int> jogos, List<int> jogosFavoritos)
     {
