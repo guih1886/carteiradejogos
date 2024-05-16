@@ -8,8 +8,8 @@ namespace CarteiraDeJogos.Data.Repository;
 
 public class JogosDoUsuarioRepository : IJogosDoUsuarioRepository
 {
-    private UsuarioRepository _usuarioRepository;
-    public JogosDoUsuarioRepository(UsuarioRepository usuarioRepository)
+    private IUsuariosRepository _usuarioRepository;
+    public JogosDoUsuarioRepository(IUsuariosRepository usuarioRepository)
     {
         _usuarioRepository = usuarioRepository;
     }
