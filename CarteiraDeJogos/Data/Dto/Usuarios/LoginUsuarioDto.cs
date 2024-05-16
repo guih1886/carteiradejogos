@@ -5,6 +5,12 @@ namespace CarteiraDeJogos.Data.Dto.Usuarios;
 
 public record LoginUsuarioDto
 {
+    public LoginUsuarioDto(string senha, string email)
+    {
+        Senha = senha;
+        Email = email;
+    }
+
     [Required(ErrorMessage = "E-mail não pode estar vazio.")]
     [NotNull]
     public string Email { get; set; }
