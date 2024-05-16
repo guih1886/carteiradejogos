@@ -19,7 +19,7 @@ namespace CarteiraDeJogosTest.ControllersTest
         public async void CadastrarUsuarioTest()
         {
             //Arrange
-            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "1234", "1234");
+            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme@gmail.com", "1234", "1234");
             //Act
             HttpResponseMessage resposta = await _httpClientBuilder.CadastrarAsync<CreateUsuarioDto>("/Usuarios", novoUsuario);
             ReadUsuariosDto usuario = JsonSerializer.Deserialize<ReadUsuariosDto>(resposta.Content.ReadAsStringAsync().Result)!;
@@ -33,7 +33,7 @@ namespace CarteiraDeJogosTest.ControllersTest
         public async void CadastrarUsuarioIncorretoTest()
         {
             //Arrange
-            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "123456", "1234");
+            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme@gmail.com", "123456", "1234");
             //Act
             HttpResponseMessage resposta = await _httpClientBuilder.CadastrarAsync<CreateUsuarioDto>("/Usuarios", novoUsuario);
             _outputHelper.WriteLine(resposta.Content.ReadAsStringAsync().Result);
@@ -45,7 +45,7 @@ namespace CarteiraDeJogosTest.ControllersTest
         public async void AlterarUsuarioTest()
         {
             //Arrange
-            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "1234", "1234");
+            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme@gmail.com", "1234", "1234");
             UpdateUsuariosDto usuarioAlterado = new UpdateUsuariosDto("Usuario Alterado", [1, 2, 5, 8], [1, 2]);
             //Act
             HttpResponseMessage novoUsuarioDTO = await _httpClientBuilder.CadastrarAsync<CreateUsuarioDto>("/Usuarios", novoUsuario);
@@ -86,7 +86,7 @@ namespace CarteiraDeJogosTest.ControllersTest
         public async void ListarUsuarioPorIdTest()
         {
             //Arrange
-            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "1234", "1234");
+            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme@gmail.com", "1234", "1234");
             //Act
             //Act
             HttpResponseMessage usuarioCriado = await _httpClientBuilder.CadastrarAsync<CreateUsuarioDto>("/Usuarios", novoUsuario);
@@ -115,7 +115,7 @@ namespace CarteiraDeJogosTest.ControllersTest
         public async void DeletarUsuarioTest()
         {
             //Arrange
-            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "1234", "1234");
+            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José","guilherme@gmail.com", "1234", "1234");
             //Act
             HttpResponseMessage usuarioCriado = await _httpClientBuilder.CadastrarAsync<CreateUsuarioDto>("/Usuarios", novoUsuario);
             ReadUsuariosDto usuario = JsonSerializer.Deserialize<ReadUsuariosDto>(usuarioCriado.Content.ReadAsStringAsync().Result)!;
