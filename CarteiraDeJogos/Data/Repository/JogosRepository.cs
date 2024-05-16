@@ -10,9 +10,9 @@ namespace CarteiraDeJogos.Data.Repository
     {
         private JogosContext _context;
         private IMapper _mapper;
-        private UsuarioRepository _usuarioRepository;
+        private IUsuariosRepository _usuarioRepository;
 
-        public JogosRepository(JogosContext context, IMapper mapper, UsuarioRepository usuarioRepository)
+        public JogosRepository(JogosContext context, IMapper mapper, IUsuariosRepository usuarioRepository)
         {
             _context = context;
             _mapper = mapper;

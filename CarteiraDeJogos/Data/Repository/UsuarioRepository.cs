@@ -16,6 +16,23 @@ namespace CarteiraDeJogos.Data.Repository
             _mapper = mapper;
         }
 
+        public Usuario? BuscarUsuario(int id)
+        {
+            return _context.Usuarios.FirstOrDefault(u => u.Id == id);
+        }
+        public Usuario? BuscarUsuarioEmail(string email)
+        {
+            return _context.Usuarios.FirstOrDefault(u => u.Email == email);
+        }
+        public ReadUsuariosDto BuscarUsuarioPorId(int id)
+        {
+            Usuario? usuario = BuscarUsuario(id);
+            return _mapper.Map<ReadUsuariosDto>(usuario);
+        }
+        public List<ReadUsuariosDto> ListarUsuarios()
+        {
+            return _mapper.Map<List<ReadUsuariosDto>>(_context.Usuarios.ToList());
+        }
         public ReadUsuariosDto CadastrarUsuario(CreateUsuarioDto usuarioDto)
         {
             Usuario? novoUsuario = _mapper.Map<Usuario>(usuarioDto);
@@ -30,19 +47,6 @@ namespace CarteiraDeJogos.Data.Repository
             Usuario? usuario = BuscarUsuario(id);
             _mapper.Map(usuarioDto, usuario);
             _context.SaveChanges();
-            return _mapper.Map<ReadUsuariosDto>(usuario);
-        }
-        public List<ReadUsuariosDto> ListarUsuarios()
-        {
-            return _mapper.Map<List<ReadUsuariosDto>>(_context.Usuarios.ToList());
-        }
-        private Usuario? BuscarUsuario(int id)
-        {
-            return _context.Usuarios.FirstOrDefault(u => u.Id == id);
-        }
-        public ReadUsuariosDto BuscarUsuarioPorId(int id)
-        {
-            Usuario? usuario = BuscarUsuario(id);
             return _mapper.Map<ReadUsuariosDto>(usuario);
         }
         public bool DeletarUsuario(int id)
@@ -61,6 +65,14 @@ namespace CarteiraDeJogos.Data.Repository
             _context.SaveChanges();
             return "Ok";
         }
+        public string AdicionarJogoFavorito(int usuarioId, int idJogoFavorito)
+        {
+            Usuario? usuario = BuscarUsuario(usuarioId);
+            if (usuario == null) return "Usuário não encontrado.";
+            if (!usuario.JogosFavoritos!.Contains(idJogoFavorito)) usuario.JogosFavoritos.Add(idJogoFavorito);
+            _context.SaveChanges();
+            return "Ok";
+        }
         public string RemoverJogo(int usuarioId, int idJogo)
         {
             Usuario? usuario = BuscarUsuario(usuarioId);
@@ -69,14 +81,6 @@ namespace CarteiraDeJogos.Data.Repository
             Jogos? jogo = _context.Jogos.FirstOrDefault(jogo => jogo.Id == idJogo);
             if (jogo == null) return "Jogo não encontrado.";
             jogo.Ativo = 0;
-            _context.SaveChanges();
-            return "Ok";
-        }
-        public string AdicionarJogoFavorito(int usuarioId, int idJogoFavorito)
-        {
-            Usuario? usuario = BuscarUsuario(usuarioId);
-            if (usuario == null) return "Usuário não encontrado.";
-            if (!usuario.JogosFavoritos!.Contains(idJogoFavorito)) usuario.JogosFavoritos.Add(idJogoFavorito);
             _context.SaveChanges();
             return "Ok";
         }
