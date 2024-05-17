@@ -10,19 +10,19 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 
 ### Detalhes do projeto
 
-> - **Cadastrar, Alterar, deletar, listar e detalhar os jogos.**
+> - **Cadastrar, Alterar, deletar, listar, ativar e detalhar os jogos.**
 > - **Cadastrar, Alterar, deletar, listar e detalhar os usuários.**
 > - **Adicionar e remover os jogos na lista de jogos favoritos do usuário.**
+
+As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com o Jwt obtido através do endpoint de `/Login`, cadastrado através do `POST /Usuarios` (livre de autenticação).
 
 ### Escalamento do projeto
 
 - Implementado os conceitos de repository, para a clareza do código. ✅
 - Implementado 38 testes para garantir a qualidade do código. ✅
 - Implementar segurança de login, com o JWT. ✅
-- Implementar a alteração de ativação dos jogos.
+- Implementar a alteração de ativação dos jogos. ✅
 - Implementar um app com Flutter para o consumo da API.
-
-As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com o Jwt obtido através do endpoint de `/Login`.
 
 ##
 
@@ -33,9 +33,9 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
 
   ```json
   {
-  "email": "string",
-  "senha": "string"
-    }
+    "email": "string",
+    "senha": "string"
+  }
   ```
 
 Caso o usuário e-mail e senha seja a mesma cadastrada no banco de dados, retorna um HTTP 200 com o token jwt de autenticação, e caso as credenciais estejam incorretas, retorna um HTTP 401 com a mensagem `E-mail ou senha inválido.`.
@@ -223,10 +223,14 @@ Caso o usuário e-mail e senha seja a mesma cadastrada no banco de dados, retorn
   ```
 
   Em caso de falha retorna um HTTP 400 caso o jogo já esteja na lista de jogos favoritos do usuário com a mensagem `"Jogo já está na lista."` ou caso o jogo não esteja cadastrado, com a mensagem `"Jogo não está na lista de jogos."`.
-  Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem "`Usuario não encontrado.`.
+  Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem `Usuario não encontrado.`.
+
+- `POST /JogosDoUsuario/{id}/ativarJogo/{idJogo}`: Ativa o jogo do usuário e o adiciona na lista de jogos do usuário, retorna um HTTP 200 em caso de sucesso.
+  Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem `Usuario não encontrado.`. Caso o jogo não seja encontrando, retorna um HTTP 404 com a mensagem `Jogo não encontrado.`,
+  e se o jogo não pertencer ao `id` do usuário, retorna um HTTP 400 com a mensagem `Jogo não pertence ao usuário.`. Se até aqui estiver tudo certo, e o jogo já estiver ativo, retorna um HTTP 400 com a mensagem `Jogo já está ativo.`.
 
 - `GET /JogosDoUsuario/{id}/todosJogos`: Retorna a lista de todos os jogos ativos cadastrados do usuário.
-  Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem "`Usuario não encontrado.`.
+  Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem `Usuario não encontrado.`.
 
   ```json
   [5, 6, 7]
