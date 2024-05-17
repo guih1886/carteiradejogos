@@ -9,4 +9,5 @@ public interface IJogosRepository
     ReadJogosDto CadastrarJogo(CreateJogosDto jogo);
     ReadJogosDto AtualizarJogo(int id, UpdateJogosDto jogo);
     bool DeletarJogo(int id);
+    HttpResponseMessage AtivarJogo(int id, int idJogo);
 }

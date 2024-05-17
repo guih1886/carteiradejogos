@@ -1,4 +1,5 @@
 ﻿using CarteiraDeJogos.Data.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -8,11 +9,13 @@ namespace CarteiraDeJogos.Controllers;
 [Route("JogosDoUsuario/{id}")]
 public class JogosDoUsuarioController : ControllerBase
 {
+    private readonly IJogosRepository _jogosRepository;
     private readonly IJogosDoUsuarioRepository _jogosDoUsuarioRepository;
 
-    public JogosDoUsuarioController(IJogosDoUsuarioRepository jogosDoUsuarioRepository)
+    public JogosDoUsuarioController(IJogosDoUsuarioRepository jogosDoUsuarioRepository, IJogosRepository jogosRepository)
     {
         _jogosDoUsuarioRepository = jogosDoUsuarioRepository;
+        _jogosRepository = jogosRepository;
     }
 
     [HttpGet("todosJogos")]
@@ -38,7 +41,7 @@ public class JogosDoUsuarioController : ControllerBase
         }
         return Ok(content);
     }
-
+    [Authorize]
     [HttpPost("adicionarJogoFavorito/{idJogoFavorito}")]
     public async Task<IActionResult> AdicionarJogoFavoritoUsuario(int id, int idJogoFavorito)
     {
@@ -48,7 +51,7 @@ public class JogosDoUsuarioController : ControllerBase
         if (response.StatusCode == HttpStatusCode.BadRequest) return BadRequest(content);
         return Ok(content);
     }
-
+    [Authorize]
     [HttpDelete("removerJogo/{idJogo}")]
     public async Task<IActionResult> RemoverJogoUsuario(int id, int idJogo)
     {
@@ -58,7 +61,7 @@ public class JogosDoUsuarioController : ControllerBase
         if (response.StatusCode == HttpStatusCode.BadRequest) return BadRequest(content);
         return NoContent();
     }
-
+    [Authorize]
     [HttpDelete("removerJogoFavorito/{idJogoFavorito}")]
     public async Task<IActionResult> RemoverJogoFavoritoUsuario(int id, int idJogoFavorito)
     {
@@ -67,6 +70,15 @@ public class JogosDoUsuarioController : ControllerBase
         if (response.StatusCode == HttpStatusCode.NotFound) return NotFound(content);
         if (response.StatusCode == HttpStatusCode.BadRequest) return BadRequest(content);
         return NoContent();
+    }
+    [HttpPost("ativarJogo/{idJogo}")]
+    public async Task<IActionResult> AtivarJogo(int id, int idJogo)
+    {
+        HttpResponseMessage response = _jogosRepository.AtivarJogo(id, idJogo);
+        string content = await response.Content.ReadAsStringAsync();
+        if (response.StatusCode == HttpStatusCode.NotFound) return NotFound(content);
+        if (response.StatusCode == HttpStatusCode.BadRequest) return BadRequest(content);
+        return Ok(content);
     }
 }
 
