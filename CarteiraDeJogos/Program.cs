@@ -19,9 +19,9 @@ builder.Services.AddDbContext<JogosContext>(opts =>
     opts.UseSqlServer(connectionString, e => e.EnableRetryOnFailure()));
 
 builder.Services.AddControllers();
-builder.Services.AddScoped<IUsuariosRepository, UsuarioRepository>();
 builder.Services.AddScoped<IJogosRepository, JogosRepository>();
 builder.Services.AddScoped<IJogosDoUsuarioRepository, JogosDoUsuarioRepository>();
+builder.Services.AddScoped<IUsuariosRepository, UsuarioRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -32,13 +32,12 @@ builder.Services.AddSwaggerGen(opts =>
     {
         Version = "v1",
         Title = "API Carteira de Jogos",
-        Description = "O projeto carteira de jogos é uma API onde é" +
-        " possível cadastrar, alterar, deletar e adicionar os jogos aos favoritos.",
+        Description = "O projeto carteira de jogos é uma API onde é possível cadastrar, alterar, deletar e adicionar os jogos aos favoritos.",
         Contact = new OpenApiContact() { Name = "LinkedIn", Url = new Uri("https://www.linkedin.com/in/guih1886/") },
     });
-    opts.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    opts.AddSecurityDefinition("1", new OpenApiSecurityScheme
     {
-        Name = "Autorização",
+        Name = "Authorization",
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer",
         BearerFormat = "Jwt",
@@ -53,7 +52,7 @@ builder.Services.AddSwaggerGen(opts =>
             Reference = new OpenApiReference()
             {
                 Type = ReferenceType.SecurityScheme,
-                Id = "Bearer"
+                Id = "1"
             }
         },
         Array.Empty<string>()
@@ -62,19 +61,16 @@ builder.Services.AddSwaggerGen(opts =>
 });
 builder.Services.AddAuthentication(x =>
 {
-    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(opts =>
 {
     opts.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = false,
-        ValidateAudience = false,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+        ValidateAudience = false,
+        ValidateIssuer = false,
         ValidateLifetime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
     };
 });
 
