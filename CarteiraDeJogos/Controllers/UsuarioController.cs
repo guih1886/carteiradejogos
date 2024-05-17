@@ -1,5 +1,6 @@
 ﻿using CarteiraDeJogos.Data.Dto.Usuarios;
 using CarteiraDeJogos.Data.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarteiraDeJogos.Controllers;
@@ -29,14 +30,13 @@ public class UsuarioController : ControllerBase
         if (usuario == null) return NotFound();
         return Ok(usuario);
     }
-
     [HttpPost]
     public ActionResult<ReadUsuariosDto> CadastrarUsuario([FromBody] CreateUsuarioDto usuario)
     {
         ReadUsuariosDto usuarioNovo = _usuarioRepository.CadastrarUsuario(usuario);
         return Ok(usuarioNovo);
     }
-
+    [Authorize]
     [HttpPut("{id}")]
     public ActionResult<ReadUsuariosDto> AlterarUsuario(int id, [FromBody] UpdateUsuariosDto usuario)
     {
@@ -44,7 +44,7 @@ public class UsuarioController : ControllerBase
         if (usuarioAtualizado == null) return NotFound();
         return Ok(usuarioAtualizado);
     }
-
+    [Authorize]
     [HttpDelete("{id}")]
     public ActionResult DeletarUsuario(int id)
     {

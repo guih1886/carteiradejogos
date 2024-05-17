@@ -1,6 +1,8 @@
 ﻿using CarteiraDeJogos.Data.Dto.Jogos;
 using CarteiraDeJogos.Data.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace CarteiraDeJogos.Controllers
 {
@@ -21,7 +23,6 @@ namespace CarteiraDeJogos.Controllers
             List<ReadJogosDto> jogos = _repository.ListarJogos();
             return Ok(jogos);
         }
-
         [HttpGet("{id}")]
         public IActionResult BuscarJogoPorId(int id)
         {
@@ -29,7 +30,7 @@ namespace CarteiraDeJogos.Controllers
             if (jogo == null) return NotFound();
             return Ok(jogo);
         }
-
+        [Authorize]
         [HttpPost]
         public ActionResult<ReadJogosDto> CadastrarJogo([FromBody] CreateJogosDto jogo)
         {
@@ -43,7 +44,7 @@ namespace CarteiraDeJogos.Controllers
                 return BadRequest($"Erro ao localizar o usuário com o id {jogo.UsuarioId} + {error.Message}.");
             }
         }
-
+        [Authorize]
         [HttpPut("{id}")]
         public ActionResult<ReadJogosDto> AtualizarJogo(int id, [FromBody] UpdateJogosDto jogo)
         {
@@ -51,7 +52,7 @@ namespace CarteiraDeJogos.Controllers
             if (jogoAtualizado == null) return NotFound();
             return Ok(jogoAtualizado);
         }
-
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult DeletarJogo(int id)
         {
