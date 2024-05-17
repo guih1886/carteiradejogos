@@ -5,7 +5,7 @@ namespace CarteiraDeJogos.Data.Dto.Usuarios;
 
 public record LoginUsuarioDto
 {
-    public LoginUsuarioDto(string senha, string email)
+    public LoginUsuarioDto(string email, string senha)
     {
         Senha = senha;
         Email = email;
