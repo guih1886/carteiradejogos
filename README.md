@@ -17,10 +17,32 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 ### Escalamento do projeto
 
 - Implementado os conceitos de repository, para a clareza do código. ✅
-- Implementado 33 testes para garantir a qualidade do código. ✅
-- Implementar segurança de login, com o JWT.
+- Implementado 38 testes para garantir a qualidade do código. ✅
+- Implementar segurança de login, com o JWT. ✅
 - Implementar a alteração de ativação dos jogos.
 - Implementar um app com Flutter para o consumo da API.
+
+As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com o Jwt obtido através do endpoint de `/Login`.
+
+##
+
+### Login
+
+- `POST /Login`: Tenta fazer o login do usuário cadastrado através do endpoint `POST /Usuarios`. É necessário passar no corpo da requisição o json com o campo de `email` e `senha`.
+  Retorna um HTTP 200 com a lista de jogos favoritos em caso de sucesso.
+
+  ```json
+  {
+  "email": "string",
+  "senha": "string"
+    }
+  ```
+
+Caso o usuário e-mail e senha seja a mesma cadastrada no banco de dados, retorna um HTTP 200 com o token jwt de autenticação, e caso as credenciais estejam incorretas, retorna um HTTP 401 com a mensagem `E-mail ou senha inválido.`.
+
+```
+    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1NzYiLCJlbWFpbCI6InN0cmluZyIsImV4cCI6MTcxNTk2MjUwMiwiaXNzIjoiZHUxZSVrbGFBc2RFI0A2Z3dtNjJkYSQzNnc1ZEBBVmczZGFzOTVkJSIsImF1ZCI6Imd1aWgxODg2In0.MqN2w9ht-hDGnqoDxSAEqmq9RP1NfItNmzva5NV8Vhk
+```
 
 ##
 
