@@ -1,6 +1,6 @@
 # Projeto Carteira de Jogos
 
-O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, deletar e adicionar os jogos aos favoritos. O projeto envolve uma complexidade onde cada jogo cadastrado é incluido na lista de jogos do usuário, e ao ser excluido o jogo é inativado, não aparecendo mais para o usuário. Também é possível adicionar os jogos a lista de favoritos, caso esse jogo já esteja na lista de jogos do usuário.
+O CarteiraDeJogos-API é uma aplicação desenvolvida em C# utilizando o framework .NET, com o objetivo de gerenciar uma coleção de jogos. A API permite operações CRUD (Create, Read, Update, Delete) em jogos e usuários, bem como a funcionalidade de adicionar e remover jogos favoritos para cada usuário. A autenticação é feita via JWT, garantindo segurança nas operações que alteram dados. A API oferece uma robusta solução para gerenciamento de coleções de jogos, com foco em segurança e escalabilidade, além de contar com testes automatizados para garantir a qualidade do software.
 
 | :placard: Vitrine.Dev | Guilherme Henrique                                                                                                                           |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -8,15 +8,17 @@ O projeto carteira de jogos é um projeto onde é possível cadastrar, alterar, 
 | :label: Tecnologias   | C#, .NET, ASP.NET, SQL Server                                                                                                                |
 | :inbox_tray: Download | [Download Zip](https://github.com/guih1886/carteiradejogos/raw/main/CarteiraDeJogos/Assets/carteiraDeJogos.rar)<br>[Download App]() Em breve |
 
-### Detalhes do projeto
+## Detalhes do projeto
 
-> - **Cadastrar, Alterar, deletar, listar, ativar e detalhar os jogos.**
-> - **Cadastrar, Alterar, deletar, listar e detalhar os usuários.**
-> - **Adicionar e remover os jogos na lista de jogos favoritos do usuário.**
+> - **Cadastrar, Alterar, Deletar e Listar Jogos: Permite a criação, atualização, exclusão e listagem de jogos.**
+> - **Ativação de Jogos: Possibilita a ativação de jogos, alterando seu status.**
+> - **Cadastrar, Alterar, Deletar e Listar Usuários: Permite a criação, atualização, exclusão e listagem de usuários.**
+> - **Adicionar e Remover Jogos Favoritos: Usuários podem adicionar e remover jogos de sua lista de favoritos.**
+> - **Login com JWT: As operações POST, PUT e DELETE requerem autenticação via JWT, obtido através do endpoint /Login.**
 
 As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com o Jwt obtido através do endpoint de `/Login`, cadastrado através do `POST /Usuarios` (livre de autenticação).
 
-### Escalamento do projeto
+## Escalamento do projeto
 
 - Implementado os conceitos de repository, para a clareza do código. ✅
 - Implementado 38 testes para garantir a qualidade do código. ✅
@@ -24,9 +26,9 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
 - Implementar a alteração de ativação dos jogos. ✅
 - Implementar um app com Flutter para o consumo da API.
 
-##
+<br>
 
-### Login
+## Login
 
 - `POST /Login`: Tenta fazer o login do usuário cadastrado através do endpoint `POST /Usuarios`. É necessário passar no corpo da requisição o json com o campo de `email` e `senha`.
   Retorna um HTTP 200 com a lista de jogos favoritos em caso de sucesso.
@@ -38,15 +40,15 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   }
   ```
 
-Caso o usuário e-mail e senha seja a mesma cadastrada no banco de dados, retorna um HTTP 200 com o token jwt de autenticação, e caso as credenciais estejam incorretas, retorna um HTTP 401 com a mensagem `E-mail ou senha inválido.`.
+  Caso o usuário e-mail e senha seja a mesma cadastrada no banco de dados, retorna um HTTP 200 com o token jwt de autenticação, e caso as credenciais estejam incorretas, retorna um HTTP 401 com a mensagem `E-mail ou senha inválido.`.
 
-```
-    eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1NzYiLCJlbWFpbCI6InN0cmluZyIsImV4cCI6MTcxNTk2MjUwMiwiaXNzIjoiZHUxZSVrbGFBc2RFI0A2Z3dtNjJkYSQzNnc1ZEBBVmczZGFzOTVkJSIsImF1ZCI6Imd1aWgxODg2In0.MqN2w9ht-hDGnqoDxSAEqmq9RP1NfItNmzva5NV8Vhk
-```
+  ```
+      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjI1NzYiLCJlbWFpbCI6InN0cmluZyIsImV4cCI6MTcxNTk2MjUwMiwiaXNzIjoiZHUxZSVrbGFBc2RFI0A2Z3dtNjJkYSQzNnc1ZEBBVmczZGFzOTVkJSIsImF1ZCI6Imd1aWgxODg2In0.MqN2w9ht-hDGnqoDxSAEqmq9RP1NfItNmzva5NV8Vhk
+  ```
 
-##
+<br>
 
-### Usuários
+## Usuários
 
 - `POST /Usuarios`: Essa rota recebe através do corpo da requisição um JSON com os dados de `nome`, `senha` e `confirmacaoSenha` para o cadastro no banco de dados, aqui utilizado o SQL Server.
   O usuário não é cadastrado caso as senhas sejam divergentes, e retorna a mensagem de erro `"As senhas não são iguais."`.
@@ -114,9 +116,9 @@ Caso o usuário e-mail e senha seja a mesma cadastrada no banco de dados, retorn
 
 - `DELETE /Usuarios/{id}`: Apaga o usuário com o `Id` correspondente. Em caso de sucesso é retornado o HTTP 204 e caso não encontre o usuário é retornado o HTTP 404.
 
-##
+<br>
 
-### Jogos
+## Jogos
 
 - `POST /Jogos`: A rota cria um jogo no banco de dados, utilizando um DTO de criação com os dados `nome`, `endereçoImagem`, `descricao`, `genero`, `anoLançamento`, `plataforma`, `nota` e `usuarioId`.
   Os campos opcionais são gênero, ano de lançamento, plataforma e nota. E os demais são obrigátorios, e o campo de `usuarioId` é uma chave estrangeira que faz referência ao Id de usuário, e portanto, deve ser um valor válido para a inclusão. O jogo ao ser criado é marcado automaticamente como ativo.
@@ -211,9 +213,9 @@ Caso o usuário e-mail e senha seja a mesma cadastrada no banco de dados, retorn
 - `DELETE /Jogos/{id}`: Marca o jogo com o `Id` correspondente como inativo. Em caso de sucesso é retornado o HTTP 204 e caso não encontre o usuário é retornado o HTTP 404.
   O jogo é retirado da lista de jogos e de jogos favoritos do usuários.
 
-##
+<br>
 
-### Jogos Do Usuário
+## Jogos Do Usuário
 
 - `POST /JogosDoUsuario/{id}/adicionarJogoFavorito/{idJogoFavorito}`: Adiciona um jogo ativo cadastrado `idJogoFavorito` à lista de jogos favoritos do usuário com o `id` informado.
   Retorna um HTTP 200 com a lista de jogos favoritos em caso de sucesso.
@@ -249,7 +251,9 @@ Caso o usuário e-mail e senha seja a mesma cadastrada no banco de dados, retorn
 - `DELETE /JogosDoUsuario/{id}/removerJogoFavorito/{idJogoFavorito}`: Remove o jogo da lista de jogos favoritos do usuário. Retorna o HTTP 204 em caso de sucesso,
   e caso o usuário não seja encontrado retorna o HTTP 404 com a mensagem "`Usuario não encontrado.`" ou o HTTP 400 com a mensagem "`Jogo não está na lista.`" caso o `idJogoFavorito` não seja de um jogo na lista de jogos favoritos do usuário.
 
-### Imagens
+<br>
+
+## Imagens
 
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/swagger.png#vitrinedev)
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/schemas.png)
@@ -257,8 +261,8 @@ Caso o usuário e-mail e senha seja a mesma cadastrada no banco de dados, retorn
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/modeloUsuarios.png)
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/testes.png)
 
-##
+<br>
 
-### Configurando o zip
+## Configurando o zip
 
 Faça o download e extraia a pasta do aplicativo. No arquivo `appsettings.json` será necessário adicionar a string de conexão com o banco de dados SQL Server. Exercutar o aplicativo carteiraDeJogos.exe.
