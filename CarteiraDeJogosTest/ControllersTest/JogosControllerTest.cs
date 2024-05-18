@@ -1,27 +1,22 @@
-﻿using CarteiraDeJogos.Data.Dto.Jogos;
+﻿using CarteiraDeJogos.Controllers;
+using CarteiraDeJogos.Data.Dto.Jogos;
 using CarteiraDeJogos.Data.Dto.Usuarios;
 using CarteiraDeJogos.Models;
+using CarteiraDeJogosTest.Services;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net;
 using Xunit.Abstractions;
 
 namespace CarteiraDeJogosTest.ControllersTest;
 
-[Collection("JogosControllerTest")]
 public class JogosControllerTest
 {
-    private HttpClientBuilder _httpClient = new HttpClientBuilder();
-    private ITestOutputHelper _outputHelper;
-    private ReadJogosDto jogo;
+    private JogosController controller;
 
     public JogosControllerTest(ITestOutputHelper outputHelper)
     {
-        _outputHelper = outputHelper;
-        CreateJogosDto jogo = new CreateJogosDto("Endereço de imagem da internet", "Jogo Teste", "Um jogo de teste para o testes do controlador", Genero.Estratégia, 1, "2000", "Atari", 8);
-        Task<HttpResponseMessage> response = _httpClient.CadastrarAsync("/Jogos", jogo);
-        Task<string> content = response.Result.Content.ReadAsStringAsync();
-        this.jogo = JsonConvert.DeserializeObject<ReadJogosDto>(content.Result)!;
-        _outputHelper.WriteLine($"Criando jogo {this.jogo.Id}");
+        controller = new JogosServiceProvider().AdicionarServico();
     }
 
     [Fact]
@@ -73,14 +68,14 @@ public class JogosControllerTest
         Assert.Equal("Jogo Alterado", jogoAlterado.Nome);
     }
     [Fact]
-    public async void ListarJogosTest()
+    public void ListarJogosTest()
     {
         //Arrange
         ApagarJogoCriado();
         //Act
-        HttpResponseMessage resultado = await _httpClient.BuscarAsync("/Jogos");
+        ObjectResult resultado = controller.ListarJogos();
         //Assert        
-        Assert.True(resultado.StatusCode == HttpStatusCode.OK);
+        Assert.Equal(200, resultado.StatusCode);
     }
     [Fact]
     public async void ListarJogosPorIdTest()

@@ -6,10 +6,8 @@ using Xunit.Abstractions;
 
 namespace CarteiraDeJogosTest.ControllersTest;
 
-[Collection("JogosDoUsuarioControllerTest")]
 public class JogosDoUsuarioControllerTest
 {
-    private HttpClientBuilder _httpClientBuilder = new HttpClientBuilder();
     private ITestOutputHelper _outputHelper;
     private ReadJogosDto jogo;
 

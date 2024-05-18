@@ -1,70 +1,72 @@
-﻿using CarteiraDeJogos.Data.Dto.Usuarios;
-using System.Net;
+﻿using CarteiraDeJogos.Controllers;
+using CarteiraDeJogos.Data.Dto.Usuarios;
+using CarteiraDeJogosTest.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CarteiraDeJogosTest.ControllersTest;
 
 public class LoginControllerTest
 {
-    private HttpClientBuilder _httpClientBuilder = new HttpClientBuilder();
+    private LoginController controller;
+
+    public LoginControllerTest()
+    {
+        controller = new LoginServiceProvider().AdicionarServico();
+    }
 
     [Fact]
-    public async void EfetuaLogin()
+    public void EfetuaLogin()
     {
         //Arrange
-        LoginUsuarioDto loginDto = new LoginUsuarioDto("guilherme@gmail.com", "123456");
+        LoginUsuarioDto loginDto = new LoginUsuarioDto("guilherme@email.com", "12345");
         //Act
-        HttpResponseMessage response = await _httpClientBuilder.CadastrarAsync("/Login", loginDto);
-        string mensagem = await response.Content.ReadAsStringAsync();
+        ObjectResult resposta = controller.EfetuarLogin(loginDto);
         //Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-        Assert.Contains("eyJhbGciOiJIUz", mensagem);
+        Assert.Equal(200, resposta.StatusCode);
+        Assert.Contains("eyJhbGciOiJIUz", resposta.Value.ToString());
     }
     [Fact]
-    public async void NaoEfetuaLoginComEmailIncorreto()
+    public void NaoEfetuaLoginComEmailIncorreto()
     {
         //Arrange
         LoginUsuarioDto loginDto = new LoginUsuarioDto("umemailincorretoaqui", "123456");
         //Act
-        HttpResponseMessage response = await _httpClientBuilder.CadastrarAsync("/Login", loginDto);
-        string mensagem = await response.Content.ReadAsStringAsync();
+        ObjectResult resposta = controller.EfetuarLogin(loginDto);
         //Assert
-        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-        Assert.Contains("E-mail ou senha inválido.", mensagem);
+        Assert.Equal(401, resposta.StatusCode);
+        Assert.Contains("E-mail ou senha inválido.", resposta.Value.ToString());
     }
     [Fact]
-    public async void NaoEfetuaLoginComSenhaIncorreta()
+    public void NaoEfetuaLoginComSenhaIncorreta()
     {
         //Arrange
         LoginUsuarioDto loginDto = new LoginUsuarioDto("guilherme@gmail.com", "32sda6e89");
         //Act
-        HttpResponseMessage response = await _httpClientBuilder.CadastrarAsync("/Login", loginDto);
-        string mensagem = await response.Content.ReadAsStringAsync();
+        ObjectResult resposta = controller.EfetuarLogin(loginDto);
         //Assert
-        Assert.Equal(HttpStatusCode.Unauthorized, response.StatusCode);
-        Assert.Contains("E-mail ou senha inválido.", mensagem);
+        Assert.Equal(401, resposta.StatusCode);
+        Assert.Contains("E-mail ou senha inválido.", resposta.Value.ToString());
     }
     [Fact]
-    public async void NaoEfetuaLoginSemSenha()
+    public void NaoEfetuaLoginSemSenha()
     {
         //Arrange
         LoginUsuarioDto loginDto = new LoginUsuarioDto("guilherme@gmail.com", "");
         //Act
-        HttpResponseMessage response = await _httpClientBuilder.CadastrarAsync("/Login", loginDto);
-        string mensagem = await response.Content.ReadAsStringAsync();
+        ObjectResult resposta = controller.EfetuarLogin(loginDto);
         //Assert
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        Assert.Contains("A senha deve ser informada.", mensagem);
+        Assert.Equal(401, resposta.StatusCode);
+        Assert.Contains("E-mail ou senha inválido.", resposta.Value.ToString());
     }
     [Fact]
-    public async void NaoEfetuaLoginSemEmail()
+    public void NaoEfetuaLoginSemEmail()
     {
         //Arrange
         LoginUsuarioDto loginDto = new LoginUsuarioDto("", "32sda6e89");
         //Act
-        HttpResponseMessage response = await _httpClientBuilder.CadastrarAsync("/Login", loginDto);
-        string mensagem = await response.Content.ReadAsStringAsync();
+        ObjectResult resposta = controller.EfetuarLogin(loginDto);
         //Assert
-        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-        Assert.Contains("E-mail não pode estar vazio.", mensagem);
+        Assert.Equal(401, resposta.StatusCode);
+        Assert.Contains("E-mail ou senha inválido.", resposta.Value.ToString());
     }
 }

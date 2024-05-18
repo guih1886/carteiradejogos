@@ -1,5 +1,6 @@
 ﻿using CarteiraDeJogos.Controllers;
 using CarteiraDeJogos.Data.Dto.Usuarios;
+using CarteiraDeJogosTest.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Xunit.Abstractions;
@@ -13,7 +14,7 @@ namespace CarteiraDeJogosTest.ControllersTest
 
         public UsuariosControllerTest(ITestOutputHelper outputHelper)
         {
-            controller = new UsuarioServiceProvider().AdicionarServico<UsuarioController>()!;
+            controller = new UsuarioServiceProvider().AdicionarServico();
             _outputHelper = outputHelper;
         }
 
