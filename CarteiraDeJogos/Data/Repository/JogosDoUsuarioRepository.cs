@@ -1,7 +1,5 @@
 ﻿using CarteiraDeJogos.Data.Dto.Usuarios;
 using CarteiraDeJogos.Data.Interfaces;
-using System.Net;
-using System.Text;
 using System.Text.Json;
 
 namespace CarteiraDeJogos.Data.Repository;
@@ -14,104 +12,44 @@ public class JogosDoUsuarioRepository : IJogosDoUsuarioRepository
         _usuarioRepository = usuarioRepository;
     }
 
-    public HttpResponseMessage AdicionarJogoAoFavoritoDoUsuario(int usuarioId, int idJogoFavorito)
+    public string AdicionarJogoAoFavoritoDoUsuario(int usuarioId, int idJogoFavorito)
     {
-        HttpResponseMessage response = new HttpResponseMessage();
         ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(usuarioId);
-        if (usuario == null)
-        {
-            response.StatusCode = HttpStatusCode.NotFound;
-            response.Content = new StringContent("Usuário não encontrado.");
-            return response;
-        }
-        if (usuario.JogosFavoritos.Contains(idJogoFavorito))
-        {
-            response.StatusCode = HttpStatusCode.BadRequest;
-            response.Content = new StringContent("Jogo já está na lista.");
-            return response;
-        }
-        if (!usuario.Jogos.Contains(idJogoFavorito))
-        {
-            response.StatusCode = HttpStatusCode.BadRequest;
-            response.Content = new StringContent("Jogo não está na lista de jogos.");
-            return response;
-        }
-        _usuarioRepository.AdicionarJogoFavorito(usuario.Id, idJogoFavorito);
-        response.StatusCode = HttpStatusCode.OK;
-        ReadUsuariosDto usuarioNovo = _usuarioRepository.BuscarUsuarioPorId(usuarioId);
-        string json = JsonSerializer.Serialize(usuarioNovo.JogosFavoritos);
-        response.Content = new StringContent(json, Encoding.UTF8, "application/json");
-        return response;
+        if (usuario == null) return "Usuário não encontrado.";
+        if (usuario.JogosFavoritos.Contains(idJogoFavorito)) return "Jogo já está na lista.";
+        if (!usuario.Jogos.Contains(idJogoFavorito)) return "Jogo não está na lista de jogos.";
+        List<int> lista = _usuarioRepository.AdicionarJogoFavorito(usuario.Id, idJogoFavorito);
+        string json = JsonSerializer.Serialize(lista);
+        return json;
     }
-    public HttpResponseMessage ListarTodosOsJogos(int usuarioId)
+    public string ListarTodosOsJogos(int usuarioId)
     {
-        HttpResponseMessage response = new HttpResponseMessage();
         ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(usuarioId);
-        if (usuario == null)
-        {
-            response.StatusCode = HttpStatusCode.NotFound;
-            response.Content = new StringContent("Usuário não encontrado.");
-            return response;
-        }
-        response.StatusCode = HttpStatusCode.OK;
+        if (usuario == null) return "Usuário não encontrado.";
         string json = JsonSerializer.Serialize(usuario.Jogos);
-        response.Content = new StringContent(json, Encoding.UTF8, "application/json");
-        return response;
+        return json;
     }
-    public HttpResponseMessage ListarJogosFavoritos(int usuarioId)
+    public string ListarJogosFavoritos(int usuarioId)
     {
-        HttpResponseMessage response = new HttpResponseMessage();
         ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(usuarioId);
-        if (usuario == null)
-        {
-            response.StatusCode = HttpStatusCode.NotFound;
-            response.Content = new StringContent("Usuário não encontrado.");
-            return response;
-        }
-        response.StatusCode = HttpStatusCode.OK;
+        if (usuario == null) return "Usuário não encontrado.";
         string json = JsonSerializer.Serialize(usuario.JogosFavoritos);
-        response.Content = new StringContent(json, Encoding.UTF8, "application/json");
-        return response;
+        return json;
     }
-    public HttpResponseMessage RemoverJogoDoUsuario(int usuarioId, int idJogo)
+    public string? RemoverJogoDoUsuario(int usuarioId, int idJogo)
     {
-        HttpResponseMessage response = new HttpResponseMessage();
         ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(usuarioId);
-        if (usuario == null)
-        {
-            response.StatusCode = HttpStatusCode.NotFound;
-            response.Content = new StringContent("Usuário não encontrado.");
-            return response;
-        }
-        if (!usuario.Jogos!.Contains(idJogo))
-        {
-            response.StatusCode = HttpStatusCode.BadRequest;
-            response.Content = new StringContent("Jogo não está na lista.");
-            return response;
-        }
-        _usuarioRepository.RemoverJogo(usuario.Id, idJogo);
-        response.StatusCode = HttpStatusCode.NoContent;
-        return response;
+        if (usuario == null) return "Usuário não encontrado.";
+        if (!usuario.Jogos.Contains(idJogo)) return "Jogo não está na lista.";
+        string? resposta = _usuarioRepository.RemoverJogo(usuario.Id, idJogo);
+        return resposta;
     }
-    public HttpResponseMessage RemoverJogoFavoritoDoUsuario(int usuarioId, int idJogoFavorito)
+    public string? RemoverJogoFavoritoDoUsuario(int usuarioId, int idJogoFavorito)
     {
-        HttpResponseMessage response = new HttpResponseMessage();
         ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(usuarioId);
-        if (usuario == null)
-        {
-            response.StatusCode = HttpStatusCode.NotFound;
-            response.Content = new StringContent("Usuário não encontrado.");
-            return response;
-
-        }
-        if (!usuario.JogosFavoritos!.Contains(idJogoFavorito))
-        {
-            response.StatusCode = HttpStatusCode.BadRequest;
-            response.Content = new StringContent("Jogo não está na lista.");
-            return response;
-        }
-        _usuarioRepository.RemoverJogoFavorito(usuario.Id, idJogoFavorito);
-        response.StatusCode = HttpStatusCode.NoContent;
-        return response;
+        if (usuario == null) return "Usuário não encontrado.";
+        if (!usuario.JogosFavoritos!.Contains(idJogoFavorito)) return "Jogo não está na lista.";
+        string? lista = _usuarioRepository.RemoverJogoFavorito(usuario.Id, idJogoFavorito);
+        return lista;
     }
 }

@@ -57,40 +57,36 @@ namespace CarteiraDeJogos.Data.Repository
             _context.SaveChanges();
             return true;
         }
-        public string AdicionarJogoUsuario(int usuarioId, int id)
+        public List<int> AdicionarJogoUsuario(int usuarioId, int id)
         {
-            Usuario? usuario = BuscarUsuario(usuarioId);
-            if (usuario == null) return "Usuário não encontrado.";
+            Usuario usuario = BuscarUsuario(usuarioId)!;
             if (!usuario.Jogos!.Contains(id)) usuario.Jogos.Add(id);
             _context.SaveChanges();
-            return "Ok";
+            return usuario.Jogos;
         }
-        public string AdicionarJogoFavorito(int usuarioId, int idJogoFavorito)
+        public List<int> AdicionarJogoFavorito(int usuarioId, int idJogoFavorito)
         {
-            Usuario? usuario = BuscarUsuario(usuarioId);
-            if (usuario == null) return "Usuário não encontrado.";
+            Usuario usuario = BuscarUsuario(usuarioId)!;
             if (!usuario.JogosFavoritos!.Contains(idJogoFavorito)) usuario.JogosFavoritos.Add(idJogoFavorito);
             _context.SaveChanges();
-            return "Ok";
+            return usuario.JogosFavoritos;
         }
-        public string RemoverJogo(int usuarioId, int idJogo)
+        public string? RemoverJogo(int usuarioId, int idJogo)
         {
-            Usuario? usuario = BuscarUsuario(usuarioId);
-            if (usuario == null) return "Usuário não encontrado.";
+            Usuario usuario = BuscarUsuario(usuarioId)!;
             if (usuario.Jogos!.Contains(idJogo)) usuario.Jogos.Remove(idJogo);
             Jogos? jogo = _context.Jogos.FirstOrDefault(jogo => jogo.Id == idJogo);
             if (jogo == null) return "Jogo não encontrado.";
             jogo.Ativo = 0;
             _context.SaveChanges();
-            return "Ok";
+            return usuario.Jogos.ToString();
         }
-        public string RemoverJogoFavorito(int usuarioId, int idJogo)
+        public string? RemoverJogoFavorito(int usuarioId, int idJogo)
         {
-            Usuario? usuario = BuscarUsuario(usuarioId);
-            if (usuario == null) return "Usuário não encontrado.";
+            Usuario usuario = BuscarUsuario(usuarioId)!;
             if (usuario.JogosFavoritos!.Contains(idJogo)) usuario.JogosFavoritos.Remove(idJogo);
             _context.SaveChanges();
-            return "Ok";
+            return usuario.JogosFavoritos.ToString();
         }
     }
 }

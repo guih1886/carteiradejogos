@@ -11,9 +11,9 @@ public interface IUsuariosRepository
     ReadUsuariosDto CadastrarUsuario(CreateUsuarioDto usuarioDto);
     ReadUsuariosDto AtualizarUsuario(int id, UpdateUsuariosDto usuarioDto);
     bool DeletarUsuario(int id);
-    string AdicionarJogoUsuario(int usuarioId, int id);
-    string AdicionarJogoFavorito(int usuarioId, int idJogoFavorito);
-    string RemoverJogo(int usuarioId, int idJogo);
-    string RemoverJogoFavorito(int usuarioId, int idJogo);
+    List<int> AdicionarJogoUsuario(int usuarioId, int id);
+    List<int> AdicionarJogoFavorito(int usuarioId, int idJogoFavorito);
+    string? RemoverJogo(int usuarioId, int idJogo);
+    string? RemoverJogoFavorito(int usuarioId, int idJogo);
     Usuario? BuscarUsuarioEmail(string email);
 }

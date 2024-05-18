@@ -6,8 +6,8 @@ public interface IJogosRepository
 {
     List<ReadJogosDto> ListarJogos();
     ReadJogosDto BuscarJogoPorId(int id);
-    ReadJogosDto CadastrarJogo(CreateJogosDto jogo);
-    ReadJogosDto AtualizarJogo(int id, UpdateJogosDto jogo);
+    ReadJogosDto? CadastrarJogo(CreateJogosDto jogo);
+    ReadJogosDto? AtualizarJogo(int id, UpdateJogosDto jogo);
     bool DeletarJogo(int id);
-    HttpResponseMessage AtivarJogo(int id, int idJogo);
+    string AtivarJogo(int id, int idJogo);
 }
