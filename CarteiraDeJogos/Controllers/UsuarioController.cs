@@ -53,7 +53,7 @@ public class UsuarioController : ControllerBase
             return httpResponse;
         }
         string json = JsonConvert.SerializeObject(usuarioNovo);
-        httpResponse.StatusCode = 200;
+        httpResponse.StatusCode = 201;
         httpResponse.Value = json;
         return httpResponse;
     }
@@ -69,7 +69,7 @@ public class UsuarioController : ControllerBase
             return httpResponse;
         }
         string json = JsonConvert.SerializeObject(usuarioNovo);
-        httpResponse.StatusCode = 200;
+        httpResponse.StatusCode = 200 ;
         httpResponse.Value = json;
         return httpResponse;
     }

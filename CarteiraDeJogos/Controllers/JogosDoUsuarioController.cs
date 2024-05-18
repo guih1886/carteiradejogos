@@ -1,7 +1,6 @@
 ﻿using CarteiraDeJogos.Data.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 
 namespace CarteiraDeJogos.Controllers;
 
@@ -11,6 +10,7 @@ public class JogosDoUsuarioController : ControllerBase
 {
     private readonly IJogosRepository _jogosRepository;
     private readonly IJogosDoUsuarioRepository _jogosDoUsuarioRepository;
+    private ObjectResult httpResponse = new ObjectResult("");
 
     public JogosDoUsuarioController(IJogosDoUsuarioRepository jogosDoUsuarioRepository, IJogosRepository jogosRepository)
     {
@@ -19,67 +19,144 @@ public class JogosDoUsuarioController : ControllerBase
     }
 
     [HttpGet("todosJogos")]
-    public async Task<IActionResult> ListarTodosOsJogos(int id)
+    public ObjectResult ListarTodosOsJogos(int id)
     {
-        HttpResponseMessage response = _jogosDoUsuarioRepository.ListarTodosOsJogos(id);
-        string content = await response.Content.ReadAsStringAsync();
-        if (!response.IsSuccessStatusCode)
+        string response = _jogosDoUsuarioRepository.ListarTodosOsJogos(id);
+        if (response == "Usuário não encontrado.")
         {
-            return NotFound(content);
+            httpResponse.StatusCode = 404;
+            httpResponse.Value = response;
+            return httpResponse;
         }
-        return Ok(content);
+        httpResponse.StatusCode = 200;
+        httpResponse.Value = response;
+        return httpResponse;
     }
 
     [HttpGet("jogosfavoritos")]
-    public async Task<IActionResult> ListarJogosFavoritos(int id)
+    public ObjectResult ListarJogosFavoritos(int id)
     {
-        HttpResponseMessage response = _jogosDoUsuarioRepository.ListarJogosFavoritos(id);
-        string content = await response.Content.ReadAsStringAsync();
-        if (!response.IsSuccessStatusCode)
+        string response = _jogosDoUsuarioRepository.ListarJogosFavoritos(id);
+        if (response == "Usuário não encontrado.")
         {
-            return NotFound(content);
+            httpResponse.StatusCode = 404;
+            httpResponse.Value = response;
+            return httpResponse;
         }
-        return Ok(content);
+        httpResponse.StatusCode = 200;
+        httpResponse.Value = response;
+        return httpResponse;
     }
     [Authorize]
     [HttpPost("adicionarJogoFavorito/{idJogoFavorito}")]
-    public async Task<IActionResult> AdicionarJogoFavoritoUsuario(int id, int idJogoFavorito)
+    public ObjectResult AdicionarJogoFavoritoUsuario(int id, int idJogoFavorito)
     {
-        HttpResponseMessage response = _jogosDoUsuarioRepository.AdicionarJogoAoFavoritoDoUsuario(id, idJogoFavorito);
-        string content = await response.Content.ReadAsStringAsync();
-        if (response.StatusCode == HttpStatusCode.NotFound) return NotFound(content);
-        if (response.StatusCode == HttpStatusCode.BadRequest) return BadRequest(content);
-        return Ok(content);
+        string response = _jogosDoUsuarioRepository.AdicionarJogoAoFavoritoDoUsuario(id, idJogoFavorito);
+        if (response == "Usuário não encontrado.")
+        {
+            httpResponse.StatusCode = 404;
+            httpResponse.Value = response;
+            return httpResponse;
+        }
+        if (response == "Jogo já está na lista.")
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = response;
+            return httpResponse;
+        }
+        if (response == "Jogo não está na lista de jogos.")
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = response;
+            return httpResponse;
+        }
+        httpResponse.StatusCode = 200;
+        httpResponse.Value = response;
+        return httpResponse;
     }
     [Authorize]
     [HttpDelete("removerJogo/{idJogo}")]
-    public async Task<IActionResult> RemoverJogoUsuario(int id, int idJogo)
+    public ObjectResult RemoverJogoUsuario(int id, int idJogo)
     {
-        HttpResponseMessage response = _jogosDoUsuarioRepository.RemoverJogoDoUsuario(id, idJogo);
-        string content = await response.Content.ReadAsStringAsync();
-        if (response.StatusCode == HttpStatusCode.NotFound) return NotFound(content);
-        if (response.StatusCode == HttpStatusCode.BadRequest) return BadRequest(content);
-        return NoContent();
+        string response = _jogosDoUsuarioRepository.RemoverJogoDoUsuario(id, idJogo)!;
+        if (response == "Usuário não encontrado.")
+        {
+            httpResponse.StatusCode = 404;
+            httpResponse.Value = response;
+            return httpResponse;
+        }
+        if (response == "Jogo não encontrado.")
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = response;
+            return httpResponse;
+        }
+        if (response == "Jogo não está na lista.")
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = response;
+            return httpResponse;
+        }
+        
+        httpResponse.StatusCode = 204;
+        return httpResponse;
     }
     [Authorize]
     [HttpDelete("removerJogoFavorito/{idJogoFavorito}")]
-    public async Task<IActionResult> RemoverJogoFavoritoUsuario(int id, int idJogoFavorito)
+    public ObjectResult RemoverJogoFavoritoUsuario(int id, int idJogoFavorito)
     {
-        HttpResponseMessage response = _jogosDoUsuarioRepository.RemoverJogoFavoritoDoUsuario(id, idJogoFavorito);
-        string content = await response.Content.ReadAsStringAsync();
-        if (response.StatusCode == HttpStatusCode.NotFound) return NotFound(content);
-        if (response.StatusCode == HttpStatusCode.BadRequest) return BadRequest(content);
-        return NoContent();
+        string response = _jogosDoUsuarioRepository.RemoverJogoFavoritoDoUsuario(id, idJogoFavorito)!;
+        if (response == "Usuário não encontrado.")
+        {
+            httpResponse.StatusCode = 404;
+            httpResponse.Value = response;
+            return httpResponse;
+        }
+        if (response == "Jogo não está na lista.")
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = response;
+            return httpResponse;
+        }
+        if (response == "Jogo não está na lista.")
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = response;
+            return httpResponse;
+        }
+        httpResponse.StatusCode = 204;
+        return httpResponse;
     }
     [HttpPost("ativarJogo/{idJogo}")]
-    public async Task<IActionResult> AtivarJogo(int id, int idJogo)
+    public ObjectResult AtivarJogo(int id, int idJogo)
     {
-        HttpResponseMessage response = _jogosRepository.AtivarJogo(id, idJogo);
-        string content = await response.Content.ReadAsStringAsync();
-        if (response.StatusCode == HttpStatusCode.NotFound) return NotFound(content);
-        if (response.StatusCode == HttpStatusCode.BadRequest) return BadRequest(content);
-        return Ok(content);
+        string response = _jogosRepository.AtivarJogo(id, idJogo);
+        if (response == "Usuário não encontrado.")
+        {
+            httpResponse.StatusCode = 404;
+            httpResponse.Value = response;
+            return httpResponse;
+        }
+        if (response == "Jogo não encontrado.")
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = response;
+            return httpResponse;
+        }
+        if (response == "Jogo não pertence ao usuário.")
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = response;
+            return httpResponse;
+        }
+        if (response == "Jogo já está ativo.")
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = response;
+            return httpResponse;
+        }
+        httpResponse.StatusCode = 200;
+        httpResponse.Value = response;
+        return httpResponse;
     }
 }
-
-

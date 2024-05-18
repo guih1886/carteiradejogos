@@ -9,6 +9,7 @@ namespace CarteiraDeJogos.Controllers;
 public class LoginController : ControllerBase
 {
     private readonly ITokenService _tokenService;
+    private ObjectResult httpResponse = new ObjectResult("");
 
     public LoginController(ITokenService tokenService)
     {
@@ -16,10 +17,17 @@ public class LoginController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult EfetuarLogin([FromBody] LoginUsuarioDto usuario)
+    public ObjectResult EfetuarLogin([FromBody] LoginUsuarioDto usuario)
     {
         string resposta = _tokenService.GerarToken(usuario);
-        if (resposta == "E-mail ou senha inválido.") return Unauthorized(resposta);
-        return Ok(resposta);
+        if (resposta == "E-mail ou senha inválido.")
+        {
+            httpResponse.StatusCode = 401;
+            httpResponse.Value = "E-mail ou senha inválido.";
+            return httpResponse;
+        }
+        httpResponse.StatusCode = 200;
+        httpResponse.Value = resposta;
+        return httpResponse;
     }
 }

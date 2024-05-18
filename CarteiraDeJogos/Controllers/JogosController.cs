@@ -2,7 +2,7 @@
 using CarteiraDeJogos.Data.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
+using Newtonsoft.Json;
 
 namespace CarteiraDeJogos.Controllers
 {
@@ -11,6 +11,7 @@ namespace CarteiraDeJogos.Controllers
     public class JogosController : ControllerBase
     {
         private readonly IJogosRepository _repository;
+        private ObjectResult httpResponse = new ObjectResult("");
 
         public JogosController(IJogosRepository repository)
         {
@@ -18,46 +19,73 @@ namespace CarteiraDeJogos.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<ReadJogosDto>> ListarJogos()
+        public ObjectResult ListarJogos()
         {
             List<ReadJogosDto> jogos = _repository.ListarJogos();
-            return Ok(jogos);
+            httpResponse.StatusCode = 200;
+            httpResponse.Value = jogos;
+            return httpResponse;
         }
         [HttpGet("{id}")]
-        public IActionResult BuscarJogoPorId(int id)
+        public ObjectResult BuscarJogoPorId(int id)
         {
             ReadJogosDto jogo = _repository.BuscarJogoPorId(id);
-            if (jogo == null) return NotFound();
-            return Ok(jogo);
+            if (jogo == null)
+            {
+                httpResponse.StatusCode = 404;
+                httpResponse.Value = "Jogo não encontrado.";
+                return httpResponse;
+            }
+            string json = JsonConvert.SerializeObject(jogo);
+            httpResponse.StatusCode = 200;
+            httpResponse.Value = json;
+            return httpResponse;
         }
         [Authorize]
         [HttpPost]
-        public ActionResult<ReadJogosDto> CadastrarJogo([FromBody] CreateJogosDto jogo)
+        public ObjectResult CadastrarJogo([FromBody] CreateJogosDto jogo)
         {
-            try
+            ReadJogosDto? novoJogo = _repository.CadastrarJogo(jogo);
+            if (novoJogo == null)
             {
-                ReadJogosDto novoJogo = _repository.CadastrarJogo(jogo);
-                return Ok(novoJogo);
+                httpResponse.StatusCode = 400;
+                httpResponse.Value = $"Erro ao localizar o usuário com o id {jogo.UsuarioId}.";
+                return httpResponse;
             }
-            catch (Exception error)
-            {
-                return BadRequest($"Erro ao localizar o usuário com o id {jogo.UsuarioId} + {error.Message}.");
-            }
+            string json = JsonConvert.SerializeObject(novoJogo);
+            httpResponse.StatusCode = 200;
+            httpResponse.Value = json;
+            return httpResponse;
         }
         [Authorize]
         [HttpPut("{id}")]
-        public ActionResult<ReadJogosDto> AtualizarJogo(int id, [FromBody] UpdateJogosDto jogo)
+        public ObjectResult AtualizarJogo(int id, [FromBody] UpdateJogosDto jogo)
         {
-            ReadJogosDto jogoAtualizado = _repository.AtualizarJogo(id, jogo);
-            if (jogoAtualizado == null) return NotFound();
-            return Ok(jogoAtualizado);
+            ReadJogosDto? jogoAtualizado = _repository.AtualizarJogo(id, jogo);
+            if (jogoAtualizado == null)
+            {
+                httpResponse.StatusCode = 404;
+                httpResponse.Value = "Jogo não encontrado.";
+                return httpResponse;
+            }
+            string json = JsonConvert.SerializeObject(jogoAtualizado);
+            httpResponse.StatusCode = 200;
+            httpResponse.Value = json;
+            return httpResponse;
         }
         [Authorize]
         [HttpDelete("{id}")]
-        public IActionResult DeletarJogo(int id)
+        public ObjectResult DeletarJogo(int id)
         {
-            if (_repository.DeletarJogo(id)) return NoContent();
-            return NotFound();
+            if (!_repository.DeletarJogo(id))
+            {
+                httpResponse.StatusCode = 404;
+                httpResponse.Value = "Jogo não encontrado.";
+                return httpResponse;
+            }
+            httpResponse.StatusCode = 204;
+            httpResponse.Value = "Jogo excluido com sucesso.";
+            return httpResponse;
         }
     }
 }
