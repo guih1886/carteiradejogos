@@ -2,6 +2,7 @@
 using CarteiraDeJogos.Data.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace CarteiraDeJogos.Controllers;
 
@@ -10,6 +11,7 @@ namespace CarteiraDeJogos.Controllers;
 public class UsuarioController : ControllerBase
 {
     private readonly IUsuariosRepository _usuarioRepository;
+    private ObjectResult httpResponse = new ObjectResult("");
 
     public UsuarioController(IUsuariosRepository usuarioRepository)
     {
@@ -17,38 +19,73 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<List<ReadUsuariosDto>> ListarUsuarios()
+    public ObjectResult ListarUsuarios()
     {
         List<ReadUsuariosDto> usuarios = _usuarioRepository.ListarUsuarios();
-        return Ok(usuarios);
+        httpResponse.StatusCode = 200;
+        httpResponse.Value = usuarios;
+        return httpResponse;
     }
 
     [HttpGet("{id}")]
-    public ActionResult<ReadUsuariosDto> BuscarUsuarioPorId(int id)
+    public ObjectResult BuscarUsuarioPorId(int id)
     {
         ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(id);
-        if (usuario == null) return NotFound();
-        return Ok(usuario);
+        if (usuario == null)
+        {
+            httpResponse.StatusCode = 404;
+            httpResponse.Value = "Usuário não encontrado.";
+            return httpResponse;
+        }
+        string json = JsonConvert.SerializeObject(usuario);
+        httpResponse.StatusCode = 200;
+        httpResponse.Value = json;
+        return httpResponse;
     }
     [HttpPost]
-    public ActionResult<ReadUsuariosDto> CadastrarUsuario([FromBody] CreateUsuarioDto usuario)
+    public ObjectResult CadastrarUsuario([FromBody] CreateUsuarioDto usuario)
     {
         ReadUsuariosDto usuarioNovo = _usuarioRepository.CadastrarUsuario(usuario);
-        return Ok(usuarioNovo);
+        if (usuarioNovo == null)
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = "Erro ao cadastrar usuário.";
+            return httpResponse;
+        }
+        string json = JsonConvert.SerializeObject(usuarioNovo);
+        httpResponse.StatusCode = 200;
+        httpResponse.Value = json;
+        return httpResponse;
     }
     [Authorize]
     [HttpPut("{id}")]
-    public ActionResult<ReadUsuariosDto> AlterarUsuario(int id, [FromBody] UpdateUsuariosDto usuario)
+    public ObjectResult AlterarUsuario(int id, [FromBody] UpdateUsuariosDto usuario)
     {
-        ReadUsuariosDto usuarioAtualizado = _usuarioRepository.AtualizarUsuario(id, usuario);
-        if (usuarioAtualizado == null) return NotFound();
-        return Ok(usuarioAtualizado);
+        ReadUsuariosDto usuarioNovo = _usuarioRepository.AtualizarUsuario(id, usuario);
+        if (usuarioNovo == null)
+        {
+            httpResponse.StatusCode = 404;
+            httpResponse.Value = "Usuário não encontrado.";
+            return httpResponse;
+        }
+        string json = JsonConvert.SerializeObject(usuarioNovo);
+        httpResponse.StatusCode = 200;
+        httpResponse.Value = json;
+        return httpResponse;
     }
     [Authorize]
     [HttpDelete("{id}")]
-    public ActionResult DeletarUsuario(int id)
+    public ObjectResult DeletarUsuario(int id)
     {
-        if (_usuarioRepository.DeletarUsuario(id)) return NoContent();
-        return NotFound();
+        bool usuarioNovo = _usuarioRepository.DeletarUsuario(id);
+        if (usuarioNovo)
+        {
+            httpResponse.StatusCode = 204;
+            httpResponse.Value = "Usuário excluido com sucesso.";
+            return httpResponse;
+        }
+        httpResponse.StatusCode = 404;
+        httpResponse.Value = "Usuário não encontrado.";
+        return httpResponse;
     }
 }
