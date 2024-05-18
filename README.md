@@ -31,7 +31,6 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
 ## Login
 
 - `POST /Login`: Tenta fazer o login do usuário cadastrado através do endpoint `POST /Usuarios`. É necessário passar no corpo da requisição o json com o campo de `email` e `senha`.
-  Retorna um HTTP 200 com a lista de jogos favoritos em caso de sucesso.
 
   ```json
   {
@@ -50,8 +49,8 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
 
 ## Usuários
 
-- `POST /Usuarios`: Essa rota recebe através do corpo da requisição um JSON com os dados de `nome`, `senha` e `confirmacaoSenha` para o cadastro no banco de dados, aqui utilizado o SQL Server.
-  O usuário não é cadastrado caso as senhas sejam divergentes, e retorna a mensagem de erro `"As senhas não são iguais."`.
+- `POST /Usuarios`: Essa rota recebe através do corpo da requisição um JSON com os dados de `nome`, `email`, `senha` e `confirmacaoSenha` para o cadastro no banco de dados, aqui utilizado o SQL Server.
+  O usuário não é cadastrado caso as senhas sejam divergentes, e retorna um HTTP 400 a mensagem de erro `"As senhas não são iguais."`.
 
   ```json
   {
@@ -61,7 +60,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   }
   ```
 
-  A resposta é um DTO de leitura com os campos de `id`, `nome`, `jogos` e `jogosFavoritos` do usuário.
+  A resposta é um HTTP 201 e o DTO de leitura com os campos de `id`, `nome`, `jogos` e `jogosFavoritos` do usuário.
 
   ```json
   {
@@ -72,7 +71,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   }
   ```
 
-- `GET /Usuarios`: Retorna uma lista de todos os usuários através do DTO de leitura.
+- `GET /Usuarios`: Retorna o HTTP 200 e a lista de todos os usuários através do DTO de leitura.
 
   ```json
   [
@@ -91,7 +90,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   ]
   ```
 
-- `GET /Usuarios/{id}`: Detalha o usuário com o `Id` correspondente. Caso não encontre o usuário é retornado o HTTP 404.
+- `GET /Usuarios/{id}`: Detalha o usuário com o `Id` correspondente. Caso não encontre o usuário é retornado o HTTP 404 com a mensagem `Usuário não encontrado.`.
 
   ```json
   {
@@ -103,7 +102,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   ```
 
 - `PUT /Usuarios/{id}`: Faz a alteração do usuário com o `Id` correspondente. O DTO de update somente permite a modificação nesse caso dos campos de `nome`, `jogos` e `jogosFavoritos`, protegendo assim os campos mais sensíveis.
-  O retorno é um HTTP 200 e o json do usuário modificado em caso de sucesso, e um 404 caso o usuário não seja localizado.
+  O retorno é um HTTP 200 e o json do usuário modificado em caso de sucesso, e um 404 com a mensagem `Usuário não encontrado.` caso o usuário não seja localizado.
 
   ```json
   {
@@ -114,14 +113,14 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   }
   ```
 
-- `DELETE /Usuarios/{id}`: Apaga o usuário com o `Id` correspondente. Em caso de sucesso é retornado o HTTP 204 e caso não encontre o usuário é retornado o HTTP 404.
+- `DELETE /Usuarios/{id}`: Apaga o usuário com o `Id` correspondente. Em caso de sucesso é retornado o HTTP 204 e caso não encontre o usuário é retornado o HTTP 404 com a mensagem `Usuário não encontrado.`.
 
 <br>
 
 ## Jogos
 
 - `POST /Jogos`: A rota cria um jogo no banco de dados, utilizando um DTO de criação com os dados `nome`, `endereçoImagem`, `descricao`, `genero`, `anoLançamento`, `plataforma`, `nota` e `usuarioId`.
-  Os campos opcionais são gênero, ano de lançamento, plataforma e nota. E os demais são obrigátorios, e o campo de `usuarioId` é uma chave estrangeira que faz referência ao Id de usuário, e portanto, deve ser um valor válido para a inclusão. O jogo ao ser criado é marcado automaticamente como ativo.
+  O campo de `usuarioId` é uma chave estrangeira que faz referência ao Id de usuário, e portanto, deve ser um valor válido para a inclusão. O jogo ao ser criado é marcado automaticamente como ativo.
 
   ```json
   {
@@ -137,7 +136,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   }
   ```
 
-  Em caso de sucesso, é retornado um HTTP 200 com o json do jogo criado, e o Id do jogo é adicionado automaticamente à lista de jogos do usuário que cadastrou o jogo.
+  Em caso de sucesso, é retornado um HTTP 200 com o Dto de leitura do jogo criado, e o Id do jogo é adicionado automaticamente à lista de jogos do usuário que cadastrou o jogo.
   Em caso de falha, será retornado um HTTP 400 e a/as mensagens de erro sobre quais campos estão ausentes, ou a mensagem `Erro ao localizar o usuário com o id {UsuarioId}.`
 
   ```json
@@ -177,7 +176,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   ]
   ```
 
-- `GET /Jogos/{id}`: Detalha o jogo ativo com o `Id` correspondente e retorna o HTTP 200 e o json do jogo. Caso não encontre o jogo é retornado o HTTP 404.
+- `GET /Jogos/{id}`: Detalha o jogo ativo com o `Id` correspondente e retorna o HTTP 200 e o json do jogo. Caso não encontre o jogo é retornado o HTTP 404 com a mensagem `Jogo não encontrado.`.
 
   ```json
   {
@@ -194,7 +193,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   ```
 
 - `PUT /Jogos/{id}`: Faz a alteração de um jogo ativo com o `Id` correspondente. O DTO de update somente permite a modificação nesse caso dos campos de `nome`, `endereçoImagem`, `descricao`, `genero`, `anoLançamento`, `plataforma`, `nota`, protegendo assim os campos mais sensíveis.
-  O retorno é um HTTP 200 e o json do jogo modificado em caso de sucesso e um 404 caso o jogo não seja localizado.
+  O retorno é um HTTP 200 e o json do jogo modificado em caso de sucesso e um 404 com a mensagem `Jogo não encontrado.` caso o jogo não seja localizado.
 
   ```json
   {
@@ -210,7 +209,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   }
   ```
 
-- `DELETE /Jogos/{id}`: Marca o jogo com o `Id` correspondente como inativo. Em caso de sucesso é retornado o HTTP 204 e caso não encontre o usuário é retornado o HTTP 404.
+- `DELETE /Jogos/{id}`: Marca o jogo com o `Id` correspondente como inativo. Em caso de sucesso é retornado o HTTP 204 e caso não encontre o usuário é retornado o HTTP 404 com a mensagem `Jogo não encontrado.`.
   O jogo é retirado da lista de jogos e de jogos favoritos do usuários.
 
 <br>
@@ -227,18 +226,18 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   Em caso de falha retorna um HTTP 400 caso o jogo já esteja na lista de jogos favoritos do usuário com a mensagem `"Jogo já está na lista."` ou caso o jogo não esteja cadastrado, com a mensagem `"Jogo não está na lista de jogos."`.
   Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem `Usuario não encontrado.`.
 
-- `POST /JogosDoUsuario/{id}/ativarJogo/{idJogo}`: Ativa o jogo do usuário e o adiciona na lista de jogos do usuário, retorna um HTTP 200 em caso de sucesso.
+- `POST /JogosDoUsuario/{id}/ativarJogo/{idJogo}`: Ativa o jogo do usuário e o adiciona na lista de jogos do usuário, retorna um HTTP 200 e o json do jogo ativado em caso de sucesso.
   Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem `Usuario não encontrado.`. Caso o jogo não seja encontrando, retorna um HTTP 404 com a mensagem `Jogo não encontrado.`,
   e se o jogo não pertencer ao `id` do usuário, retorna um HTTP 400 com a mensagem `Jogo não pertence ao usuário.`. Se até aqui estiver tudo certo, e o jogo já estiver ativo, retorna um HTTP 400 com a mensagem `Jogo já está ativo.`.
 
-- `GET /JogosDoUsuario/{id}/todosJogos`: Retorna a lista de todos os jogos ativos cadastrados do usuário.
+- `GET /JogosDoUsuario/{id}/todosJogos`: Retorna um HTTP 200 com a lista de todos os jogos ativos cadastrados do usuário.
   Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem `Usuario não encontrado.`.
 
   ```json
   [5, 6, 7]
   ```
 
-- `GET /JogosDoUsuario/{id}/jogosfavoritos`: Retorna a lista de todos os jogos favoritos ativos cadastrados do usuário.
+- `GET /JogosDoUsuario/{id}/jogosfavoritos`: Retorna um HTTP 200 com a lista de todos os jogos favoritos ativos cadastrados do usuário.
   Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem "`Usuario não encontrado.`.
 
   ```json
