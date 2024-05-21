@@ -1,5 +1,6 @@
 ﻿using CarteiraDeJogos.Data.Dto.Usuarios;
 using CarteiraDeJogos.Data.Interfaces;
+using CarteiraDeJogos.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -45,6 +46,19 @@ public class UsuarioController : ControllerBase
     [HttpPost]
     public ObjectResult CadastrarUsuario([FromBody] CreateUsuarioDto usuario)
     {
+        Usuario? busca = _usuarioRepository.BuscarUsuarioEmail(usuario.Email);
+        if (busca != null)
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = "E-mail já cadastrado.";
+            return httpResponse;
+        }
+        if (usuario.Senha != usuario.ConfirmacaoSenha || String.IsNullOrEmpty(usuario.Senha) || String.IsNullOrEmpty(usuario.ConfirmacaoSenha))
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = "As senhas não são iguais.";
+            return httpResponse;
+        }
         ReadUsuariosDto usuarioNovo = _usuarioRepository.CadastrarUsuario(usuario);
         if (usuarioNovo == null)
         {
@@ -69,7 +83,7 @@ public class UsuarioController : ControllerBase
             return httpResponse;
         }
         string json = JsonConvert.SerializeObject(usuarioNovo);
-        httpResponse.StatusCode = 200 ;
+        httpResponse.StatusCode = 200;
         httpResponse.Value = json;
         return httpResponse;
     }
@@ -77,8 +91,7 @@ public class UsuarioController : ControllerBase
     [HttpDelete("{id}")]
     public ObjectResult DeletarUsuario(int id)
     {
-        bool usuarioNovo = _usuarioRepository.DeletarUsuario(id);
-        if (usuarioNovo)
+        if (_usuarioRepository.DeletarUsuario(id))
         {
             httpResponse.StatusCode = 204;
             httpResponse.Value = "Usuário excluido com sucesso.";

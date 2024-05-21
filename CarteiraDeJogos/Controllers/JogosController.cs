@@ -1,5 +1,6 @@
 ﻿using CarteiraDeJogos.Data.Dto.Jogos;
 using CarteiraDeJogos.Data.Interfaces;
+using CarteiraDeJogos.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -48,7 +49,7 @@ namespace CarteiraDeJogos.Controllers
             ReadJogosDto? novoJogo = _repository.CadastrarJogo(jogo);
             if (novoJogo == null)
             {
-                httpResponse.StatusCode = 400;
+                httpResponse.StatusCode = 404;
                 httpResponse.Value = $"Erro ao localizar o usuário com o id {jogo.UsuarioId}.";
                 return httpResponse;
             }
@@ -77,12 +78,14 @@ namespace CarteiraDeJogos.Controllers
         [HttpDelete("{id}")]
         public ObjectResult DeletarJogo(int id)
         {
-            if (!_repository.DeletarJogo(id))
+            Jogos? jogo = _repository.BuscarJogoAtivo(id);
+            if (jogo == null)
             {
                 httpResponse.StatusCode = 404;
                 httpResponse.Value = "Jogo não encontrado.";
                 return httpResponse;
             }
+            _repository.DeletarJogo(id);
             httpResponse.StatusCode = 204;
             httpResponse.Value = "Jogo excluido com sucesso.";
             return httpResponse;
