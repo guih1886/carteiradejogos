@@ -1,6 +1,8 @@
 # Projeto Carteira de Jogos
 
-O CarteiraDeJogos-API é uma aplicação desenvolvida em C# utilizando o framework .NET, com o objetivo de gerenciar uma coleção de jogos. A API permite operações CRUD (Create, Read, Update, Delete) em jogos e usuários, bem como a funcionalidade de adicionar e remover jogos favoritos para cada usuário. A autenticação é feita via JWT, garantindo segurança nas operações que alteram dados. A API oferece uma robusta solução para gerenciamento de coleções de jogos, com foco em segurança e escalabilidade, além de contar com testes automatizados para garantir a qualidade do software.
+O projeto "Carteira de Jogos API" é uma aplicação que permite a gestão completa de jogos e usuários, oferecendo funcionalidades de criação, consulta, atualização e exclusão (CRUD). A API facilita o cadastro de jogos e usuários, onde os jogos adicionados são automaticamente vinculados à lista de jogos do usuário. Também permite que os jogos sejam adicionados à lista de favoritos do usuário, passando por diversas validações, como a verificação do usuário que está adicionando aos favoritos, verifica a duplicidade na lista de favoritos e se o jogo está realmente na lista de jogos do usuário.
+
+A API também proporciona a gestão dos jogos no sentido de permitir a ativação e inativação. Remover um jogo da lista de jogos do usuário não o exclui permanentemente, apenas o marca como inativo, possibilitando sua reativação futura. Em termos de segurança, o uso da API requer autenticação, que é realizada através de login com email e senha cadastrados. O sistema implementa autenticação baseada em JSON Web Tokens (JWT), assegurando que somente usuários autenticados possam acessar e manipular os dados.
 
 | :placard: Vitrine.Dev | Guilherme Henrique                                                                                                                           |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -21,7 +23,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
 ## Escalamento do projeto
 
 - Implementado os conceitos de repository, para a clareza do código. ✅
-- Implementado 41 testes para garantir a qualidade do código. ✅
+- Implementado 40 testes para garantir a qualidade do código. ✅
 - Implementar segurança de login, com o JWT. ✅
 - Implementar a alteração de ativação dos jogos. ✅
 - Criar as telas com windows forms para realizar as operações. 
