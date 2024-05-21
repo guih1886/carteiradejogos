@@ -5,146 +5,165 @@ using CarteiraDeJogos.Models;
 using CarteiraDeJogosTest.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Net;
 using Xunit.Abstractions;
 
 namespace CarteiraDeJogosTest.ControllersTest;
 
 public class JogosControllerTest
 {
-    private JogosController controller;
+    private JogosController _jogosController;
+    private UsuarioController _usuarioController;
+    private JogosDoUsuarioController _jogosDoUsuarioController;
+    private ITestOutputHelper _outputHelper;
 
     public JogosControllerTest(ITestOutputHelper outputHelper)
     {
-        controller = new JogosServiceProvider().AdicionarServico();
+        _jogosController = new JogosServiceProvider().AdicionarServico();
+        _usuarioController = new UsuarioServiceProvider().AdicionarServico();
+        _jogosDoUsuarioController = new JogosDoUsuarioServiceProvider().AdicionarServico();
+        _outputHelper = outputHelper;
     }
 
     [Fact]
     public void CadastrarJogosTest()
     {
         //Arrange
-        ReadJogosDto jogoLocal = jogo;
-        ApagarJogoCriado();
+        CreateJogosDto jogo = new CreateJogosDto("Endereço Teste", "Jogo Teste", "Descrição de Teste para o modelo.", Genero.Ação, 1, "1994", "PS4", 9);
+        ObjectResult resposta = _jogosController.CadastrarJogo(jogo);
+        ReadJogosDto jogosDto = JsonConvert.DeserializeObject<ReadJogosDto>(resposta.Value.ToString()!)!;
         //Act
         //Assert
-        Assert.Equal(1, jogoLocal.Ativo);
-        Assert.Equal("Jogo Teste", jogoLocal.Nome);
+        Assert.Equal(200, resposta.StatusCode);
+        Assert.Equal(1, jogosDto.Ativo);
+        Assert.IsType<ReadJogosDto>(jogosDto);
+        DeletarJogo(jogosDto);
     }
     [Fact]
-    public async void AdicionarJogoNaListaDoUsuarioAoCadastrarJogoTest()
+    public void AdicionarJogoNaListaDoUsuarioAoCadastrarJogoTest()
     {
         //Arrange
-        HttpResponseMessage response = await _httpClient.BuscarAsync("/JogosDoUsuario/1/todosJogos");
-        ApagarJogoCriado();
-        string listaDeJogos = await response.Content.ReadAsStringAsync();
-        List<int> lista = JsonConvert.DeserializeObject<List<int>>(listaDeJogos)!;
+        ReadJogosDto jogo = CriarJogo();
+        ObjectResult resposta = _usuarioController.BuscarUsuarioPorId(1);
+        ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value!.ToString()!)!;
         //Act
         //Assert
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Contains(jogo.Id, usuario.Jogos);
+        DeletarJogo(jogo);
     }
     [Fact]
-    public async void CadastrarJogoComUsuarioIdIncorretoTest()
+    public void CadastrarJogoComUsuarioIdIncorretoTest()
     {
         //Arrange
-        ApagarJogoCriado();
         CreateJogosDto jogo = new CreateJogosDto("Endereço Teste", "Jogo Teste", "Descrição de Teste para o modelo.", Genero.Ação, 0, "1994", "PS4", 9);
         //Act
-        HttpResponseMessage response = await _httpClient.CadastrarAsync<CreateJogosDto>("/Jogos", jogo);
-        string erro = await response.Content.ReadAsStringAsync();
+        ObjectResult resposta = _jogosController.CadastrarJogo(jogo);
         //Assert
-        Assert.Contains("Erro ao localizar o usuário", erro);
+        Assert.Equal(404, resposta.StatusCode);
+        Assert.Equal($"Erro ao localizar o usuário com o id {jogo.UsuarioId}.", resposta.Value);
     }
     [Fact]
-    public async void AlterarJogosTest()
+    public void AlterarJogosTest()
     {
         //Arrange
-        ReadJogosDto jogoLocal = this.jogo;
-        ApagarJogoCriado();
-        UpdateJogosDto jogo = new UpdateJogosDto("Endereço Teste", "Jogo Alterado", "Descrição de Teste alterada para o modelo.", Genero.Ação, "1994", "PS4", 9);
+        ReadJogosDto jogo = CriarJogo();
+        UpdateJogosDto jogoAlterado = new UpdateJogosDto("Endereço Teste", "Jogo Alterado", "Descrição de Teste alterada para o modelo.", Genero.Ação, "1994", "PS4", 9);
         //Act
-        HttpResponseMessage responseJogoAlterado = await _httpClient.AlterarAsync($"/Jogos/{jogoLocal.Id}", jogo);
-        ReadJogosDto jogoAlterado = JsonConvert.DeserializeObject<ReadJogosDto>(await responseJogoAlterado.Content.ReadAsStringAsync())!;
+        ObjectResult response = _jogosController.AtualizarJogo(jogo.Id, jogoAlterado);
+        ReadJogosDto jogoDto = JsonConvert.DeserializeObject<ReadJogosDto>(response.Value!.ToString()!)!;
         //Assert
-        Assert.Equal("Jogo Alterado", jogoAlterado.Nome);
+        Assert.Equal(200, response.StatusCode);
+        Assert.Equal("Jogo Alterado", jogoDto.Nome);
+        Assert.IsType<ReadJogosDto>(jogoDto);
+        DeletarJogo(jogo);
+    }
+    [Fact]
+    public void AlterarJogoIncorrretoTest()
+    {
+        //Arrange
+        UpdateJogosDto jogoAlterado = new UpdateJogosDto("Endereço Teste", "Jogo Alterado", "Descrição de Teste alterada para o modelo.", Genero.Ação, "1994", "PS4", 9);
+        //Act
+        ObjectResult response = _jogosController.AtualizarJogo(0, jogoAlterado);
+        //Assert
+        Assert.Equal(404, response.StatusCode);
+        Assert.Equal("Jogo não encontrado.", response.Value);
     }
     [Fact]
     public void ListarJogosTest()
     {
         //Arrange
-        ApagarJogoCriado();
         //Act
-        ObjectResult resultado = controller.ListarJogos();
+        ObjectResult resposta = _jogosController.ListarJogos();
         //Assert        
-        Assert.Equal(200, resultado.StatusCode);
+        Assert.Equal(200, resposta.StatusCode);
     }
     [Fact]
-    public async void ListarJogosPorIdTest()
+    public void ListarJogosPorIdTest()
     {
         //Arrange
-        ReadJogosDto jogoLocal = jogo;
+        ReadJogosDto jogo = CriarJogo();
         //Act
-        ApagarJogoCriado();
-        HttpResponseMessage resultado = await _httpClient.BuscarAsync($"/Jogos/{jogoLocal.Id}");
-        ReadJogosDto jogoBuscado = JsonConvert.DeserializeObject<ReadJogosDto>(await resultado.Content.ReadAsStringAsync())!;
+        ObjectResult resposta = _jogosController.BuscarJogoPorId(jogo.Id);
+        ReadJogosDto jogoBuscado = JsonConvert.DeserializeObject<ReadJogosDto>(resposta.Value!.ToString()!)!;
         //Assert
-        Assert.Equal(jogoBuscado.Id, jogoLocal.Id);
+        Assert.Equal(200, resposta.StatusCode);
+        Assert.IsType<ReadJogosDto>(jogoBuscado);
+        DeletarJogo(jogo);
     }
     [Fact]
-    public async void ListarJogosPorIdIncorretoTest()
-    {
-        //Arrange
-        ApagarJogoCriado();
-        //Act
-        HttpResponseMessage resultado = await _httpClient.BuscarAsync($"/Jogos/0");
-        //Assert
-        Assert.Equal(HttpStatusCode.NotFound, resultado.StatusCode);
-    }
-    [Fact]
-    public async void DeletarJogosTest()
+    public void ListarJogosPorIdIncorretoTest()
     {
         //Arrange
         //Act
-        HttpResponseMessage deleteResponse = await _httpClient.DeletarAsync($"/Jogos/{jogo.Id}");
+        ObjectResult resposta = _jogosController.BuscarJogoPorId(0);
         //Assert
-        Assert.Equal(HttpStatusCode.NoContent, deleteResponse.StatusCode);
+        Assert.Equal(404, resposta.StatusCode);
+        Assert.Equal("Jogo não encontrado.", resposta.Value);
     }
     [Fact]
-    public async void DeletarJogoFavoritoAoDeletarJogoTest()
+    public void DeletarJogosTest()
     {
         //Arrange
-        ReadJogosDto jogoLocal = jogo;
+        ReadJogosDto jogo = CriarJogo();
         //Act
-        await _httpClient.IncluirJogoNosFavoritos(1, jogoLocal.Id);
-        await _httpClient.DeletarAsync($"/Jogos/{jogoLocal.Id}");
-        HttpResponseMessage response = await _httpClient.BuscarAsync("/Usuarios/1");
-        string content = await response.Content.ReadAsStringAsync();
-        ReadUsuariosDto usuarioDto = JsonConvert.DeserializeObject<ReadUsuariosDto>(content)!;
-        bool estaNaLista = usuarioDto.Jogos.Contains(jogo.Id);
-        bool estaNaListaFavoritos = usuarioDto.Jogos.Contains(jogo.Id);
-        ApagarJogoCriado();
+        ObjectResult resposta = _jogosController.DeletarJogo(jogo.Id);
         //Assert
-        Assert.False(estaNaLista);
-        Assert.False(estaNaListaFavoritos);
+        Assert.Equal(204, resposta.StatusCode);
+        Assert.Equal("Jogo excluido com sucesso.", resposta.Value);
     }
     [Fact]
-    public async void DeletarJogosIncorretoTest()
+    public void DeletarJogoFavoritoAoDeletarJogoTest()
     {
         //Arrange
-        ApagarJogoCriado();
+        ReadJogosDto jogo = CriarJogo();
         //Act
-        HttpResponseMessage deleteResponse = await _httpClient.DeletarAsync($"/Jogos/0");
+        _jogosDoUsuarioController.AdicionarJogoFavoritoUsuario(1, jogo.Id);
+        DeletarJogo(jogo);
+        ObjectResult resposta = _usuarioController.BuscarUsuarioPorId(1);
+        ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value!.ToString()!)!;
         //Assert
-        Assert.Equal(HttpStatusCode.NotFound, deleteResponse.StatusCode);
+        Assert.DoesNotContain(jogo.Id, usuario.JogosFavoritos);
     }
-
-    private async void ApagarJogoCriado()
+    [Fact]
+    public void DeletarJogosIncorretoTest()
     {
-        _outputHelper.WriteLine($"Apagando jogo {this.jogo.Id}");
-        await _httpClient.DeletarAsync($"/Jogos/{jogo.Id}");
+        //Arrange
+        //Act
+        ObjectResult resposta = _jogosController.DeletarJogo(0);
+        //Assert
+        Assert.Equal(404, resposta.StatusCode);
+        Assert.Equal("Jogo não encontrado.", resposta.Value);
     }
-    private async void ApagarJogoListaDeFavorito(int idJogoFavorito)
+    private ReadJogosDto CriarJogo()
     {
-        _outputHelper.WriteLine($"Apagando jogo favorito {idJogoFavorito}");
-        await _httpClient.DeletarAsync($"/JogosDoUsuario/1/removerJogoFavorito/{idJogoFavorito}");
+        CreateJogosDto jogo = new CreateJogosDto("Endereço Teste", "Jogo Teste", "Descrição de Teste para o modelo.", Genero.Ação, 1, "1994", "PS4", 9);
+        ObjectResult resposta = _jogosController.CadastrarJogo(jogo);
+        ReadJogosDto jogosDto = JsonConvert.DeserializeObject<ReadJogosDto>(resposta.Value.ToString()!)!;
+        _outputHelper.WriteLine($"Jogo {jogosDto.Id} criado com sucesso.");
+        return jogosDto;
+    }
+    private void DeletarJogo(ReadJogosDto jogo)
+    {
+        _jogosController.DeletarJogo(jogo.Id);
+        _outputHelper.WriteLine($"Jogo deletado {jogo.Id} com sucesso.");
     }
 }

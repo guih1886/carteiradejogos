@@ -18,7 +18,7 @@ public class LoginControllerTest
     public void EfetuaLogin()
     {
         //Arrange
-        LoginUsuarioDto loginDto = new LoginUsuarioDto("guilherme@email.com", "12345");
+        LoginUsuarioDto loginDto = new LoginUsuarioDto("guilherme@email.com", "1234");
         //Act
         ObjectResult resposta = controller.EfetuarLogin(loginDto);
         //Assert

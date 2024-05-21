@@ -22,29 +22,53 @@ namespace CarteiraDeJogosTest.ControllersTest
         public void CadastrarUsuarioTest()
         {
             //Arrange
-            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme@gmail.com", "1234", "1234");
+            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme3@gmail.com", "1234", "1234");
             //Act
             var resposta = controller.CadastrarUsuario(novoUsuario);
             ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value.ToString());
             //Assert
             _outputHelper.WriteLine(usuario.ToString());
-            Assert.Equal(200, resposta.StatusCode);
+            Assert.Equal(201, resposta.StatusCode);
             Assert.IsType<ReadUsuariosDto>(usuario);
             DeletarUsuario(usuario);
         }
-        [Fact(Skip = "Atualizar validação para o modelo")]
-        public void CadastrarUsuarioIncorretoTest()
+        [Fact]
+        public void NaoCadastrarUsuarioComMesmoEmailTest()
         {
             //Arrange
-            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme@gmail.com", "", "1234");
+            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme2@gmail.com", "1234", "1234");
+            CreateUsuarioDto novoUsuario2 = new CreateUsuarioDto("Malaquias José", "guilherme2@gmail.com", "1234", "1234");
             //Act
             var resposta = controller.CadastrarUsuario(novoUsuario);
             ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value.ToString());
-            _outputHelper.WriteLine(usuario.ToString());
+            var resposta2 = controller.CadastrarUsuario(novoUsuario2);
             //Assert
             Assert.Equal(400, resposta.StatusCode);
-            Assert.Equal("Erro ao cadastrar usuário.", resposta.Value);
+            Assert.Equal("E-mail já cadastrado.", resposta2.Value);
             DeletarUsuario(usuario);
+        }
+        [Fact]
+        public void NaoCadastrarUsuarioComSenhaDivergenteTest()
+        {
+            //Arrange
+            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme3@gmail.com", "12345", "1234");
+            //Act
+            var resposta = controller.CadastrarUsuario(novoUsuario);
+            //Assert
+            Assert.Equal(400, resposta.StatusCode);
+            Assert.Equal("As senhas não são iguais.", resposta.Value);
+        }
+        [Fact]
+        public void CadastrarUsuarioIncorretoTest()
+        {
+            //Arrange
+            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme3@gmail.com", "", "1234");
+            //Act
+            var resposta = controller.CadastrarUsuario(novoUsuario);
+            //Assert
+            Assert.Equal(400, resposta.StatusCode);
+            Assert.Equal("As senhas não são iguais.", resposta.Value);
+ 
         }
         [Fact]
         public void AlterarUsuarioTest()
@@ -125,7 +149,6 @@ namespace CarteiraDeJogosTest.ControllersTest
             //Arrange
             //Act
             ObjectResult resposta = controller.DeletarUsuario(0);
-            _outputHelper.WriteLine(resposta.Value.ToString());
             //Assert
             Assert.Equal(404, resposta.StatusCode);
             Assert.Equal("Usuário não encontrado.", resposta.Value);
@@ -133,7 +156,7 @@ namespace CarteiraDeJogosTest.ControllersTest
 
         private ReadUsuariosDto CriarUsuario()
         {
-            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme@gmail.com", "1234", "1234");
+            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme2@gmail.com", "1234", "1234");
             ObjectResult resposta = controller.CadastrarUsuario(novoUsuario);
             ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value.ToString()!)!;
             _outputHelper.WriteLine($"Usuario {usuario.Id} criado com sucesso.");
