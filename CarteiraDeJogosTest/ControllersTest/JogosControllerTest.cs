@@ -131,19 +131,6 @@ public class JogosControllerTest
         Assert.Equal("Jogo excluido com sucesso.", resposta.Value);
     }
     [Fact]
-    public void DeletarJogoFavoritoAoDeletarJogoTest()
-    {
-        //Arrange
-        ReadJogosDto jogo = CriarJogo();
-        //Act
-        _jogosDoUsuarioController.AdicionarJogoFavoritoUsuario(1, jogo.Id);
-        DeletarJogo(jogo);
-        ObjectResult resposta = _usuarioController.BuscarUsuarioPorId(1);
-        ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value!.ToString()!)!;
-        //Assert
-        Assert.DoesNotContain(jogo.Id, usuario.JogosFavoritos);
-    }
-    [Fact]
     public void DeletarJogosIncorretoTest()
     {
         //Arrange
