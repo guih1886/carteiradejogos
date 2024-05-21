@@ -62,13 +62,13 @@ public class JogosDoUsuarioController : ControllerBase
             httpResponse.Value = "Usuário não encontrado.";
             return httpResponse;
         }
-        if (!usuario.Jogos.Contains(idJogoFavorito))
+        if (!usuario.Jogos!.Contains(idJogoFavorito))
         {
             httpResponse.StatusCode = 404;
             httpResponse.Value = "Jogo não está na lista de jogos.";
             return httpResponse;
         }
-        if (usuario.JogosFavoritos.Contains(idJogoFavorito))
+        if (usuario.JogosFavoritos!.Contains(idJogoFavorito))
         {
             httpResponse.StatusCode = 400;
             httpResponse.Value = "Jogo já está na lista.";
@@ -98,7 +98,7 @@ public class JogosDoUsuarioController : ControllerBase
             httpResponse.Value = "Jogo não encontrado.";
             return httpResponse;
         }
-        if (!usuario.Jogos.Contains(idJogo))
+        if (!usuario.Jogos!.Contains(idJogo))
         {
             httpResponse.StatusCode = 400;
             httpResponse.Value = "Jogo não está na lista.";
