@@ -27,7 +27,6 @@ public class UsuarioServiceProvider
         servico.AddTransient<IUsuariosRepository, UsuarioRepository>();
         servico.AddTransient<UsuarioController>();
         servico.AddTransient<IJogosRepository, JogosRepository>();
-        servico.AddTransient<IJogosDoUsuarioRepository, JogosDoUsuarioRepository>();
         servico.AddAutoMapper(typeof(UsuariosProfile).Assembly);
         var provedor = servico.BuildServiceProvider();
         var controler = provedor.GetService<UsuarioController>();

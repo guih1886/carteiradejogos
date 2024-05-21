@@ -20,7 +20,6 @@ builder.Services.AddDbContext<JogosContext>(opts =>
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IJogosRepository, JogosRepository>();
-builder.Services.AddScoped<IJogosDoUsuarioRepository, JogosDoUsuarioRepository>();
 builder.Services.AddScoped<IUsuariosRepository, UsuarioRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
