@@ -2,6 +2,7 @@
 using CarteiraDeJogos.Data.Dto.Usuarios;
 using CarteiraDeJogos.Data.Interfaces;
 using CarteiraDeJogos.Models;
+using System.Linq;
 
 namespace CarteiraDeJogos.Data.Repository
 {
@@ -20,18 +21,28 @@ namespace CarteiraDeJogos.Data.Repository
         {
             return _context.Usuarios.FirstOrDefault(u => u.Id == id);
         }
-        public Usuario? BuscarUsuarioEmail(string email)
-        {
-            return _context.Usuarios.FirstOrDefault(u => u.Email == email);
-        }
         public ReadUsuariosDto BuscarUsuarioPorId(int id)
         {
             Usuario? usuario = BuscarUsuario(id);
             return _mapper.Map<ReadUsuariosDto>(usuario);
         }
+        public Usuario? BuscarUsuarioEmail(string email)
+        {
+            return _context.Usuarios.FirstOrDefault(u => u.Email == email);
+        }
         public List<ReadUsuariosDto> ListarUsuarios()
         {
             return _mapper.Map<List<ReadUsuariosDto>>(_context.Usuarios.ToList());
+        }
+        public List<int>? ListarTodosOsJogos(int usuarioId)
+        {
+            Usuario usuario = BuscarUsuario(usuarioId)!;
+            return usuario.Jogos;
+        }
+        public List<int>? ListarJogosFavoritos(int usuarioId)
+        {
+            Usuario usuario = BuscarUsuario(usuarioId)!;
+            return usuario.JogosFavoritos;
         }
         public ReadUsuariosDto CadastrarUsuario(CreateUsuarioDto usuarioDto)
         {
@@ -71,22 +82,22 @@ namespace CarteiraDeJogos.Data.Repository
             _context.SaveChanges();
             return usuario.JogosFavoritos;
         }
-        public string? RemoverJogo(int usuarioId, int idJogo)
+        public bool RemoverJogo(int usuarioId, int idJogo)
         {
-            Usuario usuario = BuscarUsuario(usuarioId)!;
-            if (usuario.Jogos!.Contains(idJogo)) usuario.Jogos.Remove(idJogo);
-            Jogos? jogo = _context.Jogos.FirstOrDefault(jogo => jogo.Id == idJogo);
-            if (jogo == null) return "Jogo não encontrado.";
+            Jogos jogo = _context.Jogos.FirstOrDefault(jogo => jogo.Id == idJogo)!;
+            Usuario usuario = BuscarUsuario(1)!;
+            if (usuario.Jogos!.Contains(jogo.Id)) usuario.Jogos.Remove(idJogo);
+            if (usuario.JogosFavoritos!.Contains(jogo.Id)) usuario.JogosFavoritos.Remove(idJogo);
             jogo.Ativo = 0;
             _context.SaveChanges();
-            return usuario.Jogos.ToString();
+            return true;
         }
-        public string? RemoverJogoFavorito(int usuarioId, int idJogo)
+        public bool RemoverJogoFavorito(int usuarioId, int idJogo)
         {
             Usuario usuario = BuscarUsuario(usuarioId)!;
             if (usuario.JogosFavoritos!.Contains(idJogo)) usuario.JogosFavoritos.Remove(idJogo);
             _context.SaveChanges();
-            return usuario.JogosFavoritos.ToString();
+            return true;
         }
     }
 }

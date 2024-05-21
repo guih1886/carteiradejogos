@@ -1,4 +1,6 @@
 ﻿using CarteiraDeJogos.Data.Dto.Jogos;
+using CarteiraDeJogos.Data.Repository;
+using CarteiraDeJogos.Models;
 
 namespace CarteiraDeJogos.Data.Interfaces;
 
@@ -9,5 +11,7 @@ public interface IJogosRepository
     ReadJogosDto? CadastrarJogo(CreateJogosDto jogo);
     ReadJogosDto? AtualizarJogo(int id, UpdateJogosDto jogo);
     bool DeletarJogo(int id);
-    string AtivarJogo(int id, int idJogo);
+    ReadJogosDto AtivarJogo(int id, int idJogo);
+    Jogos? BuscarJogoAtivo(int id);
+    Jogos? BuscarJogoInativo(int id);
 }

@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using CarteiraDeJogos.Data.Dto.Jogos;
-using CarteiraDeJogos.Data.Dto.Usuarios;
 using CarteiraDeJogos.Data.Interfaces;
 using CarteiraDeJogos.Models;
-using Newtonsoft.Json;
 
 namespace CarteiraDeJogos.Data.Repository
 {
@@ -53,7 +51,7 @@ namespace CarteiraDeJogos.Data.Repository
         {
             return _context.Jogos.FirstOrDefault(j => j.Id == id && j.Ativo == 1);
         }
-        private Jogos? BuscarJogoInativo(int id)
+        public Jogos? BuscarJogoInativo(int id)
         {
             return _context.Jogos.FirstOrDefault(jogo => jogo.Id == id);
         }
@@ -64,31 +62,24 @@ namespace CarteiraDeJogos.Data.Repository
         }
         public bool DeletarJogo(int id)
         {
-            Jogos? jogo = BuscarJogoAtivo(id);
+            Jogos? jogo = BuscarJogoInativo(id);
             if (jogo == null) return false;
             //Caso encontre o jogo, muda ele para inativo, e retira ele das listas dos usuários.
-            jogo.Ativo = 0;
-            ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(jogo.UsuarioId);
-            UpdateUsuariosDto usuarioAlterado = _mapper.Map<UpdateUsuariosDto>(usuario);
-            if (usuarioAlterado.Jogos.Contains(jogo.Id)) usuarioAlterado.Jogos.Remove(jogo.Id);
-            if (usuarioAlterado.JogosFavoritos.Contains(jogo.Id)) usuarioAlterado.JogosFavoritos.Remove(jogo.Id);
-            _usuarioRepository.AtualizarUsuario(usuario.Id, usuarioAlterado);
+            Usuario usuario = _usuarioRepository.BuscarUsuario(jogo.UsuarioId)!;
+            _usuarioRepository.RemoverJogo(usuario.Id, jogo.Id);
+            _usuarioRepository.RemoverJogoFavorito(usuario.Id, jogo.Id);
+            _context.Remove(jogo);
+            _context.SaveChanges();
             return true;
         }
-        public string AtivarJogo(int id, int idJogo)
-        {
-            ReadUsuariosDto usuario = _usuarioRepository.BuscarUsuarioPorId(id);
-            if (usuario == null) return "Usuário não encontrado.";
-            Jogos? jogo = BuscarJogoInativo(idJogo);
-            if (jogo == null) return "Jogo não encontrado.";
-            if (jogo.UsuarioId != usuario.Id) return "Jogo não pertence ao usuário.";
-            if (jogo.Ativo == 1) return "Jogo já está ativo.";
+        public ReadJogosDto AtivarJogo(int id, int idJogo)
+        {           
+            Jogos jogo = BuscarJogoInativo(idJogo)!;
             jogo.Ativo = 1;
             _context.SaveChanges();
             _usuarioRepository.AdicionarJogoUsuario(id, idJogo);
             ReadJogosDto jogodto = _mapper.Map<ReadJogosDto>(jogo);
-            string json = JsonConvert.SerializeObject(jogodto);
-            return json;
+            return jogodto;
         }
     }
 }
