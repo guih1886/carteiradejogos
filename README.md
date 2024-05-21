@@ -21,9 +21,10 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
 ## Escalamento do projeto
 
 - Implementado os conceitos de repository, para a clareza do código. ✅
-- Implementado 38 testes para garantir a qualidade do código. ✅
+- Implementado 41 testes para garantir a qualidade do código. ✅
 - Implementar segurança de login, com o JWT. ✅
 - Implementar a alteração de ativação dos jogos. ✅
+- Criar as telas com windows forms para realizar as operações. 
 - Implementar um app com Flutter para o consumo da API.
 
 <br>
@@ -50,17 +51,18 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
 ## Usuários
 
 - `POST /Usuarios`: Essa rota recebe através do corpo da requisição um JSON com os dados de `nome`, `email`, `senha` e `confirmacaoSenha` para o cadastro no banco de dados, aqui utilizado o SQL Server.
-  O usuário não é cadastrado caso as senhas sejam divergentes, e retorna um HTTP 400 a mensagem de erro `"As senhas não são iguais."`.
+  O usuário não é cadastrado caso as senhas sejam divergentes ou o e-mail já esteja cadastrado, e retorna um HTTP 400 a mensagem de erro `"As senhas não são iguais."` ou `E-mail já cadastrado.`.
 
   ```json
   {
     "nome": "Guilherme Henrique",
+    "email": "guilherme@email.com",
     "senha": "1234",
     "confirmacaoSenha": "1234"
   }
   ```
 
-  A resposta é um HTTP 201 e o DTO de leitura com os campos de `id`, `nome`, `jogos` e `jogosFavoritos` do usuário.
+  Em caso de sucesso, a resposta é um HTTP 201 e o DTO de leitura com os campos de `id`, `nome`, `jogos` e `jogosFavoritos` do usuário.
 
   ```json
   {
@@ -121,6 +123,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
 
 - `POST /Jogos`: A rota cria um jogo no banco de dados, utilizando um DTO de criação com os dados `nome`, `endereçoImagem`, `descricao`, `genero`, `anoLançamento`, `plataforma`, `nota` e `usuarioId`.
   O campo de `usuarioId` é uma chave estrangeira que faz referência ao Id de usuário, e portanto, deve ser um valor válido para a inclusão. O jogo ao ser criado é marcado automaticamente como ativo.
+  Em caso de sucesso, é retornado um HTTP 200 com o Dto de leitura do jogo criado, e o Id do jogo é adicionado automaticamente à lista de jogos do usuário que cadastrou o jogo.
 
   ```json
   {
@@ -136,16 +139,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   }
   ```
 
-  Em caso de sucesso, é retornado um HTTP 200 com o Dto de leitura do jogo criado, e o Id do jogo é adicionado automaticamente à lista de jogos do usuário que cadastrou o jogo.
-  Em caso de falha, será retornado um HTTP 400 e a/as mensagens de erro sobre quais campos estão ausentes, ou a mensagem `Erro ao localizar o usuário com o id {UsuarioId}.`
-
-  ```json
-  {
-    "nome": "Guilherme Henrique",
-    "jogos": [5, 6, 7],
-    "jogosFavoritos": []
-  }
-  ```
+  Em caso de falha, será retornado um HTTP 404 e a mensagen de erro sobre quais campos estão ausentes ou com erros, ou a mensagem `Erro ao localizar o usuário com o id {UsuarioId}.`
 
 - `GET /Jogos`: Retorna uma lista de todos os jogos ativos através do DTO de leitura.
 
@@ -209,7 +203,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   }
   ```
 
-- `DELETE /Jogos/{id}`: Marca o jogo com o `Id` correspondente como inativo. Em caso de sucesso é retornado o HTTP 204 e caso não encontre o usuário é retornado o HTTP 404 com a mensagem `Jogo não encontrado.`.
+- `DELETE /Jogos/{id}`: Apaga o jogo com o `Id` correspondente. Em caso de sucesso é retornado o HTTP 204 e caso não encontre o usuário é retornado o HTTP 404 com a mensagem `Jogo não encontrado.`.
   O jogo é retirado da lista de jogos e de jogos favoritos do usuários.
 
 <br>
@@ -244,7 +238,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
   [6]
   ```
 
-- `DELETE /JogosDoUsuario/{id}/removerJogo/{idJogo}`: Remove o jogo da lista de jogos do usuário e marca o jogo como inativo. Retorna o HTTP 204 em caso de sucesso,
+- `DELETE /JogosDoUsuario/{id}/removerJogo/{idJogo}`: Remove o jogo da lista de jogos e da lista de jogos favoritos do usuário e marca o jogo como inativo. Retorna o HTTP 204 em caso de sucesso,
   e caso o usuário não seja encontrado retorna o HTTP 404 com a mensagem "`Usuario não encontrado.`" ou o HTTP 400 com a mensagem "`Jogo não está na lista.`" caso o `idJogo` não seja de um jogo na lista de jogos do usuário.
 
 - `DELETE /JogosDoUsuario/{id}/removerJogoFavorito/{idJogoFavorito}`: Remove o jogo da lista de jogos favoritos do usuário. Retorna o HTTP 204 em caso de sucesso,
