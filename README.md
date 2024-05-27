@@ -8,7 +8,7 @@ A API também proporciona a gestão dos jogos no sentido de permitir a ativaçã
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | :sparkles: Nome       | **CarteiraDeJogos-API**                                                                                                                      |
 | :label: Tecnologias   | C#, .NET, ASP.NET, SQL Server                                                                                                                |
-| :inbox_tray: Download | [Download App]() Em breve                                                                                                                    |
+| :inbox_tray: Download | Download App (em breve)                                                                                                                      |
 
 ## Detalhes do projeto
 
@@ -29,7 +29,11 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
 - Criar as telas com windows forms para realizar as operações. 
 - Implementar um app com Flutter para o consumo da API.
 
-<br>
+## Configurando o projeto
+
+Faça um clone do repositório em seu diretório de preferencia, adicione o arquivo `appsettings.json` na raiz do projeto JomedAPI, você pode utilizar o modelo disponibilizado [Aqui][appsettings].<br>
+Faça a alteração da chave do JWT, e a alteração da connection string do seu banco de dados SQL Server. Na raiz do projeto execute o comando `dotnet ef migrations add "Criando as migrações para o banco de dados."`, e depois `dotnet ef database update`.
+Dessa forma o banco de dados estará atualizado para rodar a aplicação.
 
 ## Login
 
@@ -256,8 +260,5 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/modeloUsuarios.png)
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/testes.png)
 
-<br>
 
-## Configurando o zip
-
-Faça o download e extraia a pasta do aplicativo. No arquivo `appsettings.json` será necessário adicionar a string de conexão com o banco de dados SQL Server. Exercutar o aplicativo carteiraDeJogos.exe.
+[appsettings]: https://raw.githubusercontent.com/guih1886/jomedAPI/main/JomedAPI/Assets/appsettings.json
