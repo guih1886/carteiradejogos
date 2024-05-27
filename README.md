@@ -8,7 +8,7 @@ A API também proporciona a gestão dos jogos no sentido de permitir a ativaçã
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | :sparkles: Nome       | **CarteiraDeJogos-API**                                                                                                                      |
 | :label: Tecnologias   | C#, .NET, ASP.NET, SQL Server                                                                                                                |
-| :inbox_tray: Download | [Download Zip](https://github.com/guih1886/carteiradejogos/raw/main/CarteiraDeJogos/Assets/carteiraDeJogos.rar)<br>[Download App]() Em breve |
+| :inbox_tray: Download | [Download App]() Em breve                                                                                                                    |
 
 ## Detalhes do projeto
 
