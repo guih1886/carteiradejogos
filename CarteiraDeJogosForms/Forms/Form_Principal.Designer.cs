@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             menuStrip1 = new MenuStrip();
-            sairToolStripMenuItem = new ToolStripMenuItem();
             primeiroToolStripMenuItem = new ToolStripMenuItem();
+            sairToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -43,18 +43,18 @@
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
+            // primeiroToolStripMenuItem
+            // 
+            primeiroToolStripMenuItem.Name = "primeiroToolStripMenuItem";
+            primeiroToolStripMenuItem.Size = new Size(64, 20);
+            primeiroToolStripMenuItem.Text = "primeiro";
+            // 
             // sairToolStripMenuItem
             // 
             sairToolStripMenuItem.Name = "sairToolStripMenuItem";
             sairToolStripMenuItem.Size = new Size(38, 20);
             sairToolStripMenuItem.Text = "Sair";
             sairToolStripMenuItem.Click += sairToolStripMenuItem_Click;
-            // 
-            // primeiroToolStripMenuItem
-            // 
-            primeiroToolStripMenuItem.Name = "primeiroToolStripMenuItem";
-            primeiroToolStripMenuItem.Size = new Size(64, 20);
-            primeiroToolStripMenuItem.Text = "primeiro";
             // 
             // Form_Principal
             // 
@@ -64,7 +64,7 @@
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Name = "Form_Principal";
-            Text = "Form_Principal";
+            Text = "CJ - Principal";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             ResumeLayout(false);
