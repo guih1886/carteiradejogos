@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-var connectionString = builder.Configuration.GetConnectionString("CarteiraDeJogosConnection");
+var connectionString = builder.Configuration.GetConnectionString("CarteiraDeJogosTestConnection");
 
 builder.Services.AddDbContext<JogosContext>(opts =>
     opts.UseSqlServer(connectionString, e => e.EnableRetryOnFailure()));
