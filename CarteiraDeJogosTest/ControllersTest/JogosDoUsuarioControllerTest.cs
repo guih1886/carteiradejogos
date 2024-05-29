@@ -145,11 +145,13 @@ public class JogosDoUsuarioControllerTest
     public void NaoRemoveJogoDoUsuarioQueNaoEstaNaListaTest()
     {
         //Arrange
+        ReadJogosDto jogo = CriarJogo();
         //Act
-        ObjectResult resposta = _jogosDoUsuarioController.RemoverJogoUsuario(1, 20);
+        ObjectResult resposta = _jogosDoUsuarioController.RemoverJogoUsuario(2, jogo.Id);
         //Assert
         Assert.Equal(400, resposta.StatusCode);
         Assert.Equal("Jogo não está na lista.", resposta.Value.ToString());
+        DeletarJogo(jogo);
 
     }
     [Fact]

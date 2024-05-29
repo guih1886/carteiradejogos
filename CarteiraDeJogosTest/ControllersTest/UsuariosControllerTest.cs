@@ -3,6 +3,7 @@ using CarteiraDeJogos.Data.Dto.Usuarios;
 using CarteiraDeJogosTest.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using Xunit.Abstractions;
 
 namespace CarteiraDeJogosTest.ControllersTest
@@ -22,7 +23,7 @@ namespace CarteiraDeJogosTest.ControllersTest
         public void CadastrarUsuarioTest()
         {
             //Arrange
-            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme3@gmail.com", "1234", "1234");
+            CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme8@gmail.com", "1234", "1234");
             //Act
             var resposta = controller.CadastrarUsuario(novoUsuario);
             ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value.ToString());
@@ -48,15 +49,14 @@ namespace CarteiraDeJogosTest.ControllersTest
             DeletarUsuario(usuario);
         }
         [Fact]
-        public void NaoCadastrarUsuarioComSenhaDivergenteTest()
+        public void NaoCadastraUsuarioComSenhaDivergenteTest()
         {
             //Arrange
             CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme3@gmail.com", "12345", "1234");
+            IList<ValidationResult> valida = ValidarModelo(novoUsuario);
             //Act
-            var resposta = controller.CadastrarUsuario(novoUsuario);
             //Assert
-            Assert.Equal(400, resposta.StatusCode);
-            Assert.Equal("As senhas não são iguais.", resposta.Value);
+            Assert.NotEmpty(valida);
         }
         [Fact]
         public void CadastrarUsuarioIncorretoTest()
@@ -64,11 +64,11 @@ namespace CarteiraDeJogosTest.ControllersTest
             //Arrange
             CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme3@gmail.com", "", "1234");
             //Act
-            var resposta = controller.CadastrarUsuario(novoUsuario);
+            IList<ValidationResult> valida = ValidarModelo(novoUsuario);
+            //Act
             //Assert
-            Assert.Equal(400, resposta.StatusCode);
-            Assert.Equal("As senhas não são iguais.", resposta.Value);
- 
+            Assert.NotEmpty(valida);
+
         }
         [Fact]
         public void AlterarUsuarioTest()
@@ -161,6 +161,13 @@ namespace CarteiraDeJogosTest.ControllersTest
             ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value.ToString()!)!;
             _outputHelper.WriteLine($"Usuario {usuario.Id} criado com sucesso.");
             return usuario;
+        }
+        private IList<ValidationResult> ValidarModelo(object model)
+        {
+            var validationResults = new List<ValidationResult>();
+            var validationContext = new ValidationContext(model, null, null);
+            Validator.TryValidateObject(model, validationContext, validationResults, true);
+            return validationResults;
         }
         private void DeletarUsuario(ReadUsuariosDto usuario)
         {
