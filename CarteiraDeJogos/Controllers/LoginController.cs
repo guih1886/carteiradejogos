@@ -20,6 +20,18 @@ public class LoginController : ControllerBase
     public ObjectResult EfetuarLogin([FromBody] LoginUsuarioDto usuario)
     {
         string resposta = _tokenService.GerarToken(usuario);
+        if (string.IsNullOrEmpty(usuario.Email))
+        {
+            httpResponse.StatusCode = 401;
+            httpResponse.Value = "E-mail não pode estar vazio.";
+            return httpResponse;
+        }
+        if (string.IsNullOrEmpty(usuario.Senha))
+        {
+            httpResponse.StatusCode = 401;
+            httpResponse.Value = "A senha deve ser informada.";
+            return httpResponse;
+        }
         if (resposta == "E-mail ou senha inválido.")
         {
             httpResponse.StatusCode = 401;
