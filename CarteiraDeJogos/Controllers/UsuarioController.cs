@@ -53,12 +53,6 @@ public class UsuarioController : ControllerBase
             httpResponse.Value = "E-mail já cadastrado.";
             return httpResponse;
         }
-        if (usuario.Senha != usuario.ConfirmacaoSenha || String.IsNullOrEmpty(usuario.Senha) || String.IsNullOrEmpty(usuario.ConfirmacaoSenha))
-        {
-            httpResponse.StatusCode = 400;
-            httpResponse.Value = "As senhas não são iguais.";
-            return httpResponse;
-        }
         ReadUsuariosDto usuarioNovo = _usuarioRepository.CadastrarUsuario(usuario);
         if (usuarioNovo == null)
         {
