@@ -64,6 +64,7 @@
             // 
             // Lbl_Erro
             // 
+            Lbl_Erro.ForeColor = Color.Red;
             Lbl_Erro.Location = new Point(11, 335);
             Lbl_Erro.Name = "Lbl_Erro";
             Lbl_Erro.Size = new Size(282, 23);
