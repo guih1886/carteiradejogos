@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_Cadastrar));
             Pic_Cadastro = new PictureBox();
             Lbl_Email = new Label();
             Txt_Email = new TextBox();
@@ -187,6 +188,7 @@
             Controls.Add(Lbl_Email);
             Controls.Add(Pic_Cadastro);
             FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form_Cadastrar";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "CJ - Cadastro";
