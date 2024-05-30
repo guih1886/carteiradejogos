@@ -1,6 +1,5 @@
 ﻿using CarteiraDeJogos.Data.Dto.Usuarios;
 using CarteiraDeJogosForms.Classes;
-using CarteiraDeJogosForms.Classes.Utils;
 using CarteiraDeJogosForms.Forms.Cadastrar;
 using System.Net;
 
@@ -27,8 +26,7 @@ namespace CarteiraDeJogosForms.Forms
             else
             {
                 string jwt = await resposta.Content.ReadAsStringAsync();
-                ArquivoJwt.GravarJwt(jwt);
-                Form_Principal form_Principal = new Form_Principal(this);
+                Form_Principal form_Principal = new Form_Principal(this, jwt);
                 form_Principal.Show();
                 Lbl_Erro.Text = "";
                 Txt_Email.Text = "";
@@ -39,7 +37,6 @@ namespace CarteiraDeJogosForms.Forms
         }
         private void Btn_Sair_Click(object sender, EventArgs e)
         {
-            ArquivoJwt.DeletarJwt();
             this.Close();
         }
         private void Btn_Cadastrar_Click(object sender, EventArgs e)
