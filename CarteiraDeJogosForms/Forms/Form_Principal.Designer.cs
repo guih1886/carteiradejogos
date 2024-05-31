@@ -39,77 +39,71 @@
             inativarJogoToolStripMenuItem = new ToolStripMenuItem();
             deletarJogoToolStripMenuItem = new ToolStripMenuItem();
             perfilToolStripMenuItem = new ToolStripMenuItem();
-            alterarDadosToolStripMenuItem = new ToolStripMenuItem();
             sairToolStripMenuItem = new ToolStripMenuItem();
             Mnu_Menu.SuspendLayout();
             SuspendLayout();
             // 
             // Mnu_Menu
             // 
-            resources.ApplyResources(Mnu_Menu, "Mnu_Menu");
             Mnu_Menu.BackColor = SystemColors.GradientActiveCaption;
             Mnu_Menu.Items.AddRange(new ToolStripItem[] { primeiroToolStripMenuItem, perfilToolStripMenuItem, sairToolStripMenuItem });
+            resources.ApplyResources(Mnu_Menu, "Mnu_Menu");
             Mnu_Menu.Name = "Mnu_Menu";
             // 
             // primeiroToolStripMenuItem
             // 
-            resources.ApplyResources(primeiroToolStripMenuItem, "primeiroToolStripMenuItem");
             primeiroToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { meusJogosToolStripMenuItem, cadastrarJogoToolStripMenuItem, editarJogoToolStripMenuItem, inativarJogoToolStripMenuItem, deletarJogoToolStripMenuItem });
             primeiroToolStripMenuItem.Name = "primeiroToolStripMenuItem";
+            resources.ApplyResources(primeiroToolStripMenuItem, "primeiroToolStripMenuItem");
             // 
             // meusJogosToolStripMenuItem
             // 
-            resources.ApplyResources(meusJogosToolStripMenuItem, "meusJogosToolStripMenuItem");
             meusJogosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { todosOsJogosToolStripMenuItem, jogosFavoritosToolStripMenuItem });
             meusJogosToolStripMenuItem.Name = "meusJogosToolStripMenuItem";
+            resources.ApplyResources(meusJogosToolStripMenuItem, "meusJogosToolStripMenuItem");
             // 
             // todosOsJogosToolStripMenuItem
             // 
-            resources.ApplyResources(todosOsJogosToolStripMenuItem, "todosOsJogosToolStripMenuItem");
             todosOsJogosToolStripMenuItem.Name = "todosOsJogosToolStripMenuItem";
+            resources.ApplyResources(todosOsJogosToolStripMenuItem, "todosOsJogosToolStripMenuItem");
             todosOsJogosToolStripMenuItem.Click += todosOsJogosToolStripMenuItem_Click;
             // 
             // jogosFavoritosToolStripMenuItem
             // 
-            resources.ApplyResources(jogosFavoritosToolStripMenuItem, "jogosFavoritosToolStripMenuItem");
             jogosFavoritosToolStripMenuItem.Name = "jogosFavoritosToolStripMenuItem";
+            resources.ApplyResources(jogosFavoritosToolStripMenuItem, "jogosFavoritosToolStripMenuItem");
             jogosFavoritosToolStripMenuItem.Click += jogosFavoritosToolStripMenuItem_Click;
             // 
             // cadastrarJogoToolStripMenuItem
             // 
-            resources.ApplyResources(cadastrarJogoToolStripMenuItem, "cadastrarJogoToolStripMenuItem");
             cadastrarJogoToolStripMenuItem.Name = "cadastrarJogoToolStripMenuItem";
+            resources.ApplyResources(cadastrarJogoToolStripMenuItem, "cadastrarJogoToolStripMenuItem");
             // 
             // editarJogoToolStripMenuItem
             // 
-            resources.ApplyResources(editarJogoToolStripMenuItem, "editarJogoToolStripMenuItem");
             editarJogoToolStripMenuItem.Name = "editarJogoToolStripMenuItem";
+            resources.ApplyResources(editarJogoToolStripMenuItem, "editarJogoToolStripMenuItem");
             // 
             // inativarJogoToolStripMenuItem
             // 
-            resources.ApplyResources(inativarJogoToolStripMenuItem, "inativarJogoToolStripMenuItem");
             inativarJogoToolStripMenuItem.Name = "inativarJogoToolStripMenuItem";
+            resources.ApplyResources(inativarJogoToolStripMenuItem, "inativarJogoToolStripMenuItem");
             // 
             // deletarJogoToolStripMenuItem
             // 
-            resources.ApplyResources(deletarJogoToolStripMenuItem, "deletarJogoToolStripMenuItem");
             deletarJogoToolStripMenuItem.Name = "deletarJogoToolStripMenuItem";
+            resources.ApplyResources(deletarJogoToolStripMenuItem, "deletarJogoToolStripMenuItem");
             // 
             // perfilToolStripMenuItem
             // 
-            resources.ApplyResources(perfilToolStripMenuItem, "perfilToolStripMenuItem");
-            perfilToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { alterarDadosToolStripMenuItem });
             perfilToolStripMenuItem.Name = "perfilToolStripMenuItem";
-            // 
-            // alterarDadosToolStripMenuItem
-            // 
-            resources.ApplyResources(alterarDadosToolStripMenuItem, "alterarDadosToolStripMenuItem");
-            alterarDadosToolStripMenuItem.Name = "alterarDadosToolStripMenuItem";
+            resources.ApplyResources(perfilToolStripMenuItem, "perfilToolStripMenuItem");
+            perfilToolStripMenuItem.Click += perfilToolStripMenuItem_Click;
             // 
             // sairToolStripMenuItem
             // 
-            resources.ApplyResources(sairToolStripMenuItem, "sairToolStripMenuItem");
             sairToolStripMenuItem.Name = "sairToolStripMenuItem";
+            resources.ApplyResources(sairToolStripMenuItem, "sairToolStripMenuItem");
             sairToolStripMenuItem.Click += sairToolStripMenuItem_Click;
             // 
             // Form_Principal
@@ -140,6 +134,5 @@
         private ToolStripMenuItem inativarJogoToolStripMenuItem;
         private ToolStripMenuItem deletarJogoToolStripMenuItem;
         private ToolStripMenuItem perfilToolStripMenuItem;
-        private ToolStripMenuItem alterarDadosToolStripMenuItem;
     }
 }

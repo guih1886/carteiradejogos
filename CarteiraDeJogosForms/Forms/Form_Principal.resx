@@ -169,12 +169,6 @@
   <data name="primeiroToolStripMenuItem.Text" xml:space="preserve">
     <value>Jogos</value>
   </data>
-  <data name="alterarDadosToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 22</value>
-  </data>
-  <data name="alterarDadosToolStripMenuItem.Text" xml:space="preserve">
-    <value>Alterar Dados</value>
-  </data>
   <data name="perfilToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>73, 20</value>
   </data>
@@ -344,12 +338,6 @@
     <value>perfilToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;perfilToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;alterarDadosToolStripMenuItem.Name" xml:space="preserve">
-    <value>alterarDadosToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;alterarDadosToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;sairToolStripMenuItem.Name" xml:space="preserve">

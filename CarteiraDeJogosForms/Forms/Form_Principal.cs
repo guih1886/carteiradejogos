@@ -1,5 +1,7 @@
 ﻿using CarteiraDeJogosForms.Classes;
+using CarteiraDeJogosForms.Classes.Utils;
 using CarteiraDeJogosForms.Forms.Jogos;
+using CarteiraDeJogosForms.Forms.Usuario;
 using Microsoft.Extensions.Configuration;
 using System.Security.Claims;
 
@@ -8,18 +10,20 @@ namespace CarteiraDeJogosForms.Forms
     public partial class Form_Principal : Form
     {
         private Form loginForm;
-        private string jwt;
-        private int usuarioId = 0;
+        private readonly string jwt;
+        private string? url;
         private string usuarioEmail = "";
-        private HttpClientBuilder _httpClientBuilder = new HttpClientBuilder();
-        private IConfiguration? _configuration;
+        private int usuarioId = 0;
+        private HttpClientBuilder _httpClientBuilder;
+        private IConfiguration _configuration;
 
         public Form_Principal(Form login, string jwt)
         {
-            InstanciaIConfiguration();
+            _configuration = InstanciaIConfiguration.GetInstancia();
             loginForm = login;
             this.jwt = jwt;
             ValidaDadosUsuario();
+            _httpClientBuilder = new HttpClientBuilder(url!, jwt);
             InitializeComponent();
         }
 
@@ -31,29 +35,29 @@ namespace CarteiraDeJogosForms.Forms
         private void todosOsJogosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form todosOsJogos = new Form_TodosOsJogos(_httpClientBuilder, usuarioId, usuarioEmail);
-            todosOsJogos.ShowDialog();
+            todosOsJogos.Show();
         }
         private void jogosFavoritosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form jogosFavoritos = new Form_JogosFavoritos();
-            jogosFavoritos.ShowDialog();
+            Form jogosFavoritos = new Form_JogosFavoritos(_httpClientBuilder, usuarioId, usuarioEmail);
+            jogosFavoritos.Show();
         }
-
-
-        private void InstanciaIConfiguration()
+        private void perfilToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var builder = new ConfigurationBuilder()
-            .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            _configuration = builder.Build();
+            Form perfil = new Form_Perfil(_httpClientBuilder, usuarioId);
+            perfil.ShowDialog();
         }
+
         private void ValidaDadosUsuario()
         {
             string key = _configuration!["Jwt:Key"]!;
+            string url = _configuration!["UrlBase"]!;
             ClaimsPrincipal dados = DeserizalizeJwt.JwtClaims(jwt, key)!;
             List<Claim> listaClaims = dados.Claims.ToList();
             usuarioId = Int32.Parse(listaClaims[0].Value);
             usuarioEmail = listaClaims[1].Value;
+            this.url = url;
         }
+
     }
 }
