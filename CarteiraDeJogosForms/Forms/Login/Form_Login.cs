@@ -1,15 +1,22 @@
 ﻿using CarteiraDeJogos.Data.Dto.Usuarios;
 using CarteiraDeJogosForms.Classes;
+using CarteiraDeJogosForms.Classes.Utils;
 using CarteiraDeJogosForms.Forms.Cadastrar;
+using Microsoft.Extensions.Configuration;
 using System.Net;
 
 namespace CarteiraDeJogosForms.Forms
 {
     public partial class Form_Login : Form
     {
-        private HttpClientBuilder _httpClient = new HttpClientBuilder();
+        private HttpClientBuilder _httpClient;
+        private IConfiguration _configuration;
         public Form_Login()
         {
+            _configuration = InstanciaIConfiguration.GetInstancia();
+            string url = _configuration["UrlBase"]!;
+            string jwt = _configuration["Jwt:Key"]!;
+            _httpClient = new HttpClientBuilder(url, jwt);
             InitializeComponent();
         }
 
@@ -41,7 +48,7 @@ namespace CarteiraDeJogosForms.Forms
         }
         private void Btn_Cadastrar_Click(object sender, EventArgs e)
         {
-            Form_Cadastrar form_cadastrar = new Form_Cadastrar(this);
+            Form_Cadastrar form_cadastrar = new Form_Cadastrar(_httpClient, this);
             form_cadastrar.Show();
             Lbl_Erro.Text = "";
             Txt_Email.Text = "";
