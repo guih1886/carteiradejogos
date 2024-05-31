@@ -14,8 +14,8 @@ namespace CarteiraDeJogosForms.Forms.Jogos
             _httpClientBuilder = httpCliente;
             this.usuarioId = usuarioId;
             this.usuarioEmail = usuarioEmail;
-            PreencherListaDeJogosDoUsuario();
             InitializeComponent();
+            PreencherListaDeJogosDoUsuario();
         }
 
         private async void PreencherListaDeJogosDoUsuario()
@@ -26,6 +26,7 @@ namespace CarteiraDeJogosForms.Forms.Jogos
             if (listaDeJogos.Count == 0)
             {
                 Dgv_Jogos.DataSource = null;
+                Lbl_Total.Text = "Nenhum jogo cadastrado";
             }
             else
             {
@@ -37,6 +38,8 @@ namespace CarteiraDeJogosForms.Forms.Jogos
                     jogos.Add(jogo);
                 }
                 Dgv_Jogos.DataSource = jogos;
+                Lbl_Total.Text = $"{jogos.Count} jogos cadastrados.";
+                if (jogos.Count == 1) Lbl_Total.Text = $"{jogos.Count} jogo cadastrado.";
             }
         }
     }
