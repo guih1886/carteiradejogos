@@ -7,9 +7,10 @@ namespace CarteiraDeJogosForms.Forms.Cadastrar
     public partial class Form_Cadastrar : Form
     {
         private Form loginForm;
-        private HttpClientBuilder _httpClientBuilder = new HttpClientBuilder();
-        public Form_Cadastrar(Form login)
+        private HttpClientBuilder _httpClientBuilder;
+        public Form_Cadastrar(HttpClientBuilder httpClientBuilder, Form login)
         {
+            _httpClientBuilder = httpClientBuilder;
             InitializeComponent();
             loginForm = login;
         }
