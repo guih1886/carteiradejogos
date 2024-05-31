@@ -4,7 +4,7 @@ namespace CarteiraDeJogos.Data.Dto.Usuarios;
 
 public record UpdateUsuariosDto
 {
-    public UpdateUsuariosDto(string nome, List<int> jogos, List<int> jogosFavoritos)
+    public UpdateUsuariosDto(string nome, List<int>? jogos, List<int>? jogosFavoritos)
     {
         Nome = nome;
         Jogos = jogos;
@@ -15,8 +15,8 @@ public record UpdateUsuariosDto
     public string Nome { get; set; }
 
     [JsonPropertyName("jogos")]
-    public List<int> Jogos { get; set; }
+    public List<int>? Jogos { get; set; }
 
     [JsonPropertyName("jogosFavoritos")]
-    public List<int> JogosFavoritos { get; set; }
+    public List<int>? JogosFavoritos { get; set; }
 }
