@@ -122,7 +122,7 @@ public class JogosDoUsuarioControllerTest
         ObjectResult resposta = _jogosDoUsuarioController.RemoverJogoUsuario(1, jogo.Id);
         ObjectResult respostaUsuario = _usuarioController.BuscarUsuarioPorId(1);
         ReadUsuariosDto usuariosDto = JsonConvert.DeserializeObject<ReadUsuariosDto>(respostaUsuario.Value.ToString());
-        ObjectResult respostaJogo = _jogosController.BuscarJogoPorId(1);
+        ObjectResult respostaJogo = _jogosController.BuscarJogoPorId(jogo.Id);
         //Assert
         Assert.Equal(204, resposta.StatusCode);
         Assert.Equal(404, respostaJogo.StatusCode);
