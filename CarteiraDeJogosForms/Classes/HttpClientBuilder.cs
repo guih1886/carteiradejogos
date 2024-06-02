@@ -21,6 +21,7 @@ namespace CarteiraDeJogosForms.Classes
         {
             string json = JsonConvert.SerializeObject(body);
             var content = new StringContent(json, Encoding.UTF8, new MediaTypeHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
             HttpResponseMessage resposta = await _httpClient.PostAsync(urlBase + endPoint, content);
             return resposta;
         }
