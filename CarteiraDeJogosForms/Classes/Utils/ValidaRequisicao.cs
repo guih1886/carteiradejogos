@@ -14,5 +14,17 @@
             if (msg.Contains("As senhas não são iguais.")) return "Erro: As senhas não são iguais.";
             return "Ok";
         }
+
+        public static async Task<string> CadastrarJogo(HttpResponseMessage resposta)
+        {
+            string msg = await resposta.Content.ReadAsStringAsync();
+            if (msg.Contains("O nome não pode ser vazio.")) return "Erro: O nome não pode ser vazio.";
+            if (msg.Contains("Nome muito curto.")) return "Erro: Nome muito curto.";
+            if (msg.Contains("A descrição não pode ser vazia.")) return "Erro: A descrição não pode ser vazia.";
+            if (msg.Contains("Descrição muito curta, insira mais informações.")) return "Erro: Descrição muito curta, insira mais informações.";
+            if (msg.Contains("A imagem não pode ser vazio.")) return "Erro: A imagem não pode ser vazio.";
+            if (msg.Contains("A url da imagem é inválida.")) return "Erro: A url da imagem é inválida.";
+            return "Ok";
+        }
     }
 }
