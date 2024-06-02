@@ -18,6 +18,7 @@ public class CreateJogosDto
     }
 
     [Required(ErrorMessage = "A imagem não pode ser vazio.")]
+    [RegularExpression("^(https?:\\/\\/)?.*$", ErrorMessage = "A url da imagem é inválida.")]
     public string EnderecoImagem { get; set; }
 
     [Required(ErrorMessage = "O nome não pode ser vazio.")]
@@ -38,6 +39,6 @@ public class CreateJogosDto
 
     public string Plataforma { get; set; }
 
-    [RegularExpression("([10]|[1-9])", ErrorMessage = "Nota deve ser de 0 a 10.")]
+    [RegularExpression("^(10|[0-9])$", ErrorMessage = "Nota deve ser de 0 a 10.")]
     public int Nota { get; set; }
 }
