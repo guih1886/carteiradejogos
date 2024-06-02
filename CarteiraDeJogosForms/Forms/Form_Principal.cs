@@ -27,6 +27,16 @@ namespace CarteiraDeJogosForms.Forms
             InitializeComponent();
         }
 
+        private void ValidaDadosUsuario()
+        {
+            string key = _configuration!["Jwt:Key"]!;
+            string url = _configuration!["UrlBase"]!;
+            ClaimsPrincipal dados = DeserizalizeJwt.JwtClaims(jwt, key)!;
+            List<Claim> listaClaims = dados.Claims.ToList();
+            usuarioId = Int32.Parse(listaClaims[0].Value);
+            usuarioEmail = listaClaims[1].Value;
+            this.url = url;
+        }
         private void sairToolStripMenuItem_Click(object sender, EventArgs e)
         {
             loginForm.Show();
@@ -47,17 +57,10 @@ namespace CarteiraDeJogosForms.Forms
             Form perfil = new Form_Perfil(_httpClientBuilder, usuarioId);
             perfil.ShowDialog();
         }
-
-        private void ValidaDadosUsuario()
+        private void cadastrarJogoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string key = _configuration!["Jwt:Key"]!;
-            string url = _configuration!["UrlBase"]!;
-            ClaimsPrincipal dados = DeserizalizeJwt.JwtClaims(jwt, key)!;
-            List<Claim> listaClaims = dados.Claims.ToList();
-            usuarioId = Int32.Parse(listaClaims[0].Value);
-            usuarioEmail = listaClaims[1].Value;
-            this.url = url;
+            Form cadastrarJogo = new Form_CadastrarJogo(_httpClientBuilder, usuarioId);
+            cadastrarJogo.Show();
         }
-
     }
 }

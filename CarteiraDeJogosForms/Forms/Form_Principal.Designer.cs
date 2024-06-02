@@ -78,6 +78,7 @@
             // 
             cadastrarJogoToolStripMenuItem.Name = "cadastrarJogoToolStripMenuItem";
             resources.ApplyResources(cadastrarJogoToolStripMenuItem, "cadastrarJogoToolStripMenuItem");
+            cadastrarJogoToolStripMenuItem.Click += cadastrarJogoToolStripMenuItem_Click;
             // 
             // editarJogoToolStripMenuItem
             // 
