@@ -23,7 +23,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
 ## Escalamento do projeto
 
 - Implementado os conceitos de repository, para a clareza do código. ✅
-- Implementado 40 testes para garantir a qualidade do código. ✅
+- Implementado 44 testes para garantir a qualidade do código. ✅
 - Implementar segurança de login, com o JWT. ✅
 - Implementar a alteração de ativação dos jogos. ✅
 - Criar as telas com windows forms para realizar as operações. 
@@ -147,7 +147,7 @@ Dessa forma o banco de dados estará atualizado para rodar a aplicação.
 
   Em caso de falha, será retornado um HTTP 404 e a mensagen de erro sobre quais campos estão ausentes ou com erros, ou a mensagem `Erro ao localizar o usuário com o id {UsuarioId}.`
 
-- `GET /Jogos`: Retorna uma lista de todos os jogos ativos através do DTO de leitura.
+- `GET /Jogos`: Retorna uma lista de todos os jogos através do DTO de leitura.
 
   ```json
   [
@@ -176,7 +176,7 @@ Dessa forma o banco de dados estará atualizado para rodar a aplicação.
   ]
   ```
 
-- `GET /Jogos/{id}`: Detalha o jogo ativo com o `Id` correspondente e retorna o HTTP 200 e o json do jogo. Caso não encontre o jogo é retornado o HTTP 404 com a mensagem `Jogo não encontrado.`.
+- `GET /Jogos/{id}`: Detalha o jogo com o `Id` correspondente e retorna o HTTP 200 e o json do jogo. Caso não encontre o jogo é retornado o HTTP 404 com a mensagem `Jogo não encontrado.`.
 
   ```json
   {
@@ -192,7 +192,7 @@ Dessa forma o banco de dados estará atualizado para rodar a aplicação.
   }
   ```
 
-- `PUT /Jogos/{id}`: Faz a alteração de um jogo ativo com o `Id` correspondente. O DTO de update somente permite a modificação nesse caso dos campos de `nome`, `endereçoImagem`, `descricao`, `genero`, `anoLançamento`, `plataforma`, `nota`, protegendo assim os campos mais sensíveis.
+- `PUT /Jogos/{id}`: Faz a alteração de um jogo com o `Id` correspondente. O DTO de update somente permite a modificação nesse caso dos campos de `nome`, `endereçoImagem`, `descricao`, `genero`, `anoLançamento`, `plataforma`, `nota`, protegendo assim os campos mais sensíveis.
   O retorno é um HTTP 200 e o json do jogo modificado em caso de sucesso e um 404 com a mensagem `Jogo não encontrado.` caso o jogo não seja localizado.
 
   ```json
@@ -230,7 +230,11 @@ Dessa forma o banco de dados estará atualizado para rodar a aplicação.
   Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem `Usuario não encontrado.`. Caso o jogo não seja encontrando, retorna um HTTP 404 com a mensagem `Jogo não encontrado.`,
   e se o jogo não pertencer ao `id` do usuário, retorna um HTTP 400 com a mensagem `Jogo não pertence ao usuário.`. Se até aqui estiver tudo certo, e o jogo já estiver ativo, retorna um HTTP 400 com a mensagem `Jogo já está ativo.`.
 
-- `GET /JogosDoUsuario/{id}/todosJogos`: Retorna um HTTP 200 com a lista de todos os jogos ativos cadastrados do usuário.
+- `POST /JogosDoUsuario/{id}/inativarJogo/{idJogo}`: Inativa o jogo do usuário, retorna um HTTP 200 em caso de sucesso.
+  Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem `Usuario não encontrado.`. Caso o jogo não seja encontrando, retorna um HTTP 404 com a mensagem `Jogo não encontrado.`,
+  e se o jogo não pertencer ao `id` do usuário, retorna um HTTP 400 com a mensagem `Jogo não pertence ao usuário.`. Se até aqui estiver tudo certo, e o jogo já estiver inativo, retorna um HTTP 400 com a mensagem `Jogo já está inativo.`.
+
+- `GET /JogosDoUsuario/{id}/todosJogos`: Retorna um HTTP 200 com a lista de todos os jogos cadastrados do usuário.
   Caso o usuário não seja encontrando ou esteja inativo, retorna um HTTP 404 com a mensagem `Usuario não encontrado.`.
 
   ```json
