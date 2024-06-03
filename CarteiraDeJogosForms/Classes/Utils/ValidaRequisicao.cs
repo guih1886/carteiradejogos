@@ -1,4 +1,5 @@
-﻿namespace CarteiraDeJogosForms.Classes.Utils
+﻿
+namespace CarteiraDeJogosForms.Classes.Utils
 {
     public static class ValidaRequisicao
     {
@@ -15,7 +16,7 @@
             return "Ok";
         }
 
-        public static async Task<string> CadastrarJogo(HttpResponseMessage resposta)
+        public static async Task<string> CadastrarEAlterarJogo(HttpResponseMessage resposta)
         {
             string msg = await resposta.Content.ReadAsStringAsync();
             if (msg.Contains("O nome não pode ser vazio.")) return "Erro: O nome não pode ser vazio.";
