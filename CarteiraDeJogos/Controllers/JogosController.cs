@@ -78,7 +78,7 @@ namespace CarteiraDeJogos.Controllers
         [HttpDelete("{id}")]
         public ObjectResult DeletarJogo(int id)
         {
-            Jogos? jogo = _repository.BuscarJogoAtivo(id);
+            Jogos? jogo = _repository.BuscarJogo(id);
             if (jogo == null)
             {
                 httpResponse.StatusCode = 404;

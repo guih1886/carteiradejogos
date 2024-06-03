@@ -85,7 +85,7 @@ public class JogosDoUsuarioController : ControllerBase
     public ObjectResult RemoverJogoUsuario(int id, int idJogo)
     {
         Usuario? usuario = _usuariosRepository.BuscarUsuario(id);
-        Jogos? jogo = _jogosRepository.BuscarJogoAtivo(idJogo);
+        Jogos? jogo = _jogosRepository.BuscarJogo(idJogo);
         if (usuario == null)
         {
             httpResponse.StatusCode = 404;
@@ -132,7 +132,7 @@ public class JogosDoUsuarioController : ControllerBase
     [HttpPost("ativarJogo/{idJogo}")]
     public ObjectResult AtivarJogo(int id, int idJogo)
     {
-        Jogos? jogo = _jogosRepository.BuscarJogoInativo(idJogo);
+        Jogos? jogo = _jogosRepository.BuscarJogo(idJogo);
         if (jogo == null)
         {
             httpResponse.StatusCode = 404;

@@ -12,6 +12,5 @@ public interface IJogosRepository
     ReadJogosDto? AtualizarJogo(int id, UpdateJogosDto jogo);
     bool DeletarJogo(int id);
     ReadJogosDto AtivarJogo(int id, int idJogo);
-    Jogos? BuscarJogoAtivo(int id);
-    Jogos? BuscarJogoInativo(int id);
+    Jogos? BuscarJogo(int id);
 }

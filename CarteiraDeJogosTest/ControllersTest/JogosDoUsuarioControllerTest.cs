@@ -121,12 +121,9 @@ public class JogosDoUsuarioControllerTest
         _jogosDoUsuarioController.AdicionarJogoFavoritoUsuario(1, jogo.Id);
         ObjectResult resposta = _jogosDoUsuarioController.RemoverJogoUsuario(1, jogo.Id);
         ObjectResult respostaUsuario = _usuarioController.BuscarUsuarioPorId(1);
-        ReadUsuariosDto usuariosDto = JsonConvert.DeserializeObject<ReadUsuariosDto>(respostaUsuario.Value.ToString());
-        ObjectResult respostaJogo = _jogosController.BuscarJogoPorId(jogo.Id);
+        ReadUsuariosDto usuariosDto = JsonConvert.DeserializeObject<ReadUsuariosDto>(respostaUsuario.Value!.ToString()!)!;
         //Assert
         Assert.Equal(204, resposta.StatusCode);
-        Assert.Equal(404, respostaJogo.StatusCode);
-        Assert.Equal("Jogo não encontrado.", respostaJogo.Value.ToString());
         Assert.DoesNotContain(jogo.Id, usuariosDto.Jogos);
         Assert.DoesNotContain(jogo.Id, usuariosDto.JogosFavoritos);
         DeletarJogo(jogo);

@@ -36,7 +36,7 @@ namespace CarteiraDeJogos.Data.Repository
         }
         public ReadJogosDto? AtualizarJogo(int id, UpdateJogosDto jogoNovo)
         {
-            Jogos? jogo = BuscarJogoAtivo(id);
+            Jogos? jogo = BuscarJogo(id);
             if (jogo == null) return null;
             Jogos jogoAtualizado = _mapper.Map(jogoNovo, jogo)!;
             _context.SaveChanges();
@@ -44,25 +44,21 @@ namespace CarteiraDeJogos.Data.Repository
         }
         public List<ReadJogosDto> ListarJogos()
         {
-            List<ReadJogosDto> jogos = _mapper.Map<List<ReadJogosDto>>(_context.Jogos.Where(jogo => jogo.Ativo == 1).ToList());
+            List<ReadJogosDto> jogos = _mapper.Map<List<ReadJogosDto>>(_context.Jogos.ToList());
             return jogos;
         }
-        public Jogos? BuscarJogoAtivo(int id)
+        public Jogos? BuscarJogo(int id)
         {
-            return _context.Jogos.FirstOrDefault(j => j.Id == id && j.Ativo == 1);
-        }
-        public Jogos? BuscarJogoInativo(int id)
-        {
-            return _context.Jogos.FirstOrDefault(jogo => jogo.Id == id);
+            return _context.Jogos.FirstOrDefault(j => j.Id == id);
         }
         public ReadJogosDto BuscarJogoPorId(int id)
         {
-            Jogos? jogo = BuscarJogoAtivo(id);
+            Jogos? jogo = BuscarJogo(id);
             return _mapper.Map<ReadJogosDto>(jogo);
         }
         public bool DeletarJogo(int id)
         {
-            Jogos? jogo = BuscarJogoInativo(id);
+            Jogos? jogo = BuscarJogo(id);
             if (jogo == null) return false;
             //Caso encontre o jogo, muda ele para inativo, e retira ele das listas dos usuários.
             Usuario usuario = _usuarioRepository.BuscarUsuario(jogo.UsuarioId)!;
@@ -74,7 +70,7 @@ namespace CarteiraDeJogos.Data.Repository
         }
         public ReadJogosDto AtivarJogo(int id, int idJogo)
         {           
-            Jogos jogo = BuscarJogoInativo(idJogo)!;
+            Jogos jogo = BuscarJogo(idJogo)!;
             jogo.Ativo = 1;
             _context.SaveChanges();
             _usuarioRepository.AdicionarJogoUsuario(id, idJogo);
