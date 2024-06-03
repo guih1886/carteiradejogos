@@ -59,7 +59,7 @@ namespace CarteiraDeJogosForms.Forms
         }
         private void cadastrarJogoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form cadastrarJogo = new Form_CadastrarJogo(_httpClientBuilder, usuarioId);
+            Form cadastrarJogo = new Form_CadastroDeJogos(_httpClientBuilder, usuarioId);
             cadastrarJogo.Show();
         }
     }

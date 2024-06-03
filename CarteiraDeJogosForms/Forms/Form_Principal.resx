@@ -122,13 +122,13 @@
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="todosOsJogosToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>153, 22</value>
   </data>
   <data name="todosOsJogosToolStripMenuItem.Text" xml:space="preserve">
     <value>Todos os Jogos</value>
   </data>
   <data name="jogosFavoritosToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
+    <value>153, 22</value>
   </data>
   <data name="jogosFavoritosToolStripMenuItem.Text" xml:space="preserve">
     <value>Jogos favoritos</value>
@@ -144,18 +144,6 @@
   </data>
   <data name="cadastrarJogoToolStripMenuItem.Text" xml:space="preserve">
     <value>Cadastro de jogos</value>
-  </data>
-  <data name="editarJogoToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
-  </data>
-  <data name="editarJogoToolStripMenuItem.Text" xml:space="preserve">
-    <value>Editar Jogo</value>
-  </data>
-  <data name="inativarJogoToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>180, 22</value>
-  </data>
-  <data name="inativarJogoToolStripMenuItem.Text" xml:space="preserve">
-    <value>Inativar Jogo</value>
   </data>
   <data name="deletarJogoToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>180, 22</value>
@@ -314,18 +302,6 @@
     <value>cadastrarJogoToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;cadastrarJogoToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;editarJogoToolStripMenuItem.Name" xml:space="preserve">
-    <value>editarJogoToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;editarJogoToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;inativarJogoToolStripMenuItem.Name" xml:space="preserve">
-    <value>inativarJogoToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;inativarJogoToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;deletarJogoToolStripMenuItem.Name" xml:space="preserve">

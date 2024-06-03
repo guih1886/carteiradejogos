@@ -35,8 +35,6 @@
             todosOsJogosToolStripMenuItem = new ToolStripMenuItem();
             jogosFavoritosToolStripMenuItem = new ToolStripMenuItem();
             cadastrarJogoToolStripMenuItem = new ToolStripMenuItem();
-            editarJogoToolStripMenuItem = new ToolStripMenuItem();
-            inativarJogoToolStripMenuItem = new ToolStripMenuItem();
             deletarJogoToolStripMenuItem = new ToolStripMenuItem();
             perfilToolStripMenuItem = new ToolStripMenuItem();
             sairToolStripMenuItem = new ToolStripMenuItem();
@@ -52,7 +50,7 @@
             // 
             // primeiroToolStripMenuItem
             // 
-            primeiroToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { meusJogosToolStripMenuItem, cadastrarJogoToolStripMenuItem, editarJogoToolStripMenuItem, inativarJogoToolStripMenuItem, deletarJogoToolStripMenuItem });
+            primeiroToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { meusJogosToolStripMenuItem, cadastrarJogoToolStripMenuItem, deletarJogoToolStripMenuItem });
             primeiroToolStripMenuItem.Name = "primeiroToolStripMenuItem";
             resources.ApplyResources(primeiroToolStripMenuItem, "primeiroToolStripMenuItem");
             // 
@@ -79,16 +77,6 @@
             cadastrarJogoToolStripMenuItem.Name = "cadastrarJogoToolStripMenuItem";
             resources.ApplyResources(cadastrarJogoToolStripMenuItem, "cadastrarJogoToolStripMenuItem");
             cadastrarJogoToolStripMenuItem.Click += cadastrarJogoToolStripMenuItem_Click;
-            // 
-            // editarJogoToolStripMenuItem
-            // 
-            editarJogoToolStripMenuItem.Name = "editarJogoToolStripMenuItem";
-            resources.ApplyResources(editarJogoToolStripMenuItem, "editarJogoToolStripMenuItem");
-            // 
-            // inativarJogoToolStripMenuItem
-            // 
-            inativarJogoToolStripMenuItem.Name = "inativarJogoToolStripMenuItem";
-            resources.ApplyResources(inativarJogoToolStripMenuItem, "inativarJogoToolStripMenuItem");
             // 
             // deletarJogoToolStripMenuItem
             // 
@@ -131,8 +119,6 @@
         private ToolStripMenuItem todosOsJogosToolStripMenuItem;
         private ToolStripMenuItem jogosFavoritosToolStripMenuItem;
         private ToolStripMenuItem cadastrarJogoToolStripMenuItem;
-        private ToolStripMenuItem editarJogoToolStripMenuItem;
-        private ToolStripMenuItem inativarJogoToolStripMenuItem;
         private ToolStripMenuItem deletarJogoToolStripMenuItem;
         private ToolStripMenuItem perfilToolStripMenuItem;
     }
