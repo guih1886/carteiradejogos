@@ -13,4 +13,5 @@ public interface IJogosRepository
     bool DeletarJogo(int id);
     ReadJogosDto AtivarJogo(int id, int idJogo);
     Jogos? BuscarJogo(int id);
+    bool InativarJogo(int id, int idJogo);
 }

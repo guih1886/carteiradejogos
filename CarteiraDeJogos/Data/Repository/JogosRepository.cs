@@ -69,13 +69,28 @@ namespace CarteiraDeJogos.Data.Repository
             return true;
         }
         public ReadJogosDto AtivarJogo(int id, int idJogo)
-        {           
+        {
             Jogos jogo = BuscarJogo(idJogo)!;
             jogo.Ativo = 1;
             _context.SaveChanges();
             _usuarioRepository.AdicionarJogoUsuario(id, idJogo);
             ReadJogosDto jogodto = _mapper.Map<ReadJogosDto>(jogo);
             return jogodto;
+        }
+
+        public bool InativarJogo(int id, int idJogo)
+        {
+            try
+            {
+                Jogos jogo = BuscarJogo(idJogo)!;
+                jogo.Ativo = 0;
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

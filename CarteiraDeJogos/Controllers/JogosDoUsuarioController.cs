@@ -164,4 +164,43 @@ public class JogosDoUsuarioController : ControllerBase
         httpResponse.Value = json;
         return httpResponse;
     }
+    [HttpPost("inativarJogo/{idJogo}")]
+    public ObjectResult InativarJogo(int id, int idJogo)
+    {
+        Jogos? jogo = _jogosRepository.BuscarJogo(idJogo);
+        if (jogo == null)
+        {
+            httpResponse.StatusCode = 404;
+            httpResponse.Value = "Jogo não encontrado.";
+            return httpResponse;
+        }
+        Usuario? buscaUsuario = _usuariosRepository.BuscarUsuario(id);
+        if (buscaUsuario == null)
+        {
+            httpResponse.StatusCode = 404;
+            httpResponse.Value = "Usuário não encontrado.";
+            return httpResponse;
+        }
+        if (jogo.UsuarioId != id)
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = "Jogo não pertence ao usuário.";
+            return httpResponse;
+        }
+        if (jogo.Ativo == 0)
+        {
+            httpResponse.StatusCode = 400;
+            httpResponse.Value = "Jogo já está inativo.";
+            return httpResponse;
+        }
+        if (_jogosRepository.InativarJogo(id, idJogo))
+        {
+            httpResponse.StatusCode = 200;
+            httpResponse.Value = "Jogo inativado com sucesso.";
+            return httpResponse;
+        }
+        httpResponse.StatusCode = 500;
+        httpResponse.Value = "Erro ao inativar o jogo.";
+        return httpResponse;
+    }
 }
