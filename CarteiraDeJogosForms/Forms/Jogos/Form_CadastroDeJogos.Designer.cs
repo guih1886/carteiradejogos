@@ -1,6 +1,6 @@
 ﻿namespace CarteiraDeJogosForms.Forms.Jogos
 {
-    partial class Form_CadastrarJogo
+    partial class Form_CadastroDeJogos
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_CadastrarJogo));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_CadastroDeJogos));
             Gpb_DadosJogos = new GroupBox();
             Lbl_Erro = new Label();
             Mtb_Nota = new MaskedTextBox();
@@ -52,9 +52,14 @@
             toolStripSeparator1 = new ToolStripSeparator();
             toolStripSalvar = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
+            toolStripBuscar = new ToolStripButton();
+            toolStripSeparator3 = new ToolStripSeparator();
             toolStripReset = new ToolStripButton();
+            Gpb_Flags = new GroupBox();
+            Ckb_Ativo = new CheckBox();
             Gpb_DadosJogos.SuspendLayout();
             toolStrip1.SuspendLayout();
+            Gpb_Flags.SuspendLayout();
             SuspendLayout();
             // 
             // Gpb_DadosJogos
@@ -77,9 +82,9 @@
             Gpb_DadosJogos.Controls.Add(Lbl_Descricao);
             Gpb_DadosJogos.Controls.Add(Txt_Nome);
             Gpb_DadosJogos.Controls.Add(Lbl_Nome);
-            Gpb_DadosJogos.Location = new Point(12, 28);
+            Gpb_DadosJogos.Location = new Point(12, 85);
             Gpb_DadosJogos.Name = "Gpb_DadosJogos";
-            Gpb_DadosJogos.Size = new Size(620, 337);
+            Gpb_DadosJogos.Size = new Size(620, 342);
             Gpb_DadosJogos.TabIndex = 1;
             Gpb_DadosJogos.TabStop = false;
             // 
@@ -251,7 +256,7 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripNovo, toolStripSeparator1, toolStripSalvar, toolStripSeparator2, toolStripReset });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripNovo, toolStripSeparator1, toolStripSalvar, toolStripSeparator2, toolStripBuscar, toolStripSeparator3, toolStripReset });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(644, 25);
@@ -287,6 +292,21 @@
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(6, 25);
             // 
+            // toolStripBuscar
+            // 
+            toolStripBuscar.Image = Properties.Resources.buscar;
+            toolStripBuscar.ImageTransparentColor = Color.Magenta;
+            toolStripBuscar.Name = "toolStripBuscar";
+            toolStripBuscar.Size = new Size(62, 22);
+            toolStripBuscar.Text = "Buscar";
+            toolStripBuscar.ToolTipText = "Abre a tela de busca de jogos";
+            toolStripBuscar.Click += toolStripBuscar_Click;
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(6, 25);
+            // 
             // toolStripReset
             // 
             toolStripReset.Image = Properties.Resources.cancelar;
@@ -297,24 +317,46 @@
             toolStripReset.ToolTipText = "Limpar";
             toolStripReset.Click += toolStripReset_Click;
             // 
+            // Gpb_Flags
+            // 
+            Gpb_Flags.Controls.Add(Ckb_Ativo);
+            Gpb_Flags.Location = new Point(12, 28);
+            Gpb_Flags.Name = "Gpb_Flags";
+            Gpb_Flags.Size = new Size(620, 51);
+            Gpb_Flags.TabIndex = 3;
+            Gpb_Flags.TabStop = false;
+            // 
+            // Ckb_Ativo
+            // 
+            Ckb_Ativo.AutoSize = true;
+            Ckb_Ativo.Enabled = false;
+            Ckb_Ativo.Location = new Point(9, 20);
+            Ckb_Ativo.Name = "Ckb_Ativo";
+            Ckb_Ativo.Size = new Size(54, 19);
+            Ckb_Ativo.TabIndex = 0;
+            Ckb_Ativo.Text = "Ativo";
+            Ckb_Ativo.UseVisualStyleBackColor = true;
+            // 
             // Form_CadastrarJogo
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(644, 377);
+            ClientSize = new Size(644, 439);
+            Controls.Add(Gpb_Flags);
             Controls.Add(toolStrip1);
             Controls.Add(Gpb_DadosJogos);
             HelpButton = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MaximumSize = new Size(660, 416);
             MinimumSize = new Size(660, 416);
             Name = "Form_CadastrarJogo";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Cadastrar Jogo";
+            Text = "Cadastro de jogos";
             Gpb_DadosJogos.ResumeLayout(false);
             Gpb_DadosJogos.PerformLayout();
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
+            Gpb_Flags.ResumeLayout(false);
+            Gpb_Flags.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -345,5 +387,9 @@
         private MaskedTextBox Mtb_Nota;
         private Label Lbl_Nota;
         private Label Lbl_Erro;
+        private ToolStripButton toolStripBuscar;
+        private ToolStripSeparator toolStripSeparator3;
+        private GroupBox Gpb_Flags;
+        private CheckBox Ckb_Ativo;
     }
 }
