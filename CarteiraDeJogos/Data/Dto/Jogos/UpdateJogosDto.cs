@@ -18,6 +18,7 @@ public class UpdateJogosDto
     }
 
     [Required(ErrorMessage = "A imagem não pode ser vazio.")]
+    [RegularExpression("^(https?:\\/\\/)?.*$", ErrorMessage = "A url da imagem é inválida.")]
     [JsonPropertyName("enderecoImagem")]
     public string EnderecoImagem { get; set; }
 
@@ -39,5 +40,6 @@ public class UpdateJogosDto
     [JsonPropertyName("plataforma")]
     public string Plataforma { get; set; }
     [JsonPropertyName("nota")]
+    [RegularExpression("^(10|[0-9])$", ErrorMessage = "Nota deve ser de 0 a 10.")]
     public int Nota { get; set; }
 }
