@@ -185,6 +185,48 @@ public class JogosDoUsuarioControllerTest
         Assert.Equal("Jogo não está na lista.", resposta.Value.ToString());
         DeletarJogo(jogo);
     }
+    [Fact]
+    public void InativaJogoCorretoTest()
+    {
+        //Arrange
+        ReadJogosDto jogo = CriarJogo();
+        //Act
+        ObjectResult resposta = _jogosDoUsuarioController.InativarJogo(1, jogo.Id);
+        //Assert
+        Assert.Equal(200, resposta.StatusCode);
+        DeletarJogo(jogo);
+    }
+    [Fact]
+    public void NaoInativaJogoIncorretoTest()
+    {
+        //Arrange
+        //Act
+        ObjectResult resposta = _jogosDoUsuarioController.InativarJogo(1, 999);
+        //Assert
+        Assert.Equal(404, resposta.StatusCode);
+    }
+    [Fact]
+    public void NaoInativaJogoUsuarioIncorretoTest()
+    {
+        //Arrange
+        //Act
+        ObjectResult resposta = _jogosDoUsuarioController.InativarJogo(99, 99);
+        //Assert
+        Assert.Equal(404, resposta.StatusCode);
+    }
+    [Fact]
+    public void NaoInativaJogoJaInativoTest()
+    {
+        //Arrange
+        ReadJogosDto jogo = CriarJogo();
+        //Act
+        ObjectResult resposta = _jogosDoUsuarioController.InativarJogo(1, jogo.Id);
+        ObjectResult resposta2 = _jogosDoUsuarioController.InativarJogo(1, jogo.Id);
+        //Assert
+        Assert.Equal(400, resposta2.StatusCode);
+        Assert.Equal("Jogo já está inativo.", resposta2.Value);
+        DeletarJogo(jogo);
+    }
 
     private ReadJogosDto CriarJogo()
     {
