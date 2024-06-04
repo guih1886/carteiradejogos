@@ -57,6 +57,7 @@
             Dgv_Jogos.Location = new Point(0, 0);
             Dgv_Jogos.Name = "Dgv_Jogos";
             Dgv_Jogos.ReadOnly = true;
+            Dgv_Jogos.ScrollBars = ScrollBars.Vertical;
             Dgv_Jogos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             Dgv_Jogos.Size = new Size(794, 290);
             Dgv_Jogos.TabIndex = 1;
