@@ -53,18 +53,25 @@
             toolStripSalvar = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
             toolStripBuscar = new ToolStripButton();
-            toolStripSeparator3 = new ToolStripSeparator();
+            toolStripSeparator4 = new ToolStripSeparator();
             toolStripReset = new ToolStripButton();
+            toolStripSeparator3 = new ToolStripSeparator();
+            toolStripFavoritos = new ToolStripButton();
             Gpb_Flags = new GroupBox();
+            Ckb_Favorito = new CheckBox();
             Ckb_Ativo = new CheckBox();
+            Pic_Jogo = new PictureBox();
+            toolStripSeparator5 = new ToolStripSeparator();
+            toolStripDeletar = new ToolStripButton();
             Gpb_DadosJogos.SuspendLayout();
             toolStrip1.SuspendLayout();
             Gpb_Flags.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)Pic_Jogo).BeginInit();
             SuspendLayout();
             // 
             // Gpb_DadosJogos
             // 
-            Gpb_DadosJogos.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            Gpb_DadosJogos.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             Gpb_DadosJogos.Controls.Add(Lbl_Erro);
             Gpb_DadosJogos.Controls.Add(Mtb_Nota);
             Gpb_DadosJogos.Controls.Add(Lbl_Nota);
@@ -82,9 +89,10 @@
             Gpb_DadosJogos.Controls.Add(Lbl_Descricao);
             Gpb_DadosJogos.Controls.Add(Txt_Nome);
             Gpb_DadosJogos.Controls.Add(Lbl_Nome);
-            Gpb_DadosJogos.Location = new Point(12, 85);
+            Gpb_DadosJogos.Location = new Point(12, 264);
+            Gpb_DadosJogos.MinimumSize = new Size(620, 352);
             Gpb_DadosJogos.Name = "Gpb_DadosJogos";
-            Gpb_DadosJogos.Size = new Size(620, 342);
+            Gpb_DadosJogos.Size = new Size(620, 352);
             Gpb_DadosJogos.TabIndex = 1;
             Gpb_DadosJogos.TabStop = false;
             // 
@@ -205,6 +213,7 @@
             Txt_Imagem.ReadOnly = true;
             Txt_Imagem.Size = new Size(605, 23);
             Txt_Imagem.TabIndex = 5;
+            Txt_Imagem.Leave += Txt_Imagem_Leave;
             // 
             // Lbl_Imagem
             // 
@@ -256,10 +265,10 @@
             // 
             // toolStrip1
             // 
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripNovo, toolStripSeparator1, toolStripSalvar, toolStripSeparator2, toolStripBuscar, toolStripSeparator3, toolStripReset });
+            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripNovo, toolStripSeparator1, toolStripSalvar, toolStripSeparator2, toolStripBuscar, toolStripSeparator4, toolStripFavoritos, toolStripSeparator3, toolStripReset, toolStripSeparator5, toolStripDeletar });
             toolStrip1.Location = new Point(0, 0);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(644, 25);
+            toolStrip1.Size = new Size(641, 25);
             toolStrip1.TabIndex = 2;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -302,10 +311,10 @@
             toolStripBuscar.ToolTipText = "Abre a tela de busca de jogos";
             toolStripBuscar.Click += toolStripBuscar_Click;
             // 
-            // toolStripSeparator3
+            // toolStripSeparator4
             // 
-            toolStripSeparator3.Name = "toolStripSeparator3";
-            toolStripSeparator3.Size = new Size(6, 25);
+            toolStripSeparator4.Name = "toolStripSeparator4";
+            toolStripSeparator4.Size = new Size(6, 25);
             // 
             // toolStripReset
             // 
@@ -317,14 +326,41 @@
             toolStripReset.ToolTipText = "Limpar";
             toolStripReset.Click += toolStripReset_Click;
             // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(6, 25);
+            // 
+            // toolStripFavoritos
+            // 
+            toolStripFavoritos.Image = Properties.Resources.favorito;
+            toolStripFavoritos.ImageTransparentColor = Color.Magenta;
+            toolStripFavoritos.Name = "toolStripFavoritos";
+            toolStripFavoritos.Size = new Size(75, 22);
+            toolStripFavoritos.Text = "Favoritos";
+            toolStripFavoritos.Click += toolStripFavoritos_Click;
+            // 
             // Gpb_Flags
             // 
+            Gpb_Flags.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            Gpb_Flags.Controls.Add(Ckb_Favorito);
             Gpb_Flags.Controls.Add(Ckb_Ativo);
-            Gpb_Flags.Location = new Point(12, 28);
+            Gpb_Flags.Location = new Point(305, 207);
             Gpb_Flags.Name = "Gpb_Flags";
-            Gpb_Flags.Size = new Size(620, 51);
+            Gpb_Flags.Size = new Size(324, 51);
             Gpb_Flags.TabIndex = 3;
             Gpb_Flags.TabStop = false;
+            // 
+            // Ckb_Favorito
+            // 
+            Ckb_Favorito.AutoSize = true;
+            Ckb_Favorito.Enabled = false;
+            Ckb_Favorito.Location = new Point(69, 20);
+            Ckb_Favorito.Name = "Ckb_Favorito";
+            Ckb_Favorito.Size = new Size(69, 19);
+            Ckb_Favorito.TabIndex = 1;
+            Ckb_Favorito.Text = "Favorito";
+            Ckb_Favorito.UseVisualStyleBackColor = true;
             // 
             // Ckb_Ativo
             // 
@@ -337,18 +373,47 @@
             Ckb_Ativo.Text = "Ativo";
             Ckb_Ativo.UseVisualStyleBackColor = true;
             // 
-            // Form_CadastrarJogo
+            // Pic_Jogo
+            // 
+            Pic_Jogo.BorderStyle = BorderStyle.Fixed3D;
+            Pic_Jogo.ErrorImage = null;
+            Pic_Jogo.ImageLocation = "";
+            Pic_Jogo.InitialImage = null;
+            Pic_Jogo.Location = new Point(12, 28);
+            Pic_Jogo.Name = "Pic_Jogo";
+            Pic_Jogo.Size = new Size(287, 230);
+            Pic_Jogo.SizeMode = PictureBoxSizeMode.StretchImage;
+            Pic_Jogo.TabIndex = 4;
+            Pic_Jogo.TabStop = false;
+            // 
+            // toolStripSeparator5
+            // 
+            toolStripSeparator5.Name = "toolStripSeparator5";
+            toolStripSeparator5.Size = new Size(6, 25);
+            // 
+            // toolStripDeletar
+            // 
+            toolStripDeletar.Image = Properties.Resources.excluir;
+            toolStripDeletar.ImageTransparentColor = Color.Magenta;
+            toolStripDeletar.Name = "toolStripDeletar";
+            toolStripDeletar.Size = new Size(62, 22);
+            toolStripDeletar.Text = "Excluir";
+            toolStripDeletar.Click += toolStripDeletar_Click;
+            // 
+            // Form_CadastroDeJogos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(644, 439);
+            ClientSize = new Size(641, 628);
+            Controls.Add(Pic_Jogo);
             Controls.Add(Gpb_Flags);
             Controls.Add(toolStrip1);
             Controls.Add(Gpb_DadosJogos);
             HelpButton = true;
             Icon = (Icon)resources.GetObject("$this.Icon");
-            MinimumSize = new Size(660, 416);
-            Name = "Form_CadastrarJogo";
+            MaximumSize = new Size(657, 667);
+            MinimumSize = new Size(657, 667);
+            Name = "Form_CadastroDeJogos";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Cadastro de jogos";
             Gpb_DadosJogos.ResumeLayout(false);
@@ -357,6 +422,7 @@
             toolStrip1.PerformLayout();
             Gpb_Flags.ResumeLayout(false);
             Gpb_Flags.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)Pic_Jogo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -388,8 +454,14 @@
         private Label Lbl_Nota;
         private Label Lbl_Erro;
         private ToolStripButton toolStripBuscar;
-        private ToolStripSeparator toolStripSeparator3;
         private GroupBox Gpb_Flags;
         private CheckBox Ckb_Ativo;
+        private ToolStripSeparator toolStripSeparator4;
+        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripButton toolStripFavoritos;
+        private CheckBox Ckb_Favorito;
+        private PictureBox Pic_Jogo;
+        private ToolStripSeparator toolStripSeparator5;
+        private ToolStripButton toolStripDeletar;
     }
 }
