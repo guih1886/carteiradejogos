@@ -35,7 +35,6 @@
             todosOsJogosToolStripMenuItem = new ToolStripMenuItem();
             jogosFavoritosToolStripMenuItem = new ToolStripMenuItem();
             cadastrarJogoToolStripMenuItem = new ToolStripMenuItem();
-            deletarJogoToolStripMenuItem = new ToolStripMenuItem();
             perfilToolStripMenuItem = new ToolStripMenuItem();
             sairToolStripMenuItem = new ToolStripMenuItem();
             Mnu_Menu.SuspendLayout();
@@ -43,20 +42,21 @@
             // 
             // Mnu_Menu
             // 
-            Mnu_Menu.BackColor = SystemColors.GradientActiveCaption;
-            Mnu_Menu.Items.AddRange(new ToolStripItem[] { primeiroToolStripMenuItem, perfilToolStripMenuItem, sairToolStripMenuItem });
+            Mnu_Menu.BackColor = SystemColors.Control;
             resources.ApplyResources(Mnu_Menu, "Mnu_Menu");
+            Mnu_Menu.Items.AddRange(new ToolStripItem[] { primeiroToolStripMenuItem, perfilToolStripMenuItem, sairToolStripMenuItem });
             Mnu_Menu.Name = "Mnu_Menu";
             // 
             // primeiroToolStripMenuItem
             // 
-            primeiroToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { meusJogosToolStripMenuItem, cadastrarJogoToolStripMenuItem, deletarJogoToolStripMenuItem });
+            primeiroToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { meusJogosToolStripMenuItem, cadastrarJogoToolStripMenuItem });
             primeiroToolStripMenuItem.Name = "primeiroToolStripMenuItem";
             resources.ApplyResources(primeiroToolStripMenuItem, "primeiroToolStripMenuItem");
             // 
             // meusJogosToolStripMenuItem
             // 
             meusJogosToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { todosOsJogosToolStripMenuItem, jogosFavoritosToolStripMenuItem });
+            meusJogosToolStripMenuItem.Image = Properties.Resources.dados;
             meusJogosToolStripMenuItem.Name = "meusJogosToolStripMenuItem";
             resources.ApplyResources(meusJogosToolStripMenuItem, "meusJogosToolStripMenuItem");
             // 
@@ -68,20 +68,17 @@
             // 
             // jogosFavoritosToolStripMenuItem
             // 
+            jogosFavoritosToolStripMenuItem.Image = Properties.Resources.favorito;
             jogosFavoritosToolStripMenuItem.Name = "jogosFavoritosToolStripMenuItem";
             resources.ApplyResources(jogosFavoritosToolStripMenuItem, "jogosFavoritosToolStripMenuItem");
             jogosFavoritosToolStripMenuItem.Click += jogosFavoritosToolStripMenuItem_Click;
             // 
             // cadastrarJogoToolStripMenuItem
             // 
+            cadastrarJogoToolStripMenuItem.Image = Properties.Resources.cadastros;
             cadastrarJogoToolStripMenuItem.Name = "cadastrarJogoToolStripMenuItem";
             resources.ApplyResources(cadastrarJogoToolStripMenuItem, "cadastrarJogoToolStripMenuItem");
             cadastrarJogoToolStripMenuItem.Click += cadastrarJogoToolStripMenuItem_Click;
-            // 
-            // deletarJogoToolStripMenuItem
-            // 
-            deletarJogoToolStripMenuItem.Name = "deletarJogoToolStripMenuItem";
-            resources.ApplyResources(deletarJogoToolStripMenuItem, "deletarJogoToolStripMenuItem");
             // 
             // perfilToolStripMenuItem
             // 
@@ -99,7 +96,9 @@
             // 
             resources.ApplyResources(this, "$this");
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.ActiveBorder;
             Controls.Add(Mnu_Menu);
+            DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MainMenuStrip = Mnu_Menu;
             Name = "Form_Principal";
@@ -119,7 +118,6 @@
         private ToolStripMenuItem todosOsJogosToolStripMenuItem;
         private ToolStripMenuItem jogosFavoritosToolStripMenuItem;
         private ToolStripMenuItem cadastrarJogoToolStripMenuItem;
-        private ToolStripMenuItem deletarJogoToolStripMenuItem;
         private ToolStripMenuItem perfilToolStripMenuItem;
     }
 }

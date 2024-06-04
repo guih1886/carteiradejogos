@@ -16,6 +16,7 @@ namespace CarteiraDeJogosForms.Forms
         private int usuarioId = 0;
         private HttpClientBuilder _httpClientBuilder;
         private IConfiguration _configuration;
+        public DialogResult dialogResult;
 
         public Form_Principal(Form login, string jwt)
         {
@@ -39,6 +40,7 @@ namespace CarteiraDeJogosForms.Forms
         }
         private void sairToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            dialogResult = DialogResult.Cancel;
             loginForm.Show();
             this.Close();
         }
@@ -49,7 +51,7 @@ namespace CarteiraDeJogosForms.Forms
         }
         private void jogosFavoritosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form jogosFavoritos = new Form_JogosFavoritos(_httpClientBuilder, usuarioId, usuarioEmail);
+            Form jogosFavoritos = new Form_JogosFavoritos(_httpClientBuilder, usuarioId);
             jogosFavoritos.Show();
         }
         private void perfilToolStripMenuItem_Click(object sender, EventArgs e)
@@ -58,6 +60,12 @@ namespace CarteiraDeJogosForms.Forms
             perfil.ShowDialog();
         }
         private void cadastrarJogoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form cadastrarJogo = new Form_CadastroDeJogos(_httpClientBuilder, usuarioId);
+            cadastrarJogo.Show();
+        }
+
+        private void panel1_Click(object sender, EventArgs e)
         {
             Form cadastrarJogo = new Form_CadastroDeJogos(_httpClientBuilder, usuarioId);
             cadastrarJogo.Show();
