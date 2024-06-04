@@ -6,7 +6,7 @@ namespace CarteiraDeJogos.Data.Dto.Jogos;
 
 public class UpdateJogosDto
 {
-    public UpdateJogosDto(string enderecoImagem, string nome, string descricao, Genero genero, string anoLancamento, string plataforma, int nota)
+    public UpdateJogosDto(string enderecoImagem, string nome, string descricao, Genero genero, string anoLancamento, string plataforma, int nota, int ativo)
     {
         Nome = nome;
         EnderecoImagem = enderecoImagem;
@@ -15,6 +15,7 @@ public class UpdateJogosDto
         AnoLancamento = anoLancamento;
         Plataforma = plataforma;
         Nota = nota;
+        Ativo = ativo;
     }
 
     [Required(ErrorMessage = "A imagem não pode ser vazio.")]
@@ -42,4 +43,6 @@ public class UpdateJogosDto
     [JsonPropertyName("nota")]
     [RegularExpression("^(10|[0-9])$", ErrorMessage = "Nota deve ser de 0 a 10.")]
     public int Nota { get; set; }
+    [JsonPropertyName("ativo")]
+    public int Ativo { get; set; }
 }
