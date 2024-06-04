@@ -50,14 +50,19 @@
             // 
             Dgv_JogosFavoritos.AllowUserToAddRows = false;
             Dgv_JogosFavoritos.AllowUserToDeleteRows = false;
+            Dgv_JogosFavoritos.AllowUserToOrderColumns = true;
+            Dgv_JogosFavoritos.AllowUserToResizeColumns = false;
+            Dgv_JogosFavoritos.AllowUserToResizeRows = false;
             Dgv_JogosFavoritos.AutoGenerateColumns = false;
             Dgv_JogosFavoritos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             Dgv_JogosFavoritos.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nomeDataGridViewTextBoxColumn, descricaoDataGridViewTextBoxColumn, generoDataGridViewTextBoxColumn, enderecoImagemDataGridViewTextBoxColumn, anoLancamentoDataGridViewTextBoxColumn, plataformaDataGridViewTextBoxColumn, notaDataGridViewTextBoxColumn, ativoDataGridViewTextBoxColumn });
             Dgv_JogosFavoritos.DataSource = readJogosDtoBindingSource;
             Dgv_JogosFavoritos.Location = new Point(0, 0);
+            Dgv_JogosFavoritos.MultiSelect = false;
             Dgv_JogosFavoritos.Name = "Dgv_JogosFavoritos";
             Dgv_JogosFavoritos.ReadOnly = true;
-            Dgv_JogosFavoritos.Size = new Size(1108, 535);
+            Dgv_JogosFavoritos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            Dgv_JogosFavoritos.Size = new Size(1093, 535);
             Dgv_JogosFavoritos.TabIndex = 0;
             // 
             // idDataGridViewTextBoxColumn
@@ -145,10 +150,12 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1108, 559);
+            ClientSize = new Size(1095, 559);
             Controls.Add(Lbl_Total);
             Controls.Add(Dgv_JogosFavoritos);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximumSize = new Size(1111, 598);
+            MinimumSize = new Size(1111, 598);
             Name = "Form_JogosFavoritos";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Meus Jogos Favoritos";

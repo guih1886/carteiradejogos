@@ -7,13 +7,11 @@ namespace CarteiraDeJogosForms.Forms.Jogos;
 public partial class Form_JogosFavoritos : Form
 {
     private int usuarioId;
-    private string usuarioEmail;
     private HttpClientBuilder _httpClientBuilder;
-    public Form_JogosFavoritos(HttpClientBuilder httpCliente, int usuarioId, string usuarioEmail)
+    public Form_JogosFavoritos(HttpClientBuilder httpCliente, int usuarioId)
     {
         _httpClientBuilder = httpCliente;
         this.usuarioId = usuarioId;
-        this.usuarioEmail = usuarioEmail;
         PreencherListaDeJogosDoUsuario();
         InitializeComponent();
     }
@@ -39,7 +37,7 @@ public partial class Form_JogosFavoritos : Form
                     jogos.Add(jogo);
                 }
             }
-            Dgv_JogosFavoritos.DataSource = jogos;
+            Dgv_JogosFavoritos.DataSource = jogos.OrderBy(j => j.Id).ToList();
             Lbl_Total.Text = $"{jogos.Count} jogos marcados como favorito.";
             if (jogos.Count == 1) Lbl_Total.Text = $"{jogos.Count} jogos marcados como favorito.";
         }
