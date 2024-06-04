@@ -82,6 +82,7 @@ public partial class Form_CadastroDeJogos : Form
         AtivarFormulario();
         Ckb_Ativo.Enabled = true;
         if (jogo.Ativo == 1) Ckb_Ativo.Checked = true;
+        if (jogo.Ativo == 0) Ckb_Ativo.Checked = false;
         Txt_Nome.Text = jogo.Nome;
         Txt_Descricao.Text = jogo.Descricao;
         Txt_Imagem.Text = jogo.EnderecoImagem;
@@ -144,6 +145,7 @@ public partial class Form_CadastroDeJogos : Form
             else
             {
                 MessageBox.Show("Jogo Alterado com sucesso.", "Cadastro de Jogos", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 LimparFormulario();
                 DesativarFormulario();
             }
