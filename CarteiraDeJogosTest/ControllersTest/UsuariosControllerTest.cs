@@ -26,7 +26,7 @@ namespace CarteiraDeJogosTest.ControllersTest
             CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme8@gmail.com", "1234", "1234");
             //Act
             var resposta = controller.CadastrarUsuario(novoUsuario);
-            ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value.ToString());
+            ReadUsuariosDto usuario = Deserializar<ReadUsuariosDto>(resposta);
             //Assert
             _outputHelper.WriteLine(usuario.ToString());
             Assert.Equal(201, resposta.StatusCode);
@@ -41,7 +41,7 @@ namespace CarteiraDeJogosTest.ControllersTest
             CreateUsuarioDto novoUsuario2 = new CreateUsuarioDto("Malaquias José", "guilherme2@gmail.com", "1234", "1234");
             //Act
             var resposta = controller.CadastrarUsuario(novoUsuario);
-            ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value.ToString());
+            ReadUsuariosDto usuario = Deserializar<ReadUsuariosDto>(resposta);
             var resposta2 = controller.CadastrarUsuario(novoUsuario2);
             //Assert
             Assert.Equal(400, resposta.StatusCode);
@@ -78,7 +78,7 @@ namespace CarteiraDeJogosTest.ControllersTest
             UpdateUsuariosDto usuarioAlterado = new UpdateUsuariosDto("Usuario Alterado", [1, 2, 5, 8], [1, 2]);
             //Act
             ObjectResult resposta = controller.AlterarUsuario(usuario.Id, usuarioAlterado);
-            ReadUsuariosDto alterado = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value.ToString());
+            ReadUsuariosDto alterado = Deserializar<ReadUsuariosDto>(resposta);
             _outputHelper.WriteLine(alterado.ToString());
             //Assert
             Assert.Equal(200, resposta.StatusCode);
@@ -92,7 +92,7 @@ namespace CarteiraDeJogosTest.ControllersTest
             UpdateUsuariosDto novoUsuario = new UpdateUsuariosDto("Usuario Alterado", [1, 2, 5, 8], [1, 2]);
             //Act
             ObjectResult resposta = controller.AlterarUsuario(0, novoUsuario);
-            _outputHelper.WriteLine(resposta.Value.ToString());
+            _outputHelper.WriteLine(resposta.Value!.ToString());
             //Assert
             Assert.Equal(404, resposta.StatusCode);
             Assert.Equal("Usuário não encontrado.", resposta.Value);
@@ -103,7 +103,7 @@ namespace CarteiraDeJogosTest.ControllersTest
             //Arrange
             //Act
             ObjectResult resposta = controller.ListarUsuarios();
-            _outputHelper.WriteLine(resposta.Value.ToString());
+            _outputHelper.WriteLine(resposta.Value!.ToString());
             //Assert
             Assert.Equal(200, resposta.StatusCode);
             Assert.IsType<List<ReadUsuariosDto>>(resposta.Value);
@@ -114,7 +114,7 @@ namespace CarteiraDeJogosTest.ControllersTest
             //Arrange
             //Act
             ObjectResult resposta = controller.BuscarUsuarioPorId(0);
-            _outputHelper.WriteLine(resposta.Value.ToString());
+            _outputHelper.WriteLine(resposta.Value!.ToString());
             //Assert
             Assert.Equal(404, resposta.StatusCode);
             Assert.Equal("Usuário não encontrado.", resposta.Value);
@@ -126,7 +126,7 @@ namespace CarteiraDeJogosTest.ControllersTest
             ReadUsuariosDto usuario = CriarUsuario();
             //Act
             var resposta = controller.BuscarUsuarioPorId(usuario.Id);
-            _outputHelper.WriteLine(resposta.Value.ToString());
+            _outputHelper.WriteLine(resposta.Value!.ToString());
             //Assert
             Assert.Equal(200, resposta.StatusCode);
             DeletarUsuario(usuario);
@@ -158,7 +158,7 @@ namespace CarteiraDeJogosTest.ControllersTest
         {
             CreateUsuarioDto novoUsuario = new CreateUsuarioDto("Malaquias José", "guilherme2@gmail.com", "1234", "1234");
             ObjectResult resposta = controller.CadastrarUsuario(novoUsuario);
-            ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value.ToString()!)!;
+            ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value!.ToString()!)!;
             _outputHelper.WriteLine($"Usuario {usuario.Id} criado com sucesso.");
             return usuario;
         }
@@ -173,6 +173,11 @@ namespace CarteiraDeJogosTest.ControllersTest
         {
             controller.DeletarUsuario(usuario.Id);
             _outputHelper.WriteLine($"Usuario deletado {usuario.Id} com sucesso.");
+        }
+        private T Deserializar<T>(ObjectResult resposta)
+        {
+            T retorno = JsonConvert.DeserializeObject<T>(resposta.Value!.ToString()!)!;
+            return retorno;
         }
     }
 }

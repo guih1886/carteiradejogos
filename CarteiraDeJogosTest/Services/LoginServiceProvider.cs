@@ -33,6 +33,6 @@ public class LoginServiceProvider
 
         var provedor = servico.BuildServiceProvider();
         var controler = provedor.GetService<LoginController>();
-        return controler;
+        return controler!;
     }
 }

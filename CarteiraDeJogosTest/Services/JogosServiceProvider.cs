@@ -33,6 +33,6 @@ public class JogosServiceProvider
 
         var provedor = servico.BuildServiceProvider();
         var controler = provedor.GetService<JogosController>();
-        return controler;
+        return controler!;
     }
 }

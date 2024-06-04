@@ -23,7 +23,7 @@ public class LoginControllerTest
         ObjectResult resposta = controller.EfetuarLogin(loginDto);
         //Assert
         Assert.Equal(200, resposta.StatusCode);
-        Assert.Contains("eyJhbGciOiJIUz", resposta.Value.ToString());
+        Assert.Contains("eyJhbGciOiJIUz", resposta.Value!.ToString());
     }
     [Fact]
     public void NaoEfetuaLoginComEmailIncorreto()
@@ -34,7 +34,7 @@ public class LoginControllerTest
         ObjectResult resposta = controller.EfetuarLogin(loginDto);
         //Assert
         Assert.Equal(401, resposta.StatusCode);
-        Assert.Contains("E-mail ou senha inválido.", resposta.Value.ToString());
+        Assert.Contains("E-mail ou senha inválido.", resposta.Value!.ToString());
     }
     [Fact]
     public void NaoEfetuaLoginComSenhaIncorreta()
@@ -45,7 +45,7 @@ public class LoginControllerTest
         ObjectResult resposta = controller.EfetuarLogin(loginDto);
         //Assert
         Assert.Equal(401, resposta.StatusCode);
-        Assert.Contains("E-mail ou senha inválido.", resposta.Value.ToString());
+        Assert.Contains("E-mail ou senha inválido.", resposta.Value!.ToString());
     }
     [Fact]
     public void NaoEfetuaLoginSemSenha()
@@ -56,7 +56,7 @@ public class LoginControllerTest
         ObjectResult resposta = controller.EfetuarLogin(loginDto);
         //Assert
         Assert.Equal(401, resposta.StatusCode);
-        Assert.Contains("A senha deve ser informada.", resposta.Value.ToString());
+        Assert.Contains("A senha deve ser informada.", resposta.Value!.ToString());
     }
     [Fact]
     public void NaoEfetuaLoginSemEmail()
@@ -67,6 +67,6 @@ public class LoginControllerTest
         ObjectResult resposta = controller.EfetuarLogin(loginDto);
         //Assert
         Assert.Equal(401, resposta.StatusCode);
-        Assert.Contains("E-mail não pode estar vazio.", resposta.Value.ToString());
+        Assert.Contains("E-mail não pode estar vazio.", resposta.Value!.ToString());
     }
 }

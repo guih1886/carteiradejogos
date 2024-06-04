@@ -32,7 +32,7 @@ namespace CarteiraDeJogosTest.Services
             servico.AddAutoMapper(typeof(JogosProfile).Assembly);
             var provedor = servico.BuildServiceProvider();
             var controler = provedor.GetService<JogosDoUsuarioController>();
-            return controler;
+            return controler!;
         }
     }
 }

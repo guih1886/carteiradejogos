@@ -30,7 +30,7 @@ public class JogosControllerTest
         //Arrange
         CreateJogosDto jogo = new CreateJogosDto("Endereço Teste", "Jogo Teste", "Descrição de Teste para o modelo.", Genero.Ação, 1, "1994", "PS4", 9);
         ObjectResult resposta = _jogosController.CadastrarJogo(jogo);
-        ReadJogosDto jogosDto = JsonConvert.DeserializeObject<ReadJogosDto>(resposta.Value.ToString()!)!;
+        ReadJogosDto jogosDto = Deserializar<ReadJogosDto>(resposta);
         //Act
         //Assert
         Assert.Equal(200, resposta.StatusCode);
@@ -44,7 +44,7 @@ public class JogosControllerTest
         //Arrange
         ReadJogosDto jogo = CriarJogo();
         ObjectResult resposta = _usuarioController.BuscarUsuarioPorId(1);
-        ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(resposta.Value!.ToString()!)!;
+        ReadUsuariosDto usuario = Deserializar<ReadUsuariosDto>(resposta);
         //Act
         //Assert
         Assert.Contains(jogo.Id, usuario.Jogos);
@@ -66,10 +66,10 @@ public class JogosControllerTest
     {
         //Arrange
         ReadJogosDto jogo = CriarJogo();
-        UpdateJogosDto jogoAlterado = new UpdateJogosDto("Endereço Teste", "Jogo Alterado", "Descrição de Teste alterada para o modelo.", Genero.Ação, "1994", "PS4", 9);
+        UpdateJogosDto jogoAlterado = new UpdateJogosDto("Endereço Teste", "Jogo Alterado", "Descrição de Teste alterada para o modelo.", Genero.Ação, "1994", "PS4", 9,1);
         //Act
         ObjectResult response = _jogosController.AtualizarJogo(jogo.Id, jogoAlterado);
-        ReadJogosDto jogoDto = JsonConvert.DeserializeObject<ReadJogosDto>(response.Value!.ToString()!)!;
+        ReadJogosDto jogoDto = Deserializar<ReadJogosDto>(response);
         //Assert
         Assert.Equal(200, response.StatusCode);
         Assert.Equal("Jogo Alterado", jogoDto.Nome);
@@ -80,7 +80,7 @@ public class JogosControllerTest
     public void AlterarJogoIncorrretoTest()
     {
         //Arrange
-        UpdateJogosDto jogoAlterado = new UpdateJogosDto("Endereço Teste", "Jogo Alterado", "Descrição de Teste alterada para o modelo.", Genero.Ação, "1994", "PS4", 9);
+        UpdateJogosDto jogoAlterado = new UpdateJogosDto("Endereço Teste", "Jogo Alterado", "Descrição de Teste alterada para o modelo.", Genero.Ação, "1994", "PS4", 9,1);
         //Act
         ObjectResult response = _jogosController.AtualizarJogo(0, jogoAlterado);
         //Assert
@@ -103,7 +103,7 @@ public class JogosControllerTest
         ReadJogosDto jogo = CriarJogo();
         //Act
         ObjectResult resposta = _jogosController.BuscarJogoPorId(jogo.Id);
-        ReadJogosDto jogoBuscado = JsonConvert.DeserializeObject<ReadJogosDto>(resposta.Value!.ToString()!)!;
+        ReadJogosDto jogoBuscado = Deserializar<ReadJogosDto>(resposta);
         //Assert
         Assert.Equal(200, resposta.StatusCode);
         Assert.IsType<ReadJogosDto>(jogoBuscado);
@@ -144,7 +144,7 @@ public class JogosControllerTest
     {
         CreateJogosDto jogo = new CreateJogosDto("Endereço Teste", "Jogo Teste", "Descrição de Teste para o modelo.", Genero.Ação, 1, "1994", "PS4", 9);
         ObjectResult resposta = _jogosController.CadastrarJogo(jogo);
-        ReadJogosDto jogosDto = JsonConvert.DeserializeObject<ReadJogosDto>(resposta.Value.ToString()!)!;
+        ReadJogosDto jogosDto = JsonConvert.DeserializeObject<ReadJogosDto>(resposta.Value!.ToString()!)!;
         _outputHelper.WriteLine($"Jogo {jogosDto.Id} criado com sucesso.");
         return jogosDto;
     }
@@ -152,5 +152,10 @@ public class JogosControllerTest
     {
         _jogosController.DeletarJogo(jogo.Id);
         _outputHelper.WriteLine($"Jogo deletado {jogo.Id} com sucesso.");
+    }
+    private T Deserializar<T>(ObjectResult resposta)
+    {
+        T retorno = JsonConvert.DeserializeObject<T>(resposta.Value!.ToString()!)!;
+        return retorno;
     }
 }

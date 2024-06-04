@@ -30,6 +30,6 @@ public class UsuarioServiceProvider
         servico.AddAutoMapper(typeof(UsuariosProfile).Assembly);
         var provedor = servico.BuildServiceProvider();
         var controler = provedor.GetService<UsuarioController>();
-        return controler;
+        return controler!;
     }
 }
