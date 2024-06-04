@@ -85,7 +85,7 @@ namespace CarteiraDeJogos.Data.Repository
         public bool RemoverJogo(int usuarioId, int idJogo)
         {
             Jogos jogo = _context.Jogos.FirstOrDefault(jogo => jogo.Id == idJogo)!;
-            Usuario usuario = BuscarUsuario(1)!;
+            Usuario usuario = BuscarUsuario(usuarioId)!;
             if (usuario.Jogos!.Contains(jogo.Id)) usuario.Jogos.Remove(idJogo);
             if (usuario.JogosFavoritos!.Contains(jogo.Id)) usuario.JogosFavoritos.Remove(idJogo);
             jogo.Ativo = 0;
