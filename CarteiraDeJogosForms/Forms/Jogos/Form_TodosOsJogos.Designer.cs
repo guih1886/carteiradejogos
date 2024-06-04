@@ -30,7 +30,6 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form_TodosOsJogos));
-            jogosRepositoryBindingSource = new BindingSource(components);
             Dgv_Jogos = new DataGridView();
             idDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             nomeDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
@@ -43,25 +42,23 @@
             ativoDataGridViewTextBoxColumn = new DataGridViewTextBoxColumn();
             Lbl_Total = new Label();
             readJogosDtoBindingSource = new BindingSource(components);
-            ((System.ComponentModel.ISupportInitialize)jogosRepositoryBindingSource).BeginInit();
             ((System.ComponentModel.ISupportInitialize)Dgv_Jogos).BeginInit();
             ((System.ComponentModel.ISupportInitialize)readJogosDtoBindingSource).BeginInit();
             SuspendLayout();
-            // 
-            // jogosRepositoryBindingSource
-            // 
-            jogosRepositoryBindingSource.DataSource = typeof(CarteiraDeJogos.Data.Repository.JogosRepository);
             // 
             // Dgv_Jogos
             // 
             Dgv_Jogos.AllowUserToAddRows = false;
             Dgv_Jogos.AllowUserToDeleteRows = false;
+            Dgv_Jogos.AllowUserToOrderColumns = true;
             Dgv_Jogos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             Dgv_Jogos.Columns.AddRange(new DataGridViewColumn[] { idDataGridViewTextBoxColumn, nomeDataGridViewTextBoxColumn, descricaoDataGridViewTextBoxColumn, generoDataGridViewTextBoxColumn, enderecoImagemDataGridViewTextBoxColumn, anoLancamentoDataGridViewTextBoxColumn, plataformaDataGridViewTextBoxColumn, notaDataGridViewTextBoxColumn, ativoDataGridViewTextBoxColumn });
             Dgv_Jogos.Location = new Point(0, 0);
+            Dgv_Jogos.MultiSelect = false;
             Dgv_Jogos.Name = "Dgv_Jogos";
             Dgv_Jogos.ReadOnly = true;
-            Dgv_Jogos.Size = new Size(1108, 535);
+            Dgv_Jogos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            Dgv_Jogos.Size = new Size(1093, 535);
             Dgv_Jogos.TabIndex = 0;
             // 
             // idDataGridViewTextBoxColumn
@@ -148,21 +145,21 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1108, 559);
+            ClientSize = new Size(1095, 559);
             Controls.Add(Lbl_Total);
             Controls.Add(Dgv_Jogos);
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximumSize = new Size(1111, 598);
+            MinimumSize = new Size(1111, 598);
             Name = "Form_TodosOsJogos";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Meus Jogos";
-            ((System.ComponentModel.ISupportInitialize)jogosRepositoryBindingSource).EndInit();
             ((System.ComponentModel.ISupportInitialize)Dgv_Jogos).EndInit();
             ((System.ComponentModel.ISupportInitialize)readJogosDtoBindingSource).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
-        private BindingSource jogosRepositoryBindingSource;
         private DataGridView Dgv_Jogos;
         private Label Lbl_Total;
         private DataGridViewTextBoxColumn idDataGridViewTextBoxColumn;

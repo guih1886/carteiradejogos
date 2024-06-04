@@ -40,7 +40,7 @@ namespace CarteiraDeJogosForms.Forms.Jogos
                         jogos.Add(jogo);
                     }
                 }
-                Dgv_Jogos.DataSource = jogos;
+                Dgv_Jogos.DataSource = jogos.OrderBy(j => j.Id).ToList();
                 Lbl_Total.Text = $"{jogos.Count} jogos cadastrados.";
                 if (jogos.Count == 1) Lbl_Total.Text = $"{jogos.Count} jogo cadastrado.";
             }
