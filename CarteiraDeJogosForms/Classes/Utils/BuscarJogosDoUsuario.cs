@@ -13,8 +13,11 @@ public static class BuscarJogosDoUsuario
         foreach (int item in lista)
         {
             HttpResponseMessage resposta = await httpClient.GetJogo(item);
-            ReadJogosDto jogo = JsonConvert.DeserializeObject<ReadJogosDto>(await resposta.Content.ReadAsStringAsync())!;
-            novaLista.Add(jogo);
+            if (resposta.IsSuccessStatusCode)
+            {
+                ReadJogosDto jogo = JsonConvert.DeserializeObject<ReadJogosDto>(await resposta.Content.ReadAsStringAsync())!;
+                novaLista.Add(jogo);
+            }
         }
         return novaLista;
     }
