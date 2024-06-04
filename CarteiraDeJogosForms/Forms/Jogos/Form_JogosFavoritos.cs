@@ -33,8 +33,11 @@ public partial class Form_JogosFavoritos : Form
             foreach (var item in listaDeJogos)
             {
                 HttpResponseMessage respostaJogo = await _httpClientBuilder.GetJogo(item);
-                ReadJogosDto jogo = JsonConvert.DeserializeObject<ReadJogosDto>(await respostaJogo.Content.ReadAsStringAsync())!;
-                jogos.Add(jogo);
+                if (respostaJogo.IsSuccessStatusCode)
+                {
+                    ReadJogosDto jogo = JsonConvert.DeserializeObject<ReadJogosDto>(await respostaJogo.Content.ReadAsStringAsync())!;
+                    jogos.Add(jogo);
+                }
             }
             Dgv_JogosFavoritos.DataSource = jogos;
             Lbl_Total.Text = $"{jogos.Count} jogos marcados como favorito.";
