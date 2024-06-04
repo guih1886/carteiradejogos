@@ -48,7 +48,7 @@ public partial class Form_Perfil : Form
     private async void toolStripSalvar_Click(object sender, EventArgs e)
     {
         Txt_Nome.ReadOnly = true;
-        if (usuario.Nome != Txt_Nome.Text)
+        if (usuario!.Nome != Txt_Nome.Text)
         {
             UpdateUsuariosDto novoUsuario = new UpdateUsuariosDto(Txt_Nome.Text, jogos, jogosFavoritos);
             HttpResponseMessage resposta = await _httpClientBuilder.PutReq($"/Usuarios/{usuarioId}", novoUsuario);
