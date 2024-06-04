@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using CarteiraDeJogos.Models;
+using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace CarteiraDeJogosForms.Classes
 {
@@ -54,5 +56,27 @@ namespace CarteiraDeJogosForms.Classes
             return resposta;
         }
 
+        public async Task<HttpResponseMessage> RemoverJogoFavorito(int usuarioId, int jogoId)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+            HttpResponseMessage resposta = await _httpClient.DeleteAsync(urlBase + $"/JogosDoUsuario/{usuarioId}/removerJogoFavorito/{jogoId}");
+            return resposta;
+        }
+
+        public async Task<HttpResponseMessage> AdicionarJogoAoFavorito(int usuarioId, int jogoId)
+        {
+            string json = JsonConvert.SerializeObject("");
+            var content = new StringContent(json, Encoding.UTF8, new MediaTypeHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+            HttpResponseMessage resposta = await _httpClient.PostAsync(urlBase + $"/JogosDoUsuario/{usuarioId}/adicionarJogoFavorito/{jogoId}", content);
+            return resposta;
+        }
+
+        public async Task<HttpResponseMessage> DeletarJogo(int jogoId)
+        {
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+            HttpResponseMessage resposta = await _httpClient.DeleteAsync(urlBase + $"/Jogos/{jogoId}");
+            return resposta;
+        }
     }
 }
