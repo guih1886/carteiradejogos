@@ -279,13 +279,13 @@ Ao fazer o login com sucesso, é aberto a tela principal, o qual tem um menu com
 
 <br>
 
-Essa tela tem a função de listar todos os jogos cadastrados do usuário, ativos e inativos. Abaixo tem a quantidade de jogos cadastrados do usuário.
+A tela de `Todos os Jogos` tem a função de listar todos os jogos cadastrados do usuário, ativos e inativos. Abaixo tem a quantidade de jogos cadastrados do usuário.
 
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/Forms/jogos.png)
 
 <br>
 
-Essa tela tem a função de listar todos os jogos favoritos cadastrados do usuário, ativos e inativos. Abaixo tem a quantidade de jogos favoritos cadastrados do usuário.
+A tela de `Jogos favoritos` tem a função de listar todos os jogos favoritos cadastrados do usuário, ativos e inativos. Abaixo tem a quantidade de jogos favoritos cadastrados do usuário.
 
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/Forms/jogosFavoritos.png)
 
@@ -315,8 +315,6 @@ Ao clicar no botão de "Perfil" na tela principal, é exibido os dados do usuár
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/Forms/usuario.png)
 
 Nessa tela é possivel editar o cadastro do usuário, o qual é limitada apenas ao nome, pois a lista de jogos e de jogos favoritos é administrado tela tela de Cadastro de Jogos.
-
-<br>
 
 ## Imagens
 
