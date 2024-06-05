@@ -26,7 +26,7 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
 - Implementado 44 testes para garantir a qualidade do código. ✅
 - Implementar segurança de login, com o JWT. ✅
 - Implementar a alteração de ativação dos jogos. ✅
-- Criar as telas com windows forms para realizar as operações. 
+- Criar as telas com windows forms para realizar as operações. ✅
 - Implementar um app com Flutter para o consumo da API.
 
 ## Configurando o projeto
@@ -256,6 +256,66 @@ Dessa forma o banco de dados estará atualizado para rodar a aplicação.
 
 <br>
 
+## Windows Forms
+
+A entrada no sistema começa na tela de login, o qual faz uma requisição para `/Login` com os dados do formulário. Apresenta os erros de login caso possua ou abre a tela principal do sistema.
+
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/Forms/login.png)
+
+A API retorna um JWT com os dados do usuário, o qual é armazenado pelo sistema para fazer as requisições, a fim de evitar o erro [HTTP 401][http401] não autorizado.
+
+<br>
+
+Ao clicar no botão "cadastrar" na tela de login, abre a tela para o cadastro de usuários, que faz a requisição para `/Usuarios` enviando os dados do formulário. Caso tenha erros, é exibido no label de erro, e em caso de sucesso é mostrado uma mensagem de sucesso e redirecionado para a tela de login.
+
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/Forms/cadastrar.png)
+
+<br>
+
+Ao fazer o login com sucesso, é aberto a tela principal, o qual tem um menu com as funcionalidades de `Listar Jogos`, `Listar os jogos Favoritos`, `Cadastro de Jogos`, `Perfil` e `Sair`.
+
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/Forms/menu.png)
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/Forms/principal.png)
+
+<br>
+
+A tela de `Todos os Jogos` tem a função de listar todos os jogos cadastrados do usuário, ativos e inativos. Abaixo tem a quantidade de jogos cadastrados do usuário.
+
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/Forms/jogos.png)
+
+<br>
+
+A tela de `Jogos favoritos` tem a função de listar todos os jogos favoritos cadastrados do usuário, ativos e inativos. Abaixo tem a quantidade de jogos favoritos cadastrados do usuário.
+
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/Forms/jogosFavoritos.png)
+
+<br>
+
+A proxima tela é a de `Cadastro de jogos`, o qual faz a função CRUD completa de jogos. Nessa tela tem o botão de "Favoritos" como um atalho para a `Lista de Jogos Favoritos`.
+
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/Forms/cadastroJogos.png)
+
+Ao clicar no botão "Novo", o formulário é desbloqueado possibilitando o cadastro de jogos, ao clicar em "Salvar" o sistema faz a requisição `POST /Jogos` para cadastrar o jogo, e apresenta os erros no label de erro caso possua, ou a mensagem que o jogo foi cadastrado com sucesso.
+Ao selecionar "Buscar", é aberto a tela de busca de jogos, o qual possui diversos filtros como `Ativo/Inativo`, `Favoritos`, `Id`, `Nome`, `Genero` e `Plataforma` que podemos fazer para buscar o jogo que desejamos com mais facilidade.
+
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/Forms/buscaJogos.png)
+
+<br>
+
+Ao encontrar o jogo desejado e seleciona-lo, ele é carregado para a tela de cadastro de jogos, preenchendo os campos para alteração, caso necessário. Nesse ponto, ao salvar, é feito a requisição para `PUT /Jogos/{id}` para editar o jogo.
+
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/Forms/cadastroJogosSelecionado.png)
+
+Nesse ponto podemos editar qualquer campo do jogo, além da possibilidade de ativar ou inativar e incluir ou retirar da lista de favoritos através das flags.
+
+<br>
+
+Ao clicar no botão de "Perfil" na tela principal, é exibido os dados do usuário logado, com as informações de `Id`, `Nnome`, `Lista dos Ids dos Jogos` e a `Lista dos Ids dos Jogos Favoritos`.
+
+![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/Forms/usuario.png)
+
+Nessa tela é possivel editar o cadastro do usuário, o qual é limitada apenas ao nome, pois a lista de jogos e de jogos favoritos é administrado tela tela de Cadastro de Jogos.
+
 ## Imagens
 
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/swagger.png#vitrinedev)
@@ -266,3 +326,4 @@ Dessa forma o banco de dados estará atualizado para rodar a aplicação.
 
 
 [appsettings]: https://raw.githubusercontent.com/guih1886/jomedAPI/main/JomedAPI/Assets/appsettings.json
+[http401]: https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/401
