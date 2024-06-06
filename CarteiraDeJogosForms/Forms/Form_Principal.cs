@@ -1,46 +1,26 @@
-﻿using CarteiraDeJogosForms.Classes;
-using CarteiraDeJogosForms.Classes.Utils;
+﻿using CarteiraDeJogosForms.Classes.Interfaces;
 using CarteiraDeJogosForms.Forms.Jogos;
 using CarteiraDeJogosForms.Forms.Usuario;
-using Microsoft.Extensions.Configuration;
-using System.Security.Claims;
 
 namespace CarteiraDeJogosForms.Forms
 {
     public partial class Form_Principal : Form
     {
+        private IHttpClient _httpClientBuilder;
         private Form loginForm;
-        private readonly string jwt;
-        private string? url;
-        private string usuarioEmail = "";
-        private int usuarioId = 0;
-        private HttpClientBuilder _httpClientBuilder;
-        private IConfiguration _configuration;
-        public DialogResult dialogResult;
+        private int usuarioId;
 
-        public Form_Principal(Form login, string jwt)
+        public Form_Principal(IHttpClient httpClient, Form login, int usuarioId)
         {
-            _configuration = InstanciaIConfiguration.GetInstancia();
+            _httpClientBuilder = httpClient;
             loginForm = login;
-            this.jwt = jwt;
-            ValidaDadosUsuario();
-            _httpClientBuilder = new HttpClientBuilder(url!, jwt);
+            this.usuarioId = usuarioId;
             InitializeComponent();
         }
 
-        private void ValidaDadosUsuario()
-        {
-            string key = _configuration!["Jwt:Key"]!;
-            string url = _configuration!["UrlBase"]!;
-            ClaimsPrincipal dados = DeserizalizeJwt.JwtClaims(jwt, key)!;
-            List<Claim> listaClaims = dados.Claims.ToList();
-            usuarioId = Int32.Parse(listaClaims[0].Value);
-            usuarioEmail = listaClaims[1].Value;
-            this.url = url;
-        }
         private void sairToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            dialogResult = DialogResult.Cancel;
+            DialogResult = DialogResult.Cancel;
             loginForm.Show();
             this.Close();
         }
@@ -60,12 +40,6 @@ namespace CarteiraDeJogosForms.Forms
             perfil.ShowDialog();
         }
         private void cadastrarJogoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form cadastrarJogo = new Form_CadastroDeJogos(_httpClientBuilder, usuarioId);
-            cadastrarJogo.Show();
-        }
-
-        private void panel1_Click(object sender, EventArgs e)
         {
             Form cadastrarJogo = new Form_CadastroDeJogos(_httpClientBuilder, usuarioId);
             cadastrarJogo.Show();
