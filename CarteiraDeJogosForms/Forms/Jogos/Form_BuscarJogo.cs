@@ -1,6 +1,6 @@
 ﻿using CarteiraDeJogos.Data.Dto.Jogos;
 using CarteiraDeJogos.Models;
-using CarteiraDeJogosForms.Classes;
+using CarteiraDeJogosForms.Classes.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
@@ -11,10 +11,10 @@ public partial class Form_BuscarJogo : Form
     private List<ReadJogosDto>? todosOsJogos;
     private List<ReadJogosDto>? todosOsJogosAux;
     private int usuarioId;
-    private HttpClientBuilder _httpClientBuilder;
+    private IHttpClient _httpClientBuilder;
     public int jogoId { get; set; }
 
-    public Form_BuscarJogo(HttpClientBuilder httpClientBuilder, int usuarioId, List<ReadJogosDto> todosOsJogos)
+    public Form_BuscarJogo(IHttpClient httpClientBuilder, int usuarioId, List<ReadJogosDto> todosOsJogos)
     {
         this.usuarioId = usuarioId;
         this.todosOsJogos = todosOsJogos;
@@ -43,7 +43,6 @@ public partial class Form_BuscarJogo : Form
         DialogResult = DialogResult.OK;
         this.Close();
     }
-
     private void Btn_Buscar_Click(object sender, EventArgs e)
     {
         List<ReadJogosDto> novaLista = new List<ReadJogosDto>();
@@ -71,7 +70,6 @@ public partial class Form_BuscarJogo : Form
             Dgv_Jogos.DataSource = novaLista.OrderBy(j => j.Id).ToList();
         }
     }
-
     private int ValidaStatusAtivo()
     {
         int retorno = 0;
@@ -93,18 +91,17 @@ public partial class Form_BuscarJogo : Form
         Cmb_Genero.SelectedIndex = 0;
         Cmb_Ativo.SelectedIndex = 0;
     }
-
     private async void Ckb_Favoritos_CheckedChanged(object sender, EventArgs e)
     {
         int ativo = ValidaStatusAtivo();
         if (Ckb_Favoritos.CheckState == CheckState.Checked)
         {
-            HttpResponseMessage resposta = await _httpClientBuilder.GetJogosFavoritosDoUsuario(usuarioId);
+            HttpResponseMessage resposta = await _httpClientBuilder.GetRequisition($"/JogosDoUsuario/{usuarioId}/jogosfavoritos");
             List<int> todosOsJogosFavoritos = JsonConvert.DeserializeObject<List<int>>(await resposta.Content.ReadAsStringAsync())!;
             List<ReadJogosDto> todosOsJogosFavoritosRead = new List<ReadJogosDto>();
             foreach (var item in todosOsJogosFavoritos)
             {
-                HttpResponseMessage response = await _httpClientBuilder.GetJogo(item);
+                HttpResponseMessage response = await _httpClientBuilder.GetRequisition($"/Jogos/{item}");
                 if (resposta.IsSuccessStatusCode)
                 {
                     var jogo = JsonConvert.DeserializeObject<ReadJogosDto>(await response.Content.ReadAsStringAsync());

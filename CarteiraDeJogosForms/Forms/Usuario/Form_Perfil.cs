@@ -1,5 +1,5 @@
 ﻿using CarteiraDeJogos.Data.Dto.Usuarios;
-using CarteiraDeJogosForms.Classes;
+using CarteiraDeJogosForms.Classes.Interfaces;
 using Newtonsoft.Json;
 
 namespace CarteiraDeJogosForms.Forms.Usuario;
@@ -7,11 +7,11 @@ namespace CarteiraDeJogosForms.Forms.Usuario;
 public partial class Form_Perfil : Form
 {
     private int usuarioId;
-    private HttpClientBuilder _httpClientBuilder;
+    private IHttpClient _httpClientBuilder;
     private ReadUsuariosDto? usuario;
     private List<int>? jogos;
     private List<int>? jogosFavoritos;
-    public Form_Perfil(HttpClientBuilder httpClient, int usuarioId)
+    public Form_Perfil(IHttpClient httpClient, int usuarioId)
     {
         this.usuarioId = usuarioId;
         _httpClientBuilder = httpClient;
@@ -21,7 +21,7 @@ public partial class Form_Perfil : Form
 
     private async void PreencherCamposDoUsuario()
     {
-        HttpResponseMessage resposta = await _httpClientBuilder.GetUsuario(usuarioId);
+        HttpResponseMessage resposta = await _httpClientBuilder.GetRequisition($"/Usuarios/{usuarioId}");
         string obj = await resposta.Content.ReadAsStringAsync();
         if (resposta.IsSuccessStatusCode)
         {
@@ -51,7 +51,7 @@ public partial class Form_Perfil : Form
         if (usuario!.Nome != Txt_Nome.Text)
         {
             UpdateUsuariosDto novoUsuario = new UpdateUsuariosDto(Txt_Nome.Text, jogos, jogosFavoritos);
-            HttpResponseMessage resposta = await _httpClientBuilder.PutReq($"/Usuarios/{usuarioId}", novoUsuario);
+            HttpResponseMessage resposta = await _httpClientBuilder.PutRequisition($"/Usuarios/{usuarioId}", novoUsuario);
             if (resposta.IsSuccessStatusCode)
             {
                 MessageBox.Show("Usuário alterado com sucesso.", "Alteração de usuário", MessageBoxButtons.OK, MessageBoxIcon.Information);

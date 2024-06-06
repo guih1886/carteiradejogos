@@ -1,5 +1,5 @@
 ﻿using CarteiraDeJogos.Data.Dto.Usuarios;
-using CarteiraDeJogosForms.Classes;
+using CarteiraDeJogosForms.Classes.Interfaces;
 using CarteiraDeJogosForms.Classes.Utils;
 
 namespace CarteiraDeJogosForms.Forms.Cadastrar
@@ -7,8 +7,8 @@ namespace CarteiraDeJogosForms.Forms.Cadastrar
     public partial class Form_Cadastrar : Form
     {
         private Form loginForm;
-        private HttpClientBuilder _httpClientBuilder;
-        public Form_Cadastrar(HttpClientBuilder httpClientBuilder, Form login)
+        private IHttpClient _httpClientBuilder;
+        public Form_Cadastrar(IHttpClient httpClientBuilder, Form login)
         {
             _httpClientBuilder = httpClientBuilder;
             InitializeComponent();
@@ -23,7 +23,7 @@ namespace CarteiraDeJogosForms.Forms.Cadastrar
         private async void Btn_Cadastrar_Click(object sender, EventArgs e)
         {
             CreateUsuarioDto usuario = new CreateUsuarioDto(Txt_Nome.Text, Txt_Email.Text, Txt_Senha.Text, Txt_ConfirmaSenha.Text);
-            HttpResponseMessage resposta = await _httpClientBuilder.PostReq("/Usuarios", usuario);
+            HttpResponseMessage resposta = await _httpClientBuilder.PostRequisition("/Usuarios", usuario);
             string msg = await ValidaRequisicao.CadastrarUsuario(resposta);
             if (msg.Contains("Ok"))
             {

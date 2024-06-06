@@ -1,6 +1,7 @@
 ﻿using CarteiraDeJogos.Data.Dto.Jogos;
 using CarteiraDeJogos.Models;
 using CarteiraDeJogosForms.Classes;
+using CarteiraDeJogosForms.Classes.Interfaces;
 using CarteiraDeJogosForms.Classes.Utils;
 using CarteiraDeJogosForms.Properties;
 using Newtonsoft.Json;
@@ -9,13 +10,13 @@ namespace CarteiraDeJogosForms.Forms.Jogos;
 
 public partial class Form_CadastroDeJogos : Form
 {
-    private HttpClientBuilder _httpClientBuilder;
+    private IHttpClient _httpClientBuilder;
     private int usuarioId;
     private int jogoId;
     private List<int>? listaFavoritos;
     // status 0 = bloqueado; status 1 = criação de jogos; status 2 = alteração de jogos;
     private int toolStripNovoStatus = 0;
-    public Form_CadastroDeJogos(HttpClientBuilder httpClientBuilder, int usuarioId)
+    public Form_CadastroDeJogos(IHttpClient httpClientBuilder, int usuarioId)
     {
         _httpClientBuilder = httpClientBuilder;
         this.usuarioId = usuarioId;
@@ -105,7 +106,7 @@ public partial class Form_CadastroDeJogos : Form
     }
     private async void ValidaJogoFavorito()
     {
-        HttpResponseMessage resposta = await _httpClientBuilder.GetJogosFavoritosDoUsuario(usuarioId);
+        HttpResponseMessage resposta = await _httpClientBuilder.GetRequisition($"/JogosDoUsuario/{usuarioId}/jogosfavoritos");
         List<int> listaFavoritos = JsonConvert.DeserializeObject<List<int>>(await resposta.Content.ReadAsStringAsync())!;
         this.listaFavoritos = listaFavoritos;
         if (listaFavoritos.Contains(jogoId)) Ckb_Favorito.Checked = true;
@@ -139,7 +140,7 @@ public partial class Form_CadastroDeJogos : Form
         {
             var genero = (Genero)Cmb_Genero.SelectedItem!;
             CreateJogosDto novoJogo = new CreateJogosDto(Txt_Imagem.Text, Txt_Nome.Text, Txt_Descricao.Text, genero, usuarioId, Mtb_AnoLancamento.Text, Txt_Plataforma.Text, Int32.Parse(Mtb_Nota.Text));
-            var resposta = await _httpClientBuilder.PostReq("/Jogos", novoJogo);
+            var resposta = await _httpClientBuilder.PostRequisition("/Jogos", novoJogo);
             string msg = await ValidaRequisicao.CadastrarEAlterarJogo(resposta);
             if (!resposta.IsSuccessStatusCode)
             {
@@ -158,10 +159,10 @@ public partial class Form_CadastroDeJogos : Form
             if (Ckb_Ativo.Checked) ativo = 1;
             var genero = (Genero)Cmb_Genero.SelectedItem!;
             UpdateJogosDto novoJogo = new UpdateJogosDto(Txt_Imagem.Text, Txt_Nome.Text, Txt_Descricao.Text, genero, Mtb_AnoLancamento.Text, Txt_Plataforma.Text, Int32.Parse(Mtb_Nota.Text), ativo);
-            HttpResponseMessage resposta = await _httpClientBuilder.PutReq($"/Jogos/{jogoId}", novoJogo);
+            HttpResponseMessage resposta = await _httpClientBuilder.PutRequisition($"/Jogos/{jogoId}", novoJogo);
             string msg = await ValidaRequisicao.CadastrarEAlterarJogo(resposta);
-            if (listaFavoritos!.Contains(jogoId) && Ckb_Favorito.Checked == false) await _httpClientBuilder.RemoverJogoFavorito(usuarioId, jogoId);
-            if (!listaFavoritos!.Contains(jogoId) && Ckb_Favorito.Checked == true) await _httpClientBuilder.AdicionarJogoAoFavorito(usuarioId, jogoId);
+            if (listaFavoritos!.Contains(jogoId) && Ckb_Favorito.Checked == false) await _httpClientBuilder.DeleteRequisition($"/JogosDoUsuario/{usuarioId}/removerJogoFavorito/{jogoId}");
+            if (!listaFavoritos!.Contains(jogoId) && Ckb_Favorito.Checked == true) await _httpClientBuilder.PostRequisition($"/JogosDoUsuario/{usuarioId}/adicionarJogoFavorito/{jogoId}", string.Empty);
             if (!resposta.IsSuccessStatusCode)
             {
                 Lbl_Erro.Text = msg;
@@ -181,7 +182,7 @@ public partial class Form_CadastroDeJogos : Form
         DialogResult resposta = buscar.ShowDialog();
         if (resposta == DialogResult.OK)
         {
-            HttpResponseMessage response = await _httpClientBuilder.GetJogo(buscar.jogoId);
+            HttpResponseMessage response = await _httpClientBuilder.GetRequisition($"/Jogos/{buscar.jogoId}");
             if (response.IsSuccessStatusCode)
             {
                 jogoId = buscar.jogoId;
@@ -196,7 +197,6 @@ public partial class Form_CadastroDeJogos : Form
         Form jogosFavoritos = new Form_JogosFavoritos(_httpClientBuilder, usuarioId);
         jogosFavoritos.ShowDialog();
     }
-
     private async void toolStripDeletar_Click(object sender, EventArgs e)
     {
         if (toolStripNovoStatus == 2)
@@ -204,7 +204,7 @@ public partial class Form_CadastroDeJogos : Form
             DialogResult resposta = MessageBox.Show("Deseja mesmo excluir o jogo?", "Excluir jogo", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
             if (resposta == DialogResult.OK)
             {
-                HttpResponseMessage response = await _httpClientBuilder.DeletarJogo(jogoId);
+                HttpResponseMessage response = await _httpClientBuilder.DeleteRequisition($"/Jogos/{jogoId}");
                 if (response.IsSuccessStatusCode)
                 {
                     DesativarFormulario();

@@ -1,5 +1,5 @@
 ﻿using CarteiraDeJogos.Data.Dto.Jogos;
-using CarteiraDeJogosForms.Classes;
+using CarteiraDeJogosForms.Classes.Interfaces;
 using Newtonsoft.Json;
 
 namespace CarteiraDeJogosForms.Forms.Jogos
@@ -8,10 +8,10 @@ namespace CarteiraDeJogosForms.Forms.Jogos
     {
         private int usuarioId;
         private string usuarioEmail;
-        private HttpClientBuilder _httpClientBuilder;
-        public Form_TodosOsJogos(HttpClientBuilder httpCliente, int usuarioId, string usuarioEmail)
+        private IHttpClient _httpClientBuilder;
+        public Form_TodosOsJogos(IHttpClient httpClient, int usuarioId, string usuarioEmail)
         {
-            _httpClientBuilder = httpCliente;
+            _httpClientBuilder = httpClient;
             this.usuarioId = usuarioId;
             this.usuarioEmail = usuarioEmail;
             InitializeComponent();
@@ -20,7 +20,7 @@ namespace CarteiraDeJogosForms.Forms.Jogos
 
         private async void PreencherListaDeJogosDoUsuario()
         {
-            HttpResponseMessage resposta = await _httpClientBuilder.GetJogosDoUsuario(usuarioId);
+            HttpResponseMessage resposta = await _httpClientBuilder.GetRequisition($"/JogosDoUsuario/{usuarioId}/todosJogos");
 
             List<int> listaDeJogos = JsonConvert.DeserializeObject<List<int>>(await resposta.Content.ReadAsStringAsync())!;
             if (listaDeJogos.Count == 0)
@@ -33,7 +33,7 @@ namespace CarteiraDeJogosForms.Forms.Jogos
                 List<ReadJogosDto> jogos = new List<ReadJogosDto>();
                 foreach (var item in listaDeJogos)
                 {
-                    HttpResponseMessage respostaJogo = await _httpClientBuilder.GetJogo(item);
+                    HttpResponseMessage respostaJogo = await _httpClientBuilder.GetRequisition($"/Jogos/{item}");
                     if (respostaJogo.IsSuccessStatusCode)
                     {
                         ReadJogosDto jogo = JsonConvert.DeserializeObject<ReadJogosDto>(await respostaJogo.Content.ReadAsStringAsync())!;
