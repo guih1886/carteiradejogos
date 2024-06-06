@@ -1,10 +1,13 @@
 ﻿using CarteiraDeJogos.Data.Dto.Usuarios;
+using CarteiraDeJogos.Models;
 using CarteiraDeJogosForms.Classes;
 using CarteiraDeJogosForms.Classes.Interfaces;
 using CarteiraDeJogosForms.Classes.Utils;
 using CarteiraDeJogosForms.Forms.Cadastrar;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using System.Net;
+using System.Security.Claims;
 
 namespace CarteiraDeJogosForms.Forms
 {
@@ -15,9 +18,7 @@ namespace CarteiraDeJogosForms.Forms
         public Form_Login()
         {
             _configuration = InstanciaIConfiguration.GetInstancia();
-            string url = _configuration["UrlBase"]!;
-            string jwt = _configuration["Jwt:Key"]!;
-            _httpClient = new HttpClientBuilder(url, jwt);
+            _httpClient = new HttpClientBuilder(_configuration["UrlBase"]!, "");
             InitializeComponent();
         }
 
@@ -26,15 +27,19 @@ namespace CarteiraDeJogosForms.Forms
             LoginUsuarioDto usuario = new LoginUsuarioDto(Txt_Email.Text, Txt_Senha.Text);
             HttpResponseMessage resposta = await _httpClient.PostRequisition("/Login", usuario);
             string msg = await resposta.Content.ReadAsStringAsync();
-            if (resposta.StatusCode != HttpStatusCode.OK)
+            if (!resposta.IsSuccessStatusCode)
             {
-                Txt_Email.Focus();
                 Lbl_Erro.Text = msg;
+                Txt_Email.Focus();
             }
             else
             {
                 string jwt = msg;
-                Form_Principal form_Principal = new Form_Principal(this, jwt);
+                _httpClient = new HttpClientBuilder(_configuration["UrlBase"]!, jwt);
+                ClaimsPrincipal dados = DeserizalizeJwt.JwtClaims(jwt, _configuration["Jwt:Key"]!)!;
+                List<Claim> listaClaims = dados.Claims.ToList();
+                int usuarioId = Int32.Parse(listaClaims[0].Value);
+                Form_Principal form_Principal = new Form_Principal(_httpClient, this, usuarioId);
                 form_Principal.Show();
                 EsconderTela();
             }
