@@ -24,7 +24,7 @@ namespace CarteiraDeJogosForms.Forms.Cadastrar
         {
             CreateUsuarioDto usuario = new CreateUsuarioDto(Txt_Nome.Text, Txt_Email.Text, Txt_Senha.Text, Txt_ConfirmaSenha.Text);
             HttpResponseMessage resposta = await _httpClientBuilder.PostRequisition("/Usuarios", usuario);
-            string msg = await ValidaRequisicao.CadastrarUsuario(resposta);
+            string msg = await Validacoes.ValidaCadastrarUsuario(resposta);
             if (msg.Contains("Ok"))
             {
                 Lbl_Erro.Text = "";

@@ -141,7 +141,7 @@ public partial class Form_CadastroDeJogos : Form
             var genero = (Genero)Cmb_Genero.SelectedItem!;
             CreateJogosDto novoJogo = new CreateJogosDto(Txt_Imagem.Text, Txt_Nome.Text, Txt_Descricao.Text, genero, usuarioId, Mtb_AnoLancamento.Text, Txt_Plataforma.Text, Int32.Parse(Mtb_Nota.Text));
             var resposta = await _httpClientBuilder.PostRequisition("/Jogos", novoJogo);
-            string msg = await ValidaRequisicao.CadastrarEAlterarJogo(resposta);
+            string msg = await Validacoes.ValidaCadastrarEAlterarJogo(resposta);
             if (!resposta.IsSuccessStatusCode)
             {
                 Lbl_Erro.Text = msg;
@@ -160,7 +160,7 @@ public partial class Form_CadastroDeJogos : Form
             var genero = (Genero)Cmb_Genero.SelectedItem!;
             UpdateJogosDto novoJogo = new UpdateJogosDto(Txt_Imagem.Text, Txt_Nome.Text, Txt_Descricao.Text, genero, Mtb_AnoLancamento.Text, Txt_Plataforma.Text, Int32.Parse(Mtb_Nota.Text), ativo);
             HttpResponseMessage resposta = await _httpClientBuilder.PutRequisition($"/Jogos/{jogoId}", novoJogo);
-            string msg = await ValidaRequisicao.CadastrarEAlterarJogo(resposta);
+            string msg = await Validacoes.ValidaCadastrarEAlterarJogo(resposta);
             if (listaFavoritos!.Contains(jogoId) && Ckb_Favorito.Checked == false) await _httpClientBuilder.DeleteRequisition($"/JogosDoUsuario/{usuarioId}/removerJogoFavorito/{jogoId}");
             if (!listaFavoritos!.Contains(jogoId) && Ckb_Favorito.Checked == true) await _httpClientBuilder.PostRequisition($"/JogosDoUsuario/{usuarioId}/adicionarJogoFavorito/{jogoId}", string.Empty);
             if (!resposta.IsSuccessStatusCode)
