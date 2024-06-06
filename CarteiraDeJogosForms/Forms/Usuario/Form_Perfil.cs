@@ -6,11 +6,9 @@ namespace CarteiraDeJogosForms.Forms.Usuario;
 
 public partial class Form_Perfil : Form
 {
-    private int usuarioId;
     private IHttpClient _httpClientBuilder;
+    private int usuarioId;
     private ReadUsuariosDto? usuario;
-    private List<int>? jogos;
-    private List<int>? jogosFavoritos;
     public Form_Perfil(IHttpClient httpClient, int usuarioId)
     {
         this.usuarioId = usuarioId;
@@ -22,22 +20,15 @@ public partial class Form_Perfil : Form
     private async void PreencherCamposDoUsuario()
     {
         HttpResponseMessage resposta = await _httpClientBuilder.GetRequisition($"/Usuarios/{usuarioId}");
-        string obj = await resposta.Content.ReadAsStringAsync();
         if (resposta.IsSuccessStatusCode)
         {
-            ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(obj)!;
+            string usuarioDto = await resposta.Content.ReadAsStringAsync();
+            ReadUsuariosDto usuario = JsonConvert.DeserializeObject<ReadUsuariosDto>(usuarioDto)!;
             this.usuario = usuario;
-            jogos = usuario.Jogos;
-            jogosFavoritos = usuario.JogosFavoritos;
-            Txt_Id.Text = usuario.Id.ToString();
+            Txt_Id.Text = usuarioId.ToString();
             Txt_Nome.Text = usuario.Nome;
-            Txt_Jogos.Text = JsonConvert.SerializeObject(jogos);
-            Txt_JogosFavoritos.Text = JsonConvert.SerializeObject(jogosFavoritos);
-        }
-        else
-        {
-            MessageBox.Show(obj, "Buscar Usuário", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            this.Close();
+            Txt_Jogos.Text = JsonConvert.SerializeObject(usuario.Jogos.Order());
+            Txt_JogosFavoritos.Text = JsonConvert.SerializeObject(usuario.JogosFavoritos.Order());
         }
     }
     private void toolStripEditar_Click(object sender, EventArgs e)
@@ -50,7 +41,7 @@ public partial class Form_Perfil : Form
         Txt_Nome.ReadOnly = true;
         if (usuario!.Nome != Txt_Nome.Text)
         {
-            UpdateUsuariosDto novoUsuario = new UpdateUsuariosDto(Txt_Nome.Text, jogos, jogosFavoritos);
+            UpdateUsuariosDto novoUsuario = new UpdateUsuariosDto(Txt_Nome.Text, usuario.Jogos, usuario.JogosFavoritos);
             HttpResponseMessage resposta = await _httpClientBuilder.PutRequisition($"/Usuarios/{usuarioId}", novoUsuario);
             if (resposta.IsSuccessStatusCode)
             {
