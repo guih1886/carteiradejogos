@@ -46,7 +46,7 @@ namespace CarteiraDeJogosForms.Forms
         }
         private void todosOsJogosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form todosOsJogos = new Form_TodosOsJogos(_httpClientBuilder, usuarioId, usuarioEmail);
+            Form todosOsJogos = new Form_TodosOsJogos(_httpClientBuilder, usuarioId);
             todosOsJogos.Show();
         }
         private void jogosFavoritosToolStripMenuItem_Click(object sender, EventArgs e)
