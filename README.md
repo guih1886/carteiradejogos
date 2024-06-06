@@ -31,9 +31,10 @@ As requisições com os verbos POST, PUT e DELETE precisam ser autenticadas com 
 
 ## Configurando o projeto
 
-Faça um clone do repositório em seu diretório de preferencia, adicione o arquivo `appsettings.json` na raiz do projeto JomedAPI, você pode utilizar o modelo disponibilizado [Aqui][appsettings].<br>
-Faça a alteração da chave do JWT, e a alteração da connection string do seu banco de dados SQL Server. Na raiz do projeto execute o comando `dotnet ef migrations add "Criando as migrações para o banco de dados."`, e depois `dotnet ef database update`.
-Dessa forma o banco de dados estará atualizado para rodar a aplicação.
+Faça um clone do repositório em seu diretório de preferencia, adicione o arquivo `appsettings.json` na raiz do projeto, você pode utilizar o modelo disponibilizado [Aqui][appsettings].<br>
+Faça a alteração da chave do JWT, da url e a alteração da connection string do seu banco de dados SQL Server. Na raiz do projeto execute o comando `dotnet ef migrations add "Criando as migrações para o banco de dados."`, e depois `dotnet ef database update`.
+Dessa forma o banco de dados estará atualizado para rodar a aplicação.<br>
+Caso for utilizar a opção com o windows forms, adicione o mesmo arquivo `appsettings.json` na raiz do projeto `CarteiraDeJogosForms` e configure para executar os dois projetos simultaneamente.
 
 ## Login
 
@@ -325,5 +326,5 @@ Nessa tela é possivel editar o cadastro do usuário, o qual é limitada apenas 
 ![](https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/Images/testes.png)
 
 
-[appsettings]: https://raw.githubusercontent.com/guih1886/jomedAPI/main/JomedAPI/Assets/appsettings.json
+[appsettings]: https://github.com/guih1886/carteiradejogos/blob/main/CarteiraDeJogos/Assets/appsettings.json
 [http401]: https://developer.mozilla.org/pt-BR/docs/Web/HTTP/Status/401
