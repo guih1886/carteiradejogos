@@ -18,7 +18,7 @@ namespace CarteiraDeJogosForms.Forms.Jogos
 
         private async void PreencherListaDeJogosDoUsuario()
         {
-            List<ReadJogosDto> listaDeJogos = await BuscarJogosDoUsuario.BuscarJogos($"/JogosDoUsuario/{usuarioId}/todosJogos", _httpClientBuilder);
+            List<ReadJogosDto> listaDeJogos = await BuscarJogosDoUsuario.ConverterListaDeJogos($"/JogosDoUsuario/{usuarioId}/todosJogos", _httpClientBuilder);
             if (listaDeJogos.Count == 0)
             {
                 Dgv_Jogos.DataSource = null;

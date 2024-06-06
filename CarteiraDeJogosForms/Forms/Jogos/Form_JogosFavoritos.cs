@@ -18,7 +18,7 @@ public partial class Form_JogosFavoritos : Form
 
     private async void PreencherListaDeJogosDoUsuario()
     {
-        List<ReadJogosDto> listaDeJogos = await BuscarJogosDoUsuario.BuscarJogos($"/JogosDoUsuario/{usuarioId}/jogosfavoritos", _httpClientBuilder);
+        List<ReadJogosDto> listaDeJogos = await BuscarJogosDoUsuario.ConverterListaDeJogos($"/JogosDoUsuario/{usuarioId}/jogosfavoritos", _httpClientBuilder);
         if (listaDeJogos.Count == 0)
         {
             Dgv_JogosFavoritos.DataSource = null;
